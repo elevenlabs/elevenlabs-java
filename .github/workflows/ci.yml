@@ -1,0 +1,63 @@
+name: ci
+
+on: [push]
+
+concurrency:
+  group: ${{ github.workflow }}-${{ github.ref }}
+  cancel-in-progress: false
+
+jobs:
+  compile:
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Compile
+        run: gradle --no-daemon compileJava
+
+  test:
+    needs: [compile]
+    runs-on: ubuntu-latest
+
+    steps:
+      - name: Checkout repo
+        uses: actions/checkout@v6
+
+      - name: Set up Java
+        uses: actions/setup-java@v4
+        with:
+          distribution: 'temurin'
+          java-version: '11'
+
+      - name: Test
+        run: gradle --no-daemon test
+      - name: Verify tests were actually collected
+        # Generated tests are expected here, so their absence is a failure rather than a silent
+        # skip: a regression in the emitters would otherwise leave the Test step green with zero
+        # tests executed (Gradle's `test` task does not fail on zero test classes). Reading
+        # `tests="N"` and `skipped="N"` out of Gradle's own JUnit XML reports asserts a real
+        # executed count, matching the guard already shipped for Python/Go rather than trusting
+        # the exit code alone. `find -exec ... +` avoids both an argv overflow on large SDKs and a
+        # pipefail failure from grep finding no match in an individual file.
+        run: |
+          if [ ! -d build/test-results/test ] || [ -z "$(find build/test-results/test -name '*.xml' -print -quit)" ]; then
+            echo "::error::Expected generated tests under src/test/java, but no test results were found under build/test-results/test."
+            exit 1
+          fi
+          totals=$(find build/test-results/test -name '*.xml' -exec grep -h -o 'tests="[0-9]*"\|skipped="[0-9]*"' {} + || true)
+          total=$(echo "$totals" | grep -o 'tests="[0-9]*"' | grep -o '[0-9]*' | awk '{s+=$1} END {print s+0}')
+          skipped=$(echo "$totals" | grep -o 'skipped="[0-9]*"' | grep -o '[0-9]*' | awk '{s+=$1} END {print s+0}')
+          collected=$((total - skipped))
+          if [ "$collected" -le 0 ]; then
+            echo "::error::build/test-results/test exists but reports 0 executed tests (excluding skipped)."
+            exit 1
+          fi
+          echo "Gradle collected $collected executed test(s)."
