@@ -1,1 +1,6 @@
 # Specify files that shouldn't be modified by Fern
+
+# Stopgap: Fern's generated workflow sets up JDK 11 but invokes bare `gradle`,
+# and the runner's system Gradle (9.x) requires JDK 17+ to launch. Pin Java 17
+# here until Fern fixes the generated workflow; remove once it does.
+.github/workflows/ci.yml
