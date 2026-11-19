@@ -245,11 +245,18 @@ public final class SpeechEngineJakarta {
         String.class,
         new MessageHandler.Partial<String>() {
           private final StringBuilder pending = new StringBuilder();
+          // Set once a message outgrows the limit: its remaining pieces (which can still arrive
+          // while the close is in flight) are dropped, never parsed as a message of their own.
+          private boolean discarding;
 
           @Override
           public void onMessage(String part, boolean last) {
+            if (discarding) {
+              return;
+            }
             if (pending.length() + part.length() > MAX_MESSAGE_CHARS) {
               pending.setLength(0);
+              discarding = true;
               try {
                 socket.close(
                   new CloseReason(CloseReason.CloseCodes.TOO_BIG, "Speech Engine message too large")
