@@ -210,14 +210,23 @@ class WorkflowBuilderTest {
   }
 
   @Test
-  void unknownNodeTypeIsKeptWithAWarning() {
+  void unknownNodeTypeIsKeptByToJsonAndRejectedByBuild() {
+    // The generated union would read "future_survey" as another member (override_agent), so build() can't return
+    // it; toJson() keeps it as given.
     Workflow wf = Workflow.fromJson(
-      "{\"nodes\": {\"start_node\": {\"type\": \"start\"}, \"survey\": {\"type\": \"future_survey\", \"survey_id\": \"s\"}}, " +
+      "{\"nodes\": {\"start_node\": {\"type\": \"start\"}, \"survey\": {\"type\": \"future_survey\", \"label\": \"Survey\", " +
+      "\"survey_id\": \"s\"}}, " +
       "\"edges\": {\"e1\": {\"source\": \"start_node\", \"target\": \"survey\", \"forward_condition\": {\"type\": \"unconditional\"}}}}"
     );
     List<String> warnings = new ArrayList<>();
-    wf.build(issue -> warnings.add(issue.getCode()));
-    assertEquals(Arrays.asList("unknown_node_type"), warnings);
+    WorkflowValidationException e = assertThrows(
+      WorkflowValidationException.class,
+      () -> wf.build(issue -> warnings.add(issue.getCode()))
+    );
+    assertEquals(1, e.getIssues().size());
+    assertEquals("invalid_model", e.getIssues().get(0).getCode());
+    assertEquals("survey", e.getIssues().get(0).getNodeId().get());
+    assertTrue(warnings.isEmpty());
     assertEquals("future_survey", wf.toJson().get("nodes").get("survey").get("type").asText());
     assertTrue(NodeTypes.modelKnows("override_agent"));
     assertTrue(NodeTypes.modelKnows("say"));

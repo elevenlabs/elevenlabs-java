@@ -2,6 +2,7 @@ package com.elevenlabs.api.agentworkflows;
 
 import static org.junit.jupiter.api.Assertions.assertEquals;
 import static org.junit.jupiter.api.Assertions.assertNull;
+import static org.junit.jupiter.api.Assertions.assertThrows;
 
 import com.elevenlabs.api.types.AgentWorkflowRequestModel;
 import com.fasterxml.jackson.databind.JsonNode;
@@ -60,12 +61,25 @@ class WorkflowFixtureTest {
     assertEquals(CanonicalJson.write(fixture.get("expected"), false), result.json);
 
     // build()'s generated request model carries the same workflow: loading it back writes the same bytes. A node
-    // type the model doesn't know can't survive that (it is reported as unknown_node_type), so those are skipped.
-    List<String> warnings = new ArrayList<>();
-    AgentWorkflowRequestModel model = result.workflow.build(issue -> warnings.add(issue.getCode()));
-    if (!warnings.contains("unknown_node_type")) {
-      assertEquals(result.json, Workflow.fromAgent(model).toJsonString());
+    // type the model doesn't know can't survive that, so build() rejects it with invalid_model instead.
+    if (hasUnmodelledNodeType(fixture.get("expected"))) {
+      WorkflowValidationException e = assertThrows(WorkflowValidationException.class, () -> result.workflow.build());
+      for (WorkflowIssue issue : e.getIssues()) {
+        assertEquals("invalid_model", issue.getCode());
+      }
+      return;
     }
+    AgentWorkflowRequestModel model = result.workflow.build();
+    assertEquals(result.json, Workflow.fromAgent(model).toJsonString());
+  }
+
+  private static boolean hasUnmodelledNodeType(JsonNode workflow) {
+    for (JsonNode node : workflow.path("nodes")) {
+      if (!NodeTypes.modelKnows(node.path("type").asText(null))) {
+        return true;
+      }
+    }
+    return false;
   }
 
   static List<Path> fixtureFiles() throws IOException, URISyntaxException {

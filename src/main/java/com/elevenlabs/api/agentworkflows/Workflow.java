@@ -274,10 +274,14 @@ public final class Workflow extends WorkflowChain {
   /**
    * {@link #build()}, calling {@code onWarning} once per warning (such as {@code unreachable_node}).
    *
+   * <p>A node type this SDK version's generated request model doesn't have a member for can't be carried by the
+   * model (the generated union would read it as a different node type), so {@code build()} reports it as an
+   * {@code invalid_model} error. {@link #toJson()} keeps such nodes as given.
+   *
    * @throws WorkflowValidationException listing every problem, if the workflow is invalid
    */
   public AgentWorkflowRequestModel build(Consumer<WorkflowIssue> onWarning) {
-    ObjectNode wire = toWireObject(onWarning);
+    ObjectNode wire = toWireObject(onWarning, true);
     widenNumberLiterals(wire);
     try {
       return ObjectMappers.JSON_MAPPER.treeToValue(wire, AgentWorkflowRequestModel.class);
@@ -314,12 +318,12 @@ public final class Workflow extends WorkflowChain {
    * {@link #build()}.
    */
   public ObjectNode toJson() {
-    return (ObjectNode) CanonicalJson.canonicalize(toWireObject(null));
+    return (ObjectNode) CanonicalJson.canonicalize(toWireObject(null, false));
   }
 
   /** {@link #toJson()} as a string with 2-space indentation and a trailing newline: the canonical file format. */
   public String toJsonString() {
-    return CanonicalJson.toCanonicalString(toWireObject(null));
+    return CanonicalJson.toCanonicalString(toWireObject(null, false));
   }
 
   @Override
@@ -327,9 +331,30 @@ public final class Workflow extends WorkflowChain {
     return new EdgeOrigin(graph.startId, Condition.always().toWire(), null);
   }
 
-  /** Validates, merges reverse edges, lays out positions and assembles the wire-format workflow object. */
-  ObjectNode toWireObject(Consumer<WorkflowIssue> onWarning) {
-    List<WorkflowIssue> issues = Validate.run(graph);
+  /**
+   * Validates, merges reverse edges, lays out positions and assembles the wire-format workflow object. With
+   * {@code forModel}, the output is bound for the generated request model, so a node type it doesn't model is an
+   * {@code invalid_model} error instead of an {@code unknown_node_type} warning.
+   */
+  ObjectNode toWireObject(Consumer<WorkflowIssue> onWarning, boolean forModel) {
+    List<WorkflowIssue> issues = new ArrayList<>();
+    for (WorkflowIssue issue : Validate.run(graph)) {
+      if (forModel && "unknown_node_type".equals(issue.getCode())) {
+        String id = issue.getNodeId().orElse(null);
+        issues.add(
+          new WorkflowIssue(
+            "invalid_model",
+            WorkflowSeverity.ERROR,
+            "Node \"" + id + "\" has type \"" + WorkflowGraph.typeOf(graph.getNode(id)) + "\", which this SDK " +
+            "version's request model can't represent, so build() can't return it. Upgrade the SDK, or send toJson() " +
+            "as the request's workflow through additional body properties.",
+            id
+          )
+        );
+      } else {
+        issues.add(issue);
+      }
+    }
     List<WorkflowIssue> errors = new ArrayList<>();
     for (WorkflowIssue issue : issues) {
       if (issue.getSeverity() == WorkflowSeverity.ERROR) {
