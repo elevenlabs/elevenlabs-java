@@ -53,6 +53,9 @@ public final class SpeechEngineJakarta {
   /** The servlet context attribute under which containers publish the WebSocket container. */
   static final String SERVER_CONTAINER_ATTRIBUTE = "jakarta.websocket.server.ServerContainer";
 
+  /** The largest inbound message accepted (16 Mi characters), as in the Go SDK. */
+  static final int MAX_MESSAGE_CHARS = 16 * 1024 * 1024;
+
   private SpeechEngineJakarta() {}
 
   /** Serves the engine on {@code path}, verifying connections with the engine's API key. */
@@ -234,12 +237,38 @@ public final class SpeechEngineJakarta {
         }
       );
       session = created;
+      // Every user_transcript carries the whole conversation, so messages outgrow container text
+      // buffers (8 KB in Tomcat, 64 KB in Jetty) within a few turns, and a Whole handler would be
+      // closed with 1009. A Partial handler receives each message in buffer-sized pieces whatever
+      // the container's limit, and the pieces are joined here, up to MAX_MESSAGE_CHARS.
       socket.addMessageHandler(
         String.class,
-        new MessageHandler.Whole<String>() {
+        new MessageHandler.Partial<String>() {
+          private final StringBuilder pending = new StringBuilder();
+
           @Override
-          public void onMessage(String message) {
-            created.handleRawMessage(message);
+          public void onMessage(String part, boolean last) {
+            if (pending.length() + part.length() > MAX_MESSAGE_CHARS) {
+              pending.setLength(0);
+              try {
+                socket.close(
+                  new CloseReason(CloseReason.CloseCodes.TOO_BIG, "Speech Engine message too large")
+                );
+              } catch (IOException e) {
+                // Already gone.
+              }
+              return;
+            }
+            if (last && pending.length() == 0) {
+              created.handleRawMessage(part);
+              return;
+            }
+            pending.append(part);
+            if (last) {
+              String message = pending.toString();
+              pending.setLength(0);
+              created.handleRawMessage(message);
+            }
           }
         }
       );

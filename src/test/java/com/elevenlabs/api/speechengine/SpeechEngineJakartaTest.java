@@ -94,6 +94,37 @@ class SpeechEngineJakartaTest {
   }
 
   @Test
+  void aTranscriptLargerThanTomcatsTextBufferIsReceived() throws Exception {
+    // Tomcat's default text buffer is 8 KB; a long conversation is far bigger.
+    StringBuilder content = new StringBuilder();
+    for (int i = 0; i < 20000; i++) {
+      content.append("word ");
+    }
+    CompletableFuture<String> received = new CompletableFuture<>();
+    int port = startTomcat(
+      TestTokens.API_KEY,
+      new SpeechEngineCallbacks()
+        .onTranscript((transcript, signal, session) -> {
+          received.complete(transcript.get(0).getContent());
+          session.sendResponse("ok");
+        })
+    );
+
+    WebSocketTestClient api = new WebSocketTestClient(
+      "ws://127.0.0.1:" + port + "/speech-engine/ws",
+      TestTokens.TOKEN
+    );
+    api.opened.get(10, TimeUnit.SECONDS);
+    api.send(
+      "{\"type\":\"user_transcript\",\"event_id\":1," +
+      "\"user_transcript\":[{\"role\":\"user\",\"content\":\"" + content + "\"}]}"
+    );
+    assertEquals(content.toString(), received.get(10, TimeUnit.SECONDS));
+    assertEquals("ok", api.next().get("content").asText());
+    api.close();
+  }
+
+  @Test
   void unverifiedRequestIsAnswered401BeforeTheUpgrade() throws Exception {
     CompletableFuture<Void> opened = new CompletableFuture<>();
     int port = startTomcat(
