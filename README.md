@@ -209,6 +209,70 @@ an agent config. A node type this SDK version doesn't model is kept as loaded an
 workflow, pass `toJson()` instead of `build()`:
 `UpdateAgentRequest.builder().additionalProperty("workflow", wf.toJson()).build()`.
 
+## Agent tools as code
+
+`com.elevenlabs.api.agenttools` builds agent tools in code: webhook tools (the server calls an HTTP
+endpoint), client tools (the agent sends an event to the user's client) and system tools (built-in
+ones such as ending or transferring the call). Each method returns the tool, so a tool reads as one
+chain. `build()` returns the generated `ToolRequestModel` that tool create and update requests take.
+
+```java
+import com.elevenlabs.api.agenttools.Header;
+import com.elevenlabs.api.agenttools.Schema;
+import com.elevenlabs.api.agenttools.SystemTool;
+import com.elevenlabs.api.agenttools.Tool;
+import com.elevenlabs.api.agenttools.ToolOptions;
+import com.elevenlabs.api.agenttools.ToolTransferOptions;
+import com.elevenlabs.api.agenttools.WebhookTool;
+import com.elevenlabs.api.agentworkflows.Destination;
+import com.elevenlabs.api.types.PreToolSpeechMode;
+import com.elevenlabs.api.types.TransferTypeEnum;
+
+WebhookTool getOrder = Tool.webhook("get_order", "Look up an order by the number the caller gives")
+  .get("https://api.example.com/orders/{order_id}")
+  .pathParam("order_id", Schema.string().describe("The order number, e.g. A-1042"))
+  .queryParam("include", Schema.string().constant("items"))
+  .header("Authorization", Header.secret("sec_orders_api"))
+  .assign("order_status", "order.status")
+  .options(new ToolOptions().responseTimeoutSecs(10).preToolSpeech(PreToolSpeechMode.FORCE));
+
+WebhookTool refund = Tool.webhook("issue_refund", "Refund an order the caller asked to return")
+  .post("https://api.example.com/refunds")
+  .body(Schema.object()
+    .property("order_id", Schema.string().fromVariable("order_id"))
+    .property("reason", Schema.string().describe("Why the caller wants a refund").choices("damaged", "late", "other"))
+    .property("note", Schema.string().describe("Anything else the caller said").optional()));
+
+SystemTool transfer = SystemTool.transferToNumber()
+  .transfer("Caller asks for billing", Destination.phone("+15551234567"))
+  .transfer("Caller asks for a manager", Destination.sipVariable("manager_sip"),
+    new ToolTransferOptions().transferType(TransferTypeEnum.SIP_REFER));
+
+String toolId = client.agents().tools().create(getOrder.build()).getId();
+Files.write(Paths.get("tool_configs/issue_refund.json"), refund.toJsonString().getBytes(StandardCharsets.UTF_8));
+```
+
+Every literal param needs exactly one value source: `describe()` (the LLM provides it),
+`fromVariable()`, `constant()`, `systemProvided()` or `omit()`. Schemas are immutable values, so one
+schema can be reused across tools. Webhook and client tools are created with `agents().tools().create()`
+and attached to an agent by id in `prompt.tool_ids`; a system tool goes in the agent's
+`prompt.built_in_tools`, via `SystemTool.buildBuiltInConfig()`.
+
+Chaining never throws. `build()`, `toJson()` and `toJsonString()` check the whole tool and throw a
+`ToolValidationException` listing every problem; `build(issue -> ...)` also receives warnings. To
+edit an existing tool, load it with `Tool.fromResponse(client.agents().tools().get("tool_id"))` or
+`Tool.fromJson(json)`, narrow it with `asWebhook()`, `asClient()` or `asSystem()`, and use the same
+methods (`pathParam`, `removeQueryParam`, `header`, ...). Loaded fields the builder doesn't model, and
+the API's defaults for unset fields, are written back unchanged. A tool of a type this SDK can't edit
+(such as `mcp`) is kept as loaded and reported as an `unknown_tool_type` warning.
+
+`toJsonString()` writes the API wire format with sorted keys, 2-space indentation and a trailing
+newline, byte-identical to the other ElevenLabs SDKs and to the CLI's `tool_configs/*.json`. The
+generated request model holds a literal's constant as a `String`, `int`, `double` or `boolean`, so a
+constant it would change (such as an integer outside the `int` range, or a nullable literal's
+`null`) makes `build()` report `constant_type_mismatch` rather than send a different value; send the
+`toJson()` output directly for such a tool.
+
 ## Streaming
 
 Stream audio in real-time, as it's being generated. `convert` and `stream` both return an
