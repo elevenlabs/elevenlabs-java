@@ -240,6 +240,61 @@ try (
 }
 ```
 
+## Waiting for Flows generations
+
+Image, video and text-to-speech generations and template runs under `client.flows()` run
+asynchronously: `create` returns an ID and `get` reports the status. `FlowsWaiter` adds
+`createAndWait`, which does both, polling until the generation is `completed` or `failed`.
+
+```java
+import com.elevenlabs.api.flows.wait.FlowsWaitOptions;
+import com.elevenlabs.api.flows.wait.FlowsWaitTimeoutException;
+import com.elevenlabs.api.flows.wait.FlowsWaiter;
+import com.elevenlabs.api.types.GptImage1Request;
+import com.elevenlabs.api.types.ImageGenerationRequest;
+import com.elevenlabs.api.types.MediaGenerationResponse;
+import java.time.Duration;
+
+FlowsWaiter flows = new FlowsWaiter(client);
+
+MediaGenerationResponse generation;
+try {
+  generation = flows
+    .image()
+    .createAndWait(
+      ImageGenerationRequest.gptImage1(
+        GptImage1Request.builder().prompt("A lighthouse at dusk").build()
+      ),
+      FlowsWaitOptions.builder().waitTimeout(Duration.ofMinutes(10)).build()
+    );
+} catch (FlowsWaitTimeoutException e) {
+  // Still running on the server: resume with client.flows().image().get(e.getId()).
+  throw e;
+}
+
+if (generation.isCompleted()) {
+  System.out.println(generation.getCompleted().get().getContentUrl());
+} else {
+  System.out.println(generation.getFailed().get().getErrorMessage());
+}
+```
+
+`flows.video()` and `flows.textToSpeech()` work the same way, and
+`flows.templates().runs().createAndWait(templateId, request)` waits for a template run.
+
+- Between status checks it waits for the server's `Retry-After` header (seconds or an HTTP date),
+  never less than `minPollInterval` (default 3 seconds, minimum 0.5), plus up to 20% jitter.
+- `waitTimeout` bounds the whole wait. It defaults to none, which waits indefinitely. When it runs
+  out, `FlowsWaitTimeoutException` carries the `id` (and `templateId` for a run) and the last
+  status.
+- A `failed` generation or run is returned, not thrown.
+- A third `RequestOptions` argument applies to the create call and every status check; the status
+  checks are GET requests, so `bodyProperties` reach only the create call.
+- The calling thread blocks while it waits. Interrupting it stops the wait.
+
+This is meant for scripts and quickstarts. In production, set a `webhook` on the request and
+handle the webhook event instead of holding a thread open.
+
 ## Environments
 
 This SDK allows you to configure different environments for API requests. It defaults to the production environment.
