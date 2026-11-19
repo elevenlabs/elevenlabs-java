@@ -71,6 +71,17 @@ class WorkflowBuilderTest {
   }
 
   @Test
+  void buildKeepsIntegerLiteralsBeyondTheIntRange() throws Exception {
+    Workflow wf = new Workflow();
+    wf.converse("triage", "Triage").when(Expr.variable("ts").gt(1_700_000_000_000L)).end();
+
+    assertTrue(wf.toJsonString().contains("\"value\": 1700000000000\n"));
+    // The generated number union narrows integers to int; build() must not wrap this one.
+    JsonNode model = ObjectMappers.JSON_MAPPER.valueToTree(wf.build());
+    assertTrue(CanonicalJson.toCanonicalString(model).contains("\"value\": 1700000000000\n"));
+  }
+
+  @Test
   void stringAndExprConditionsAreSugar() {
     Workflow wf = new Workflow();
     WorkflowNode triage = wf.converse("triage", "Triage");
