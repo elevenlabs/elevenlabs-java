@@ -90,9 +90,9 @@ final class Validate {
           new WorkflowIssue(
             "unknown_node_type",
             WorkflowSeverity.WARNING,
-            "Node \"" + id + "\" has type \"" + type + "\", which this SDK version doesn't model. build() keeps it " +
-            "as given, but agents create/update may reject it. Upgrade the SDK, or send toJson() as the request's " +
-            "workflow through additional body properties.",
+            "Node \"" + id + "\" has type \"" + type + "\", which this SDK version doesn't model. toJson() keeps it " +
+            "as given, but build() can't return it in the generated request model. Upgrade the SDK, or send " +
+            "toJson() as the request's workflow through additional body properties.",
             id
           )
         );

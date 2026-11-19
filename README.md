@@ -204,9 +204,9 @@ positions and edge order are kept; new nodes are laid out automatically.
 
 `toJsonString()` writes the API wire format with sorted keys, 2-space indentation and a trailing
 newline, byte-identical to the other ElevenLabs SDKs, so the file can be stored in git next to
-an agent config. A node type this SDK version doesn't model is kept as loaded and reported as an
-`unknown_node_type` warning, because the generated request model can't represent it. To send such a
-workflow, pass `toJson()` instead of `build()`:
+an agent config. A node type this SDK version doesn't model is kept as loaded by `toJson()`, but
+`build()` rejects it with an `invalid_model` error, because the generated request model can't
+represent it. To send such a workflow, pass `toJson()` instead of `build()`:
 `UpdateAgentRequest.builder().additionalProperty("workflow", wf.toJson()).build()`.
 
 ## Agent tools as code
