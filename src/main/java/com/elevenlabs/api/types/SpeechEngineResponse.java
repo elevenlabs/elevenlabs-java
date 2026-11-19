@@ -22,7 +22,10 @@ import org.jetbrains.annotations.NotNull;
 
 @JsonDeserialize(builder = SpeechEngineResponse.Builder.class)
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
-public final class SpeechEngineResponse {
+// Hand-edited (see .fernignore): not final, with a protected constructor, so the hand-written
+// com.elevenlabs.api.speechengine.SpeechEngineResource can extend it and the wired
+// speechEngine().create/get/update/duplicate can return it through a covariant override.
+public class SpeechEngineResponse {
 
   private final String speechEngineId;
   private final String name;
@@ -43,7 +46,7 @@ public final class SpeechEngineResponse {
   private final Optional<ResourceAccessInfo> accessInfo;
   private final Map<String, Object> additionalProperties;
 
-  private SpeechEngineResponse(Builder builder) {
+  protected SpeechEngineResponse(Builder builder) {
     this.speechEngineId = builder.speechEngineId;
     this.name = builder.name;
     this.speechEngine = builder.speechEngine;
