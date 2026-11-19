@@ -9,6 +9,12 @@ src/main/java/com/elevenlabs/api/agentworkflows/
 src/test/java/com/elevenlabs/api/agentworkflows/
 src/test/resources/agentworkflows/
 
+# Hand-written webhook signature verifier (Fern's generated verifier can't parse the compound
+# `ElevenLabs-Signature: t=...,v0=...` header). Standalone rather than a method on the generated
+# WebhooksClient, which Java can't extend without freezing that whole generated file.
+src/main/java/com/elevenlabs/api/webhooks/
+src/test/java/com/elevenlabs/api/webhooks/
+
 # Hand-written Flows createAndWait helpers (start an image/video/text-to-speech generation or a
 # template run, then poll the generated get until it is completed or failed, honouring the
 # server's Retry-After). Java has no partial classes, and the generated Flows clients are rewritten

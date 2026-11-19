@@ -352,6 +352,39 @@ try (InputStream audio = client.textToSpeech().convert(...)) {
 `ElevenlabsApiApiException` extends `ElevenlabsApiException`, which extends `RuntimeException`, so
 none of these need to be declared.
 
+## Webhooks
+
+ElevenLabs signs every webhook it sends with an `ElevenLabs-Signature` header. `WebhookVerifier`
+checks that signature against your webhook secret and returns the decoded event:
+
+```java
+import com.elevenlabs.api.webhooks.WebhookVerificationException;
+import com.elevenlabs.api.webhooks.WebhookVerifier;
+import com.fasterxml.jackson.databind.JsonNode;
+
+// rawBody must be the request body exactly as received (a String or byte[]), not a parsed and
+// re-serialized copy: any change to the bytes breaks the signature.
+try {
+  JsonNode event = WebhookVerifier.constructEvent(
+    rawBody,
+    request.getHeader("ElevenLabs-Signature"),
+    System.getenv("ELEVENLABS_WEBHOOK_SECRET")
+  );
+  if ("post_call_transcription".equals(event.path("type").asText())) {
+    String agentId = event.path("data").path("agent_id").asText();
+    // ...
+  }
+} catch (WebhookVerificationException e) {
+  // e.reason() says which check failed: MISSING_SIGNATURE_HEADER, MISSING_SECRET,
+  // MISSING_SIGNATURE_SCHEME, TIMESTAMP_OUTSIDE_TOLERANCE, SIGNATURE_MISMATCH or INVALID_PAYLOAD.
+  response.sendError(e.statusCode(), e.getMessage()); // always 400
+}
+```
+
+Webhooks with a timestamp more than 30 minutes old are rejected as possible replays.
+`WebhookVerificationException` extends `ElevenlabsApiApiException`, so an existing
+`catch (ElevenlabsApiApiException e)` also catches it.
+
 ## WebSockets
 
 Each realtime channel has its own WebSocket client. Register handlers for incoming messages, open the
