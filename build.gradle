@@ -1,0 +1,96 @@
+plugins {
+    id 'java-library'
+    id 'maven-publish'
+}
+
+repositories {
+    mavenCentral()
+}
+
+dependencies {
+    api 'com.fasterxml.jackson.core:jackson-databind:2.15.0'
+    compileOnly 'org.projectlombok:lombok:1.18.42'
+    annotationProcessor 'org.projectlombok:lombok:1.18.42'
+    api 'com.squareup.okhttp3:okhttp:4.12.0'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jdk8:2.15.0'
+    api 'com.fasterxml.jackson.datatype:jackson-datatype-jsr310:2.15.0'
+    testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
+    testImplementation 'org.junit.platform:junit-platform-launcher:1.10.2'
+    testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+}
+
+test {
+    useJUnitPlatform()
+}
+
+tasks.withType(Javadoc) {
+    failOnError false
+    options.addStringOption('Xdoclint:none', '-quiet')
+}
+
+java {
+    // Gradle 9 removed these as project properties; the java extension is the form that works on
+    // both 8 and 9. Fern still emits the project-property form, so this is a deliberate divergence.
+    sourceCompatibility = JavaVersion.toVersion(8)
+    targetCompatibility = JavaVersion.toVersion(8)
+    withSourcesJar()
+    withJavadocJar()
+}
+
+group = 'io.elevenlabs'
+
+version = '1.0.0'
+
+jar {
+    archiveBaseName = 'elevenlabs-java'
+}
+
+sourcesJar {
+    archiveBaseName = 'elevenlabs-java'
+}
+
+javadocJar {
+    archiveBaseName = 'elevenlabs-java'
+}
+
+publishing {
+    publications {
+        maven(MavenPublication) {
+            groupId = 'io.elevenlabs'
+            artifactId = 'elevenlabs-java'
+            version = '1.0.0'
+            from components.java
+            pom {
+                name = 'ElevenLabs'
+                description = 'The official Java SDK for ElevenLabs.'
+                url = 'https://github.com/elevenlabs/elevenlabs-java'
+                licenses {
+                    license {
+                        name = 'MIT'
+                        url = 'https://opensource.org/licenses/MIT'
+                    }
+                }
+                scm {
+                    connection = 'scm:git:git://github.com/elevenlabs/elevenlabs-java.git'
+                    developerConnection = 'scm:git:ssh://github.com/elevenlabs/elevenlabs-java.git'
+                    url = 'https://github.com/elevenlabs/elevenlabs-java'
+                }
+                developers {
+                    developer {
+                        name = 'ElevenLabs'
+                        email = 'developers@elevenlabs.io'
+                    }
+                }
+            }
+        }
+    }
+    repositories {
+        maven {
+            url "$System.env.MAVEN_PUBLISH_REGISTRY_URL"
+            credentials {
+                username "$System.env.MAVEN_USERNAME"
+                password "$System.env.MAVEN_PASSWORD"
+            }
+        }
+    }
+}
