@@ -1,2 +1,8 @@
 # Specify files that shouldn't be modified by Fern
 README.md
+
+# Hand-written webhook signature verifier (Fern's generated verifier can't parse the compound
+# `ElevenLabs-Signature: t=...,v0=...` header). Standalone rather than a method on the generated
+# WebhooksClient, which Java can't extend without freezing that whole generated file.
+src/main/java/com/elevenlabs/api/webhooks/
+src/test/java/com/elevenlabs/api/webhooks/
