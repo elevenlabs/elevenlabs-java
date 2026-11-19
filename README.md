@@ -167,6 +167,48 @@ Optional fields are returned as `java.util.Optional`, so `getName()` is an `Opti
 information about the structure of the voices output, please refer to the
 [official ElevenLabs API documentation for Get Voices](https://elevenlabs.io/docs/api-reference/get-voices).
 
+## Agent workflows as code
+
+`com.elevenlabs.api.agentworkflows` builds an agent's workflow in code. The `Workflow` is the start
+node; each verb (`converse`, `tool`, `transfer`, `end`, `goTo`) adds a node, connects it, and
+returns the new node, so a flow reads as one chain. `build()` returns the generated
+`AgentWorkflowRequestModel` that agent create and update requests take.
+
+```java
+import com.elevenlabs.api.agentworkflows.Destination;
+import com.elevenlabs.api.agentworkflows.ResultBranches;
+import com.elevenlabs.api.agentworkflows.Workflow;
+import com.elevenlabs.api.resources.agents.requests.UpdateAgentRequest;
+import java.util.Arrays;
+
+Workflow wf = new Workflow();
+wf.converse("triage", "Find out what the caller needs")
+  .when("Caller gave an order number")
+  .tool("lookup_order", Arrays.asList("tool_get_order"))
+  .onResult(new ResultBranches()
+    .success(ok -> ok.converse("resolve", "Explain the order status").end())
+    .failure(failed -> failed.goTo("triage")))
+  .up()
+  .when("Caller wants a human")
+  .transfer("human", Destination.phone("+15551234567"));
+
+client.agents().update("agent_id", UpdateAgentRequest.builder().workflow(wf.build()).build());
+```
+
+Chaining never throws. `build()` checks the whole graph and throws a
+`WorkflowValidationException` listing every problem; `build(issue -> ...)` also receives
+warnings such as `unreachable_node`. To edit an existing workflow, load it with
+`Workflow.fromAgent(client.agents().get("agent_id"))` or `Workflow.fromJson(json)`, then use
+`node(id).update(...)`, `insertBetween(...)` and `remove(...)`. Loaded node ids, edge ids,
+positions and edge order are kept; new nodes are laid out automatically.
+
+`toJsonString()` writes the API wire format with sorted keys, 2-space indentation and a trailing
+newline, byte-identical to the other ElevenLabs SDKs, so the file can be stored in git next to
+an agent config. A node type this SDK version doesn't model is kept as loaded and reported as an
+`unknown_node_type` warning, because the generated request model can't represent it. To send such a
+workflow, pass `toJson()` instead of `build()`:
+`UpdateAgentRequest.builder().additionalProperty("workflow", wf.toJson()).build()`.
+
 ## Streaming
 
 Stream audio in real-time, as it's being generated. `convert` and `stream` both return an

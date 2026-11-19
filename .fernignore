@@ -1,2 +1,10 @@
 # Specify files that shouldn't be modified by Fern
 README.md
+
+# Hand-written agent workflows-as-code builder (spec: elevenlabs-js docs/agents-as-code/workflow-spec.md).
+# Fern doesn't generate it; it sits on top of the generated AgentWorkflowRequestModel. Its CanonicalJson
+# writer and Destination type are public so a later agent tools builder can reuse them. The fixtures are
+# the shared cross-SDK golden files, vendored so they can't drift silently.
+src/main/java/com/elevenlabs/api/agentworkflows/
+src/test/java/com/elevenlabs/api/agentworkflows/
+src/test/resources/agentworkflows/
