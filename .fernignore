@@ -8,3 +8,11 @@ src/main/java/com/elevenlabs/api/resources/music/MusicDetailed.java
 src/main/java/com/elevenlabs/api/resources/music/ComposeDetailedResponse.java
 src/main/java/com/elevenlabs/api/resources/music/MultipartParser.java
 src/test/java/com/elevenlabs/api/resources/music/MusicDetailedTest.java
+
+# Hand-written Flows createAndWait helpers (start an image/video/text-to-speech generation or a
+# template run, then poll the generated get until it is completed or failed, honouring the
+# server's Retry-After). Java has no partial classes, and the generated Flows clients are rewritten
+# on every regeneration, so this is a separate entry point (FlowsWaiter) that sends through the
+# generated clients' withRawResponse(), the only path that exposes the Retry-After header.
+src/main/java/com/elevenlabs/api/flows/wait/
+src/test/java/com/elevenlabs/api/flows/wait/
