@@ -1,2 +1,10 @@
 # Specify files that shouldn't be modified by Fern
 README.md
+
+# Music compose_detailed, parsed: POST /v1/music/detailed returns multipart/mixed (a JSON part, then the
+# audio), which the generated MusicClient.composeDetailed decodes as JSON and gets null. MusicDetailed
+# sends the same request and splits the parts. Remove once the generator handles multipart responses.
+src/main/java/com/elevenlabs/api/resources/music/MusicDetailed.java
+src/main/java/com/elevenlabs/api/resources/music/ComposeDetailedResponse.java
+src/main/java/com/elevenlabs/api/resources/music/MultipartParser.java
+src/test/java/com/elevenlabs/api/resources/music/MusicDetailedTest.java
