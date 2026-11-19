@@ -240,6 +240,38 @@ try (
 }
 ```
 
+## Music with metadata
+
+`POST /v1/music/detailed` returns a song together with its metadata (composition plan, title,
+genres and, if requested, word timestamps) as a `multipart/mixed` body. The generated
+`client.music().composeDetailed(...)` can't decode that body, so use `MusicDetailed`, which sends the
+same request through the client's configuration and splits the response into its parts.
+
+```java
+import com.elevenlabs.api.resources.music.ComposeDetailedResponse;
+import com.elevenlabs.api.resources.music.MusicDetailed;
+import com.elevenlabs.api.resources.music.requests.BodyComposeMusicWithADetailedResponseV1MusicDetailedPost;
+
+MusicDetailed music = new MusicDetailed(client);
+ComposeDetailedResponse song = music.composeDetailed(
+  BodyComposeMusicWithADetailedResponseV1MusicDetailedPost.builder()
+    .prompt("Epic orchestral music with dramatic strings")
+    .musicLengthMs(60000)
+    .build()
+);
+
+System.out.println(song.getJson().path("song_metadata").path("title").asText());
+Files.write(Paths.get(song.getFilename()), song.getAudio());
+```
+
+`getJson()` is the metadata part as a Jackson `JsonNode`, with the API's snake_case keys.
+`getAudio()` is the audio file's bytes, `getFilename()` the name the API suggests for it (or
+`generated_music.mp3`), and `getSongId()` the `song-id` response header, which is sent when
+`storeForInpainting(true)` is set. The whole response is held in memory. Per-call `RequestOptions`
+apply as they do to generated methods. API errors throw the usual exceptions; a response that isn't a
+complete multipart body with a JSON part and an audio part throws `ElevenlabsApiException`. For a
+client constructed with `new ElevenlabsApiClient(config)`, pass that config: `new MusicDetailed(config)`.
+
 ## Waiting for Flows generations
 
 Image, video and text-to-speech generations and template runs under `client.flows()` run

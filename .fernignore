@@ -9,6 +9,14 @@ src/main/java/com/elevenlabs/api/agentworkflows/
 src/test/java/com/elevenlabs/api/agentworkflows/
 src/test/resources/agentworkflows/
 
+# Music compose_detailed, parsed: POST /v1/music/detailed returns multipart/mixed (a JSON part, then the
+# audio), which the generated MusicClient.composeDetailed decodes as JSON and gets null. MusicDetailed
+# sends the same request and splits the parts. Remove once the generator handles multipart responses.
+src/main/java/com/elevenlabs/api/resources/music/MusicDetailed.java
+src/main/java/com/elevenlabs/api/resources/music/ComposeDetailedResponse.java
+src/main/java/com/elevenlabs/api/resources/music/MultipartParser.java
+src/test/java/com/elevenlabs/api/resources/music/MusicDetailedTest.java
+
 # Hand-written webhook signature verifier (Fern's generated verifier can't parse the compound
 # `ElevenLabs-Signature: t=...,v0=...` header). Standalone rather than a method on the generated
 # WebhooksClient, which Java can't extend without freezing that whole generated file.
