@@ -35,7 +35,12 @@ public class SpeechEngineResource extends SpeechEngineResponse {
    *     {@code ELEVENLABS_API_KEY} environment variable when a server starts
    */
   public SpeechEngineResource(SpeechEngineResponse response, String apiKey) {
-    super(SpeechEngineResponse.builder().from(response));
+    // The generated from() skips additionalProperties, so copy them too: unknown fields in the API
+    // response stay on the resource.
+    super(
+        SpeechEngineResponse.builder()
+            .from(response)
+            .additionalProperties(response.getAdditionalProperties()));
     this.apiKey = apiKey;
   }
 

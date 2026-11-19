@@ -138,6 +138,41 @@ class SpeechEngineSessionTest {
   }
 
   @Test
+  void aJavaStreamIsClosedWhenTheReplyEnds() {
+    SpeechEngineSession session = inlineSession();
+    AtomicInteger streamCloses = new AtomicInteger();
+    session.onTranscript(
+      (transcript, signal, s) -> s.sendResponse(Stream.of("a", "b").onClose(streamCloses::incrementAndGet))
+    );
+    session.handleRawMessage(transcript(1, "hi"));
+    assertEquals(1, streamCloses.get());
+  }
+
+  @Test
+  void aJavaStreamIsClosedWhenTheReplyIsInterrupted() {
+    SpeechEngineSession session = inlineSession();
+    AtomicInteger streamCloses = new AtomicInteger();
+    AtomicInteger produced = new AtomicInteger();
+    session.onTranscript(
+      (transcript, signal, s) ->
+        s.sendResponse(
+          Stream.generate(() -> {
+            // Closing the session after the first chunk interrupts the turn mid-stream.
+            if (produced.incrementAndGet() == 2) {
+              s.close();
+            }
+            return "chunk";
+          })
+            .limit(1000)
+            .onClose(streamCloses::incrementAndGet)
+        )
+    );
+    session.handleRawMessage(transcript(1, "hi"));
+    assertEquals(1, streamCloses.get());
+    assertTrue(produced.get() < 1000, "the interrupted stream stopped being read");
+  }
+
+  @Test
   void streamedResponseExtractsLlmStreamEvents() throws Exception {
     SpeechEngineSession session = inlineSession();
     List<Object> chunks = new ArrayList<>();

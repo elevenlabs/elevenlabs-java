@@ -187,6 +187,18 @@ class SpeechEngineResourceTest {
   }
 
   @Test
+  void resourceKeepsUnknownResponseFields() throws Exception {
+    SpeechEngineResponse response = SpeechEngineResponse.builder()
+      .from(response("seng_1"))
+      .additionalProperty("future_field", "kept")
+      .build();
+    SpeechEngineResource engine = new SpeechEngineResource(response, TestTokens.API_KEY);
+    assertEquals("kept", engine.getAdditionalProperties().get("future_field"));
+    JsonNode json = ObjectMappers.JSON_MAPPER.readTree(engine.toString());
+    assertEquals("kept", json.get("future_field").asText());
+  }
+
+  @Test
   void verifyRequestMatchesTheHeaderCaseInsensitively() {
     SpeechEngineResource engine = new SpeechEngineResource(response("seng_1"), TestTokens.API_KEY);
 

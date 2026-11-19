@@ -224,8 +224,20 @@ public final class SpeechEngineSession {
     }
   }
 
-  /** Streams an LLM response; see {@link #sendResponse(Iterable)}. */
+  /**
+   * Streams an LLM response; see {@link #sendResponse(Iterable)}. The stream is closed when the
+   * reply ends, including when a newer transcript interrupts it, so a stream backed by an HTTP body
+   * releases its connection.
+   */
   public void sendResponse(Stream<?> chunks) {
+    try {
+      sendIterable(chunks);
+    } finally {
+      chunks.close();
+    }
+  }
+
+  private void sendIterable(Stream<?> chunks) {
     Iterable<Object> iterable = () -> {
       Iterator<?> iterator = chunks.iterator();
       return new Iterator<Object>() {
