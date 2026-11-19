@@ -278,10 +278,34 @@ public final class Workflow extends WorkflowChain {
    */
   public AgentWorkflowRequestModel build(Consumer<WorkflowIssue> onWarning) {
     ObjectNode wire = toWireObject(onWarning);
+    widenNumberLiterals(wire);
     try {
       return ObjectMappers.JSON_MAPPER.treeToValue(wire, AgentWorkflowRequestModel.class);
     } catch (JsonProcessingException e) {
       throw new IllegalStateException("The workflow doesn't fit the generated request model: " + e.getOriginalMessage(), e);
+    }
+  }
+
+  /**
+   * The generated number-literal value holds an {@code int} or a {@code double}, and its deserializer
+   * narrows any integer with {@code intValue()}, so a literal outside the {@code int} range (a
+   * millisecond timestamp, say) would silently wrap. Such literals are passed as doubles instead,
+   * which is how JavaScript sends every number: exact up to 2^53.
+   */
+  private static void widenNumberLiterals(JsonNode node) {
+    if (node.isObject()) {
+      JsonNode value = node.get("value");
+      if ("number_literal".equals(node.path("type").asText(null))
+          && value != null
+          && value.isIntegralNumber()
+          && !value.canConvertToInt()) {
+        ((ObjectNode) node).put("value", value.doubleValue());
+      }
+    }
+    if (node.isContainerNode()) {
+      for (JsonNode child : node) {
+        widenNumberLiterals(child);
+      }
     }
   }
 
