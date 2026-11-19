@@ -27,3 +27,11 @@ src/main/java/com/elevenlabs/api/types/SpeechEngineResponse.java
 # Servlet/WebSocket APIs) and the test dependencies that exercise them (embedded Tomcat 10.0).
 # Dependencies or settings the generator adds later must be merged in by hand.
 build.gradle
+
+# Hand-written Flows createAndWait helpers (start an image/video/text-to-speech generation or a
+# template run, then poll the generated get until it is completed or failed, honouring the
+# server's Retry-After). Java has no partial classes, and the generated Flows clients are rewritten
+# on every regeneration, so this is a separate entry point (FlowsWaiter) that sends through the
+# generated clients' withRawResponse(), the only path that exposes the Retry-After header.
+src/main/java/com/elevenlabs/api/flows/wait/
+src/test/java/com/elevenlabs/api/flows/wait/
