@@ -269,6 +269,40 @@ class AgentProjectTest {
   }
 
   @Test
+  void rejectsABranchEntryWithoutAConfigBeforeAnyRequestOrWrite() throws IOException {
+    for (String branch : Arrays.asList("{\"branch_id\":\"agtbrch_beta\"}", "{\"branch_id\":\"agtbrch_beta\",\"config\":\"\"}")) {
+      Map<String, String> files = cliProject();
+      ObjectNode index = (ObjectNode) json(files.get("agents.json"));
+      ((ObjectNode) index.at("/agents/0/branches")).set("beta", json(branch));
+      files.put("agents.json", ProjectFormat.formatIndex(index));
+      String main = files.get("agent_configs/support.json");
+      AgentProject project = AgentProject.fromFiles(files);
+      try (FakeServer server = new FakeServer()) {
+        ElevenLabsClient client = server.client();
+        AgentProjectException push = assertThrows(
+          AgentProjectException.class,
+          () -> client.agents().push(project.agent("Support"), new AgentPushOptions().project(project).branchId("agtbrch_beta"))
+        );
+        assertTrue(push.getMessage().contains("has no config file"), push.getMessage());
+        AgentProjectException pull = assertThrows(
+          AgentProjectException.class,
+          () -> client.agents().pull("agent_support", new AgentPullOptions().project(project).branchId("agtbrch_beta"))
+        );
+        assertTrue(pull.getMessage().contains("has no config file"), pull.getMessage());
+        assertTrue(server.calls.isEmpty());
+      }
+      // Recording the branch directly never falls back to the main branch's file either.
+      Agent beta = new Agent("Support", new AgentOptions().prompt("beta"));
+      assertThrows(
+        AgentProjectException.class,
+        () -> project.recordAgent(beta, "agent_support", beta.toJson(), "agtbrch_beta", null, true)
+      );
+      assertTrue(project.getChangedFiles().isEmpty(), project.getChangedFiles().toString());
+      assertEquals(main, project.toFiles().get("agent_configs/support.json"));
+    }
+  }
+
+  @Test
   void keepsTheMainAgentWhenABranchIsRecordedAndTheToolTypeInStep() throws IOException {
     AgentProject project = AgentProject.fromFiles(cliProject());
     Agent main = project.agent("Support");

@@ -370,8 +370,13 @@ public final class AgentProject {
       slot = new AgentSlot(entry, agent);
       agents.add(slot);
     }
-    slot.entry.id = id;
     ObjectNode branch = branch(slot, branchId);
+    // A branch only ever writes its own file, never the main branch's.
+    String path = branch == null ? slot.entry.config : branchConfig(branch);
+    if (path == null) {
+      throw noBranchFile(branchId, agent.getName());
+    }
+    slot.entry.id = id;
     // A branch has its own file; the slot's agent is the main branch's, which a branch must not replace.
     if (branch == null) {
       slot.agent = agent;
@@ -383,10 +388,6 @@ public final class AgentProject {
       } else {
         slot.entry.versionId = versionId;
       }
-    }
-    String path = slot.entry.config;
-    if (branch != null && branch.get("config") != null && branch.get("config").isTextual()) {
-      path = branch.get("config").textValue();
     }
     write(path, ProjectFormat.formatConfig(config));
     write(AGENTS_FILE, agentsIndex());
@@ -416,12 +417,23 @@ public final class AgentProject {
     if (branchId == null || (slot != null && branchId.equals(slot.entry.branchId))) {
       return;
     }
-    if (slot == null || branch(slot, branchId) == null) {
-      throw new AgentProjectException(
-        "Branch " + branchId + " of \"" + label + "\" has no config file in " + AGENTS_FILE + ". Add it under " +
-        "\"branches\" (the CLI's `agents pull --all-branches` does), or push the main branch"
-      );
+    ObjectNode branch = slot == null ? null : branch(slot, branchId);
+    if (branch == null || branchConfig(branch) == null) {
+      throw noBranchFile(branchId, label);
     }
+  }
+
+  private static AgentProjectException noBranchFile(String branchId, String label) {
+    return new AgentProjectException(
+      "Branch " + branchId + " of \"" + label + "\" has no config file in " + AGENTS_FILE + ". Add it under " +
+      "\"branches\" (the CLI's `agents pull --all-branches` does), or push the main branch"
+    );
+  }
+
+  /** A branch entry's config path, or null if it has none (missing, not a string, or empty). */
+  private static String branchConfig(ObjectNode branch) {
+    JsonNode config = branch.get("config");
+    return config != null && config.isTextual() && !config.textValue().isEmpty() ? config.textValue() : null;
   }
 
   private static ObjectNode branch(AgentSlot slot, String branchId) {
