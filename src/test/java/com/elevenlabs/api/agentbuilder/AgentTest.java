@@ -254,6 +254,27 @@ class AgentTest {
   }
 
   @Test
+  void keepsALoadedOtherKindOfToolInToolIdsWhenTheToolsAreReplaced() {
+    Tool ping = Tool.client("ping", "Ping the client");
+    Map<String, Tool> byId = new LinkedHashMap<>();
+    byId.put("tool_mcp", mcpTool());
+    byId.put("tool_ping", ping);
+    Agent agent = Agent.fromJson(
+      json("{\"name\":\"A\",\"conversation_config\":{\"agent\":{\"prompt\":{\"prompt\":\"p\",\"tool_ids\":[\"tool_mcp\",\"tool_ping\"]}}}}"),
+      byId
+    );
+    assertEquals(Collections.singletonList("tool_mcp"), agent.getToolIds());
+    assertEquals(Collections.singletonList(ping), agent.tools());
+
+    agent.update(new AgentOptions().tools(AgentPushTest.getOrder()));
+    assertEquals(Collections.singletonList("tool_mcp"), agent.getToolIds());
+    assertEquals(
+      json("[\"tool_mcp\",\"tool_g\"]"),
+      agent.toJson(ids("get_order", "tool_g")).at("/conversation_config/agent/prompt/tool_ids")
+    );
+  }
+
+  @Test
   void rejectsAnOtherKindOfToolWithoutAnId() {
     Agent agent = new Agent("A", new AgentOptions().prompt("p")).addTool(mcpTool());
     assertTrue(agent.tools().isEmpty());

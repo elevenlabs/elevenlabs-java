@@ -117,8 +117,8 @@ public final class Agent {
 
   /**
    * {@link #fromJson(String)}, with each id in {@code tool_ids} (and in the workflow's nodes) found in
-   * {@code toolsById} becoming that {@link Tool} object, which the agent then manages; the rest stay as
-   * {@link #getToolIds() tool ids}.
+   * {@code toolsById} as a webhook or client tool becoming that {@link Tool} object, which the agent then manages; the
+   * rest, other kinds such as MCP tools included, stay as {@link #getToolIds() tool ids}.
    */
   public static Agent fromJson(String json, Map<String, ? extends Tool> toolsById) {
     return fromJson(CanonicalJson.parse(json), toolsById);
@@ -150,7 +150,8 @@ public final class Agent {
       agent.loadedToolIds = Wire.strings(ids);
       for (String id : agent.loadedToolIds) {
         Tool tool = agent.toolsById.get(id);
-        if (tool == null) {
+        // Like pull: a kind push doesn't manage stays attached by its id, so replacing `tools` keeps it.
+        if (tool == null || !isManaged(tool)) {
           agent.toolIds.add(id);
         } else {
           agent.tools.add(tool);
