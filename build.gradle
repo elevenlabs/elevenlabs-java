@@ -17,6 +17,18 @@ dependencies {
     testImplementation 'org.junit.jupiter:junit-jupiter:5.10.2'
     testImplementation 'org.junit.platform:junit-platform-launcher:1.10.2'
     testImplementation 'com.squareup.okhttp3:mockwebserver:4.12.0'
+
+    // Hand-written Speech Engine server (com.elevenlabs.api.speechengine). These are compileOnly
+    // so that the SDK's published dependencies do not change for anyone who does not host a Speech
+    // Engine server: SpeechEngineServer needs Java-WebSocket at runtime, and SpeechEngineJakarta
+    // uses the servlet container's own Jakarta Servlet/WebSocket APIs. All support Java 8.
+    compileOnly 'org.java-websocket:Java-WebSocket:1.5.7'
+    compileOnly 'jakarta.servlet:jakarta.servlet-api:5.0.0'
+    compileOnly 'jakarta.websocket:jakarta.websocket-api:2.0.0'
+    testImplementation 'org.java-websocket:Java-WebSocket:1.5.7'
+    // Tomcat 10.0 is the last Tomcat line that runs on Java 8; it provides the Jakarta APIs above.
+    testImplementation 'org.apache.tomcat.embed:tomcat-embed-core:10.0.27'
+    testImplementation 'org.apache.tomcat.embed:tomcat-embed-websocket:10.0.27'
 }
 
 test {
