@@ -1,5 +1,6 @@
 package com.elevenlabs.api.agentworkflows;
 
+import com.elevenlabs.api.agenttools.Tool;
 import com.elevenlabs.api.types.ConversationalConfigApiModelWorkflowOverrideInput;
 import com.elevenlabs.api.types.EntryBehavior;
 import com.elevenlabs.api.types.KnowledgeBaseLocator;
@@ -10,6 +11,7 @@ import com.elevenlabs.api.types.WorkflowPhoneNumberNodeModelInputCustomSipHeader
 import com.elevenlabs.api.types.WorkflowPhoneNumberNodeModelInputPostDialDigits;
 import com.elevenlabs.api.types.WorkflowToolLocatorSchemaOverridesValue;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
@@ -24,6 +26,7 @@ public final class NodeUpdate {
   final OptionMap values = new OptionMap();
   Destination destination;
   List<String> toolIds;
+  List<Tool> tools;
 
   /** Converse: the instructions added to the agent's prompt. */
   public NodeUpdate prompt(String prompt) {
@@ -31,10 +34,24 @@ public final class NodeUpdate {
     return this;
   }
 
-  /** Converse: extra tools. Tool: the tools to run. */
+  /** Converse: extra tools. Tool: the tools to run. By id; with {@link #tools(List)}, the ids come first. */
   public NodeUpdate toolIds(List<String> toolIds) {
     this.toolIds = toolIds == null ? null : new ArrayList<>(toolIds);
     return this;
+  }
+
+  /**
+   * Converse: extra tools. Tool: the tools to run. As {@link Tool} objects, after {@link #toolIds(List)}; setting
+   * either replaces the node's tools.
+   */
+  public NodeUpdate tools(List<? extends Tool> tools) {
+    this.tools = tools == null ? null : new ArrayList<Tool>(tools);
+    return this;
+  }
+
+  /** {@link #tools(List)} for a few tools. */
+  public NodeUpdate tools(Tool... tools) {
+    return tools(Arrays.asList(tools));
   }
 
   /**
@@ -71,6 +88,7 @@ public final class NodeUpdate {
     return this;
   }
 
+  /** Tool: parameter overrides per tool id (or tool name, for a {@link Tool} object). */
   public NodeUpdate schemaOverrides(Map<String, Map<String, WorkflowToolLocatorSchemaOverridesValue>> schemaOverrides) {
     values.put("schema_overrides", schemaOverrides == null ? null : new LinkedHashMap<>(schemaOverrides));
     return this;

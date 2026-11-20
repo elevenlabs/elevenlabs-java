@@ -1,5 +1,6 @@
 package com.elevenlabs.api.agentworkflows;
 
+import com.elevenlabs.api.agenttools.Tool;
 import com.elevenlabs.api.core.ObjectMappers;
 import com.elevenlabs.api.types.AgentWorkflowRequestModel;
 import com.elevenlabs.api.types.AgentWorkflowResponseModel;
@@ -10,9 +11,11 @@ import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
 import java.util.HashSet;
 import java.util.IdentityHashMap;
+import java.util.LinkedHashSet;
 import java.util.List;
 import java.util.Map;
 import java.util.Set;
@@ -106,8 +109,57 @@ public final class Workflow extends WorkflowChain {
 
   /** Loads a workflow from a parsed JSON tree (a workflow, or an agent config with a {@code workflow} key). */
   public static Workflow fromJson(JsonNode parsed) {
+    return fromJson(parsed, null);
+  }
+
+  /**
+   * {@link #fromJson(String)}, with each tool id found in {@code toolsById} swapped for that {@link Tool} object, so
+   * the loaded workflow refers to it as a workflow built in code would. Other ids stay as they are.
+   */
+  public static Workflow fromJson(String json, Map<String, ? extends Tool> toolsById) {
+    return fromJson(CanonicalJson.parse(json), toolsById);
+  }
+
+  /** {@link #fromJson(JsonNode)}, with tool ids found in {@code toolsById} swapped for those {@link Tool} objects. */
+  public static Workflow fromJson(JsonNode parsed, Map<String, ? extends Tool> toolsById) {
     JsonNode raw = parsed != null && parsed.isObject() && parsed.has("workflow") ? parsed.get("workflow") : parsed;
-    return fromWire(raw);
+    Workflow wf = fromWire(raw);
+    if (toolsById != null && !toolsById.isEmpty()) {
+      wf.bindTools(toolsById);
+    }
+    return wf;
+  }
+
+  private void bindTools(final Map<String, ? extends Tool> byId) {
+    for (String id : graph.nodeOrder()) {
+      graph.setNode(
+        id,
+        WorkflowGraph.mapNodeToolIds(graph.getNode(id), toolId -> {
+          Tool tool = byId.get(toolId);
+          if (tool == null) {
+            return toolId;
+          }
+          String key = WorkflowGraph.toolPlaceholder(tool.getName());
+          graph.toolRefs.put(key, tool);
+          return key;
+        })
+      );
+    }
+  }
+
+  /** The {@link Tool} objects the workflow's nodes use, each once, in the order they were first used. */
+  public List<Tool> tools() {
+    Set<String> used = new LinkedHashSet<>();
+    for (String id : graph.nodeOrder()) {
+      used.addAll(WorkflowGraph.nodeToolIds(graph.getNode(id)));
+    }
+    List<Tool> tools = new ArrayList<>();
+    for (Map.Entry<String, Tool> entry : graph.toolRefs.entrySet()) {
+      if (used.contains(entry.getKey())) {
+        tools.add(entry.getValue());
+      }
+    }
+    return tools;
   }
 
   private static Workflow fromWire(JsonNode raw) {
@@ -268,7 +320,7 @@ public final class Workflow extends WorkflowChain {
    * @throws WorkflowValidationException listing every problem, if the workflow is invalid
    */
   public AgentWorkflowRequestModel build() {
-    return build(null);
+    return build(null, null);
   }
 
   /**
@@ -281,7 +333,23 @@ public final class Workflow extends WorkflowChain {
    * @throws WorkflowValidationException listing every problem, if the workflow is invalid
    */
   public AgentWorkflowRequestModel build(Consumer<WorkflowIssue> onWarning) {
-    ObjectNode wire = toWireObject(onWarning, true);
+    return build(null, onWarning);
+  }
+
+  /**
+   * {@link #build()} for a workflow whose nodes use {@link Tool} objects: {@code toolIds} maps each one's name to its
+   * id. {@code agents().push()} passes these after creating the tools. A {@code Tool} object without an id is an
+   * {@code unresolved_tool} error.
+   *
+   * @throws WorkflowValidationException listing every problem, if the workflow is invalid
+   */
+  public AgentWorkflowRequestModel build(Map<String, String> toolIds) {
+    return build(toolIds, null);
+  }
+
+  /** {@link #build(Map)}, calling {@code onWarning} once per warning. */
+  public AgentWorkflowRequestModel build(Map<String, String> toolIds, Consumer<WorkflowIssue> onWarning) {
+    ObjectNode wire = toWireObject(onWarning, true, toolIds);
     widenNumberLiterals(wire);
     try {
       return ObjectMappers.JSON_MAPPER.treeToValue(wire, AgentWorkflowRequestModel.class);
@@ -318,12 +386,22 @@ public final class Workflow extends WorkflowChain {
    * {@link #build()}.
    */
   public ObjectNode toJson() {
-    return (ObjectNode) CanonicalJson.canonicalize(toWireObject(null, false));
+    return toJson((Map<String, String>) null);
+  }
+
+  /** {@link #toJson()} with each {@link Tool} object's id, by tool name, as {@link #build(Map)} takes them. */
+  public ObjectNode toJson(Map<String, String> toolIds) {
+    return (ObjectNode) CanonicalJson.canonicalize(toWireObject(null, false, toolIds));
   }
 
   /** {@link #toJson()} as a string with 2-space indentation and a trailing newline: the canonical file format. */
   public String toJsonString() {
-    return CanonicalJson.toCanonicalString(toWireObject(null, false));
+    return toJsonString((Map<String, String>) null);
+  }
+
+  /** {@link #toJsonString()} with each {@link Tool} object's id, by tool name. */
+  public String toJsonString(Map<String, String> toolIds) {
+    return CanonicalJson.toCanonicalString(toWireObject(null, false, toolIds));
   }
 
   @Override
@@ -336,7 +414,8 @@ public final class Workflow extends WorkflowChain {
    * {@code forModel}, the output is bound for the generated request model, so a node type it doesn't model is an
    * {@code invalid_model} error instead of an {@code unknown_node_type} warning.
    */
-  ObjectNode toWireObject(Consumer<WorkflowIssue> onWarning, boolean forModel) {
+  ObjectNode toWireObject(Consumer<WorkflowIssue> onWarning, boolean forModel, Map<String, String> toolIdsOrNull) {
+    final Map<String, String> toolIds = toolIdsOrNull == null ? Collections.<String, String>emptyMap() : toolIdsOrNull;
     List<WorkflowIssue> issues = new ArrayList<>();
     for (WorkflowIssue issue : Validate.run(graph)) {
       if (forModel && "unknown_node_type".equals(issue.getCode())) {
@@ -355,6 +434,7 @@ public final class Workflow extends WorkflowChain {
         issues.add(issue);
       }
     }
+    issues.addAll(unresolvedTools(toolIds));
     List<WorkflowIssue> errors = new ArrayList<>();
     for (WorkflowIssue issue : issues) {
       if (issue.getSeverity() == WorkflowSeverity.ERROR) {
@@ -420,8 +500,12 @@ public final class Workflow extends WorkflowChain {
     }
 
     ObjectNode nodesOut = JsonNodeFactory.instance.objectNode();
+    Function<String, String> resolve = toolId -> {
+      Tool tool = graph.toolRefs.get(toolId);
+      return tool == null ? toolId : toolIds.get(tool.getName());
+    };
     for (String id : graph.nodeOrder()) {
-      ObjectNode out = graph.getNode(id).deepCopy();
+      ObjectNode out = graph.toolRefs.isEmpty() ? graph.getNode(id).deepCopy() : WorkflowGraph.mapNodeToolIds(graph.getNode(id), resolve);
       out.set("position", positions.get(id).deepCopy());
       List<GraphEdge> loaded = graph.loadedOrder.containsKey(id) ? graph.loadedOrder.get(id) : new ArrayList<>();
       List<GraphEdge> current = outgoing.containsKey(id) ? outgoing.get(id) : new ArrayList<>();
@@ -439,6 +523,28 @@ public final class Workflow extends WorkflowChain {
       workflow.put("prevent_subagent_loops", graph.preventSubagentLoops.booleanValue());
     }
     return workflow;
+  }
+
+  /** A {@code unresolved_tool} error for each {@link Tool} object a node uses that has no id in {@code toolIds}. */
+  private List<WorkflowIssue> unresolvedTools(Map<String, String> toolIds) {
+    List<WorkflowIssue> issues = new ArrayList<>();
+    for (String nodeId : graph.nodeOrder()) {
+      for (String id : WorkflowGraph.nodeToolIds(graph.getNode(nodeId))) {
+        Tool tool = graph.toolRefs.get(id);
+        if (tool != null && toolIds.get(tool.getName()) == null) {
+          issues.add(
+            new WorkflowIssue(
+              "unresolved_tool",
+              WorkflowSeverity.ERROR,
+              "Node \"" + nodeId + "\" uses tool \"" + tool.getName() + "\", which has no id yet. Push the agent with " +
+              "agents().push(), or pass build(toolIds)",
+              nodeId
+            )
+          );
+        }
+      }
+    }
+    return issues;
   }
 
   private static void addToOrder(Map<String, List<GraphEdge>> outgoing, String nodeId, GraphEdge edge) {

@@ -135,9 +135,19 @@ public final class CanonicalJson {
    * they keep document order, except that array-index keys come first as in any JavaScript object.
    */
   public static String write(JsonNode node, boolean sortKeys) {
+    return write(node, sortKeys, 2, true);
+  }
+
+  /**
+   * {@code JSON.stringify(node, null, indent)}, plus a newline if {@code trailingNewline}. The ElevenLabs CLI's
+   * project files use 4 spaces and no trailing newline.
+   */
+  public static String write(JsonNode node, boolean sortKeys, int indent, boolean trailingNewline) {
     StringBuilder out = new StringBuilder();
-    writeValue(out, node, sortKeys, 0);
-    out.append('\n');
+    writeValue(out, node, sortKeys, 0, indent);
+    if (trailingNewline) {
+      out.append('\n');
+    }
     return out.toString();
   }
 
@@ -247,7 +257,7 @@ public final class CanonicalJson {
     return new BigInteger(key).compareTo(MAX_ARRAY_INDEX) <= 0;
   }
 
-  private static void writeValue(StringBuilder out, JsonNode node, boolean sortKeys, int depth) {
+  private static void writeValue(StringBuilder out, JsonNode node, boolean sortKeys, int depth, int width) {
     if (node == null || node.isNull() || node.isMissingNode()) {
       out.append("null");
     } else if (node.isObject()) {
@@ -259,13 +269,13 @@ public final class CanonicalJson {
       out.append('{');
       for (int i = 0; i < keys.size(); i++) {
         out.append(i == 0 ? "\n" : ",\n");
-        indent(out, depth + 1);
+        indent(out, depth + 1, width);
         writeString(out, keys.get(i));
         out.append(": ");
-        writeValue(out, node.get(keys.get(i)), sortKeys, depth + 1);
+        writeValue(out, node.get(keys.get(i)), sortKeys, depth + 1, width);
       }
       out.append('\n');
-      indent(out, depth);
+      indent(out, depth, width);
       out.append('}');
     } else if (node.isArray()) {
       if (node.size() == 0) {
@@ -275,11 +285,11 @@ public final class CanonicalJson {
       out.append('[');
       for (int i = 0; i < node.size(); i++) {
         out.append(i == 0 ? "\n" : ",\n");
-        indent(out, depth + 1);
-        writeValue(out, node.get(i), sortKeys, depth + 1);
+        indent(out, depth + 1, width);
+        writeValue(out, node.get(i), sortKeys, depth + 1, width);
       }
       out.append('\n');
-      indent(out, depth);
+      indent(out, depth, width);
       out.append(']');
     } else if (node.isNumber()) {
       out.append(toJavaScript(numberText(node)));
@@ -291,13 +301,13 @@ public final class CanonicalJson {
       writeString(out, node.asText());
     } else {
       // POJO nodes and the like: write them as the SDK's mapper would, then canonically.
-      writeValue(out, ObjectMappers.JSON_MAPPER.valueToTree(node), sortKeys, depth);
+      writeValue(out, ObjectMappers.JSON_MAPPER.valueToTree(node), sortKeys, depth, width);
     }
   }
 
-  private static void indent(StringBuilder out, int depth) {
-    for (int i = 0; i < depth; i++) {
-      out.append("  ");
+  private static void indent(StringBuilder out, int depth, int width) {
+    for (int i = 0; i < depth * width; i++) {
+      out.append(' ');
     }
   }
 

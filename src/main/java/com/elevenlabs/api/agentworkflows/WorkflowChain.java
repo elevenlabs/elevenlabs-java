@@ -1,9 +1,11 @@
 package com.elevenlabs.api.agentworkflows;
 
+import com.elevenlabs.api.agenttools.Tool;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
 import com.fasterxml.jackson.databind.node.ObjectNode;
 import java.util.ArrayList;
+import java.util.Arrays;
 import java.util.List;
 
 /**
@@ -34,7 +36,7 @@ public abstract class WorkflowChain {
     model.put("type", "override_agent");
     model.put("label", id);
     model.put("additional_prompt", prompt);
-    graph.addNode(id, graph.applyOptions(id, model, null, null, null, opts.values.toWire()));
+    graph.addNode(id, graph.applyOptions(id, model, null, opts.toolIds, opts.tools, null, opts.values.toWire()));
     return connect(id, null);
   }
 
@@ -51,8 +53,27 @@ public abstract class WorkflowChain {
     Object overrides = opts.values.get("schema_overrides");
     JsonNode schemaOverrides = overrides == null ? null : CanonicalJson.toTree(overrides);
     List<String> ids = toolIds == null ? new ArrayList<>() : new ArrayList<>(toolIds);
-    graph.addNode(id, graph.applyOptions(id, model, null, ids, schemaOverrides, opts.values.toWire("schema_overrides")));
+    graph.addNode(
+      id,
+      graph.applyOptions(id, model, null, ids, opts.tools, schemaOverrides, opts.values.toWire("schema_overrides"))
+    );
     return connect(id, null);
+  }
+
+  /**
+   * A tool node that runs {@link Tool} objects. Their ids are filled in when the workflow is built with tool ids, as
+   * {@code agents().push()} does, so a workflow can use tools that don't exist yet.
+   */
+  public WorkflowNode tool(String id, Tool... tools) {
+    return tool(id, new ToolOptions().tools(Arrays.asList(tools)));
+  }
+
+  /**
+   * A tool node whose tools are all in {@code options}: {@link ToolOptions#tools(List) Tool objects}, plus options
+   * such as schema overrides, keyed by tool name.
+   */
+  public WorkflowNode tool(String id, ToolOptions options) {
+    return tool(id, new ArrayList<String>(), options);
   }
 
   /** Transfers the conversation to a phone number, SIP URI or another agent. */
@@ -63,7 +84,7 @@ public abstract class WorkflowChain {
   /** A transfer node, with options for the destination's kind. */
   public WorkflowNode transfer(String id, Destination destination, TransferOptions options) {
     TransferOptions opts = options == null ? new TransferOptions() : options;
-    graph.addNode(id, graph.applyOptions(id, destination.toWire(), null, null, null, opts.values.toWire()));
+    graph.addNode(id, graph.applyOptions(id, destination.toWire(), null, null, null, null, opts.values.toWire()));
     return connect(id, null);
   }
 
@@ -78,7 +99,7 @@ public abstract class WorkflowChain {
     String id = opts.id == null ? "end" : opts.id;
     ObjectNode model = JsonNodeFactory.instance.objectNode();
     model.put("type", "end");
-    graph.addNode(id, graph.applyOptions(id, model, null, null, null, opts.values.toWire()));
+    graph.addNode(id, graph.applyOptions(id, model, null, null, null, null, opts.values.toWire()));
     return connect(id, null);
   }
 

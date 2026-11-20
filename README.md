@@ -273,6 +273,60 @@ constant it would change (such as an integer outside the `int` range, or a nulla
 `null`) makes `build()` report `constant_type_mismatch` rather than send a different value; send the
 `toJson()` output directly for such a tool.
 
+## Agents as code
+
+`com.elevenlabs.api.agentbuilder` puts an agent's settings, its tools and its workflow in one
+definition. `client.agents().push(agent)` creates or updates the webhook and client tools the agent
+uses, then creates or updates the agent with their ids filled in. Workflow tool nodes and subagents
+take `Tool` objects as well as tool ids, so a workflow can use tools that don't exist yet.
+
+```java
+import com.elevenlabs.api.agentbuilder.Agent;
+import com.elevenlabs.api.agentbuilder.AgentOptions;
+import com.elevenlabs.api.agentbuilder.AgentProject;
+import com.elevenlabs.api.agentbuilder.AgentPullOptions;
+import com.elevenlabs.api.agentbuilder.AgentPushOptions;
+import com.elevenlabs.api.agentbuilder.AgentPushResult;
+import com.elevenlabs.api.agenttools.SystemTool;
+import com.elevenlabs.api.agentworkflows.Workflow;
+
+Workflow wf = new Workflow();
+wf.converse("triage", "Find out what the caller needs")
+  .when("Caller gave an order number")
+  .tool("lookup", getOrder)              // a Tool object: push fills in its id
+  .onSuccess()
+  .converse("resolve", "Explain the order status");
+
+Agent agent = new Agent("Support line", new AgentOptions()
+  .prompt("You are a support agent for Acme.")
+  .firstMessage("Hi, how can I help?")
+  .tools(SystemTool.endCall(), refund)
+  .workflow(wf));
+
+AgentPushResult result = client.agents().push(agent);              // creates the tools, then the agent
+client.agents().push(agent, new AgentPushOptions().agentId(result.getAgentId())); // later: updates them
+
+AgentProject project = AgentProject.open(".");                     // the ElevenLabs CLI's layout
+client.agents().push(agent, new AgentPushOptions().project(project));
+Agent pulled = client.agents().pull("agent_123", new AgentPullOptions().project(project));
+```
+
+`agent.validate()` checks everything that needs no ids, so CI can run it without an API key; it
+throws an `AgentValidationException` listing every problem. `push` validates first, so an invalid
+agent writes nothing. Without a project, the tools an agent already has are found by name among the
+tools that agent uses (on `branchId`'s config, when given), so a same-named tool another agent uses is
+never touched. A tool the server already has as defined is left `UNCHANGED`; one the agent stopped
+using is reported as `DETACHED` and isn't deleted. If a request fails partway, `push` throws an
+`AgentPushException` whose `getResult()` holds what was already written, and a project opened from a
+directory is saved with those ids.
+
+`AgentProject` reads and writes the CLI's `agents.json`, `tools.json`, `agent_configs/` and
+`tool_configs/` byte for byte, so a repo works with both the SDK and the CLI. Files are written only
+by `push` and `pull`, owner-only (`0600`), never through a symlink and never outside the project; a
+file nothing changed keeps its exact text. `AgentProject.fromFiles(map)` does the same without I/O.
+`Agent.fromJson(json)` loads a single config, keeping the fields this SDK doesn't model, and
+`agent.toJson(toolIds)` writes one back with sorted keys. YAML and TOML configs aren't supported yet.
+
 ## Streaming
 
 Stream audio in real-time, as it's being generated. `convert` and `stream` both return an

@@ -118,7 +118,15 @@ public final class WorkflowNode extends WorkflowChain {
     JsonNode schemaOverrides = overrides == null ? null : CanonicalJson.toTree(overrides);
     graph.setNode(
       id,
-      graph.applyOptions(id, graph.getNode(id), u.destination, u.toolIds, schemaOverrides, u.values.toWire("schema_overrides"))
+      graph.applyOptions(
+        id,
+        graph.getNode(id),
+        u.destination,
+        u.toolIds,
+        u.tools,
+        schemaOverrides,
+        u.values.toWire("schema_overrides")
+      )
     );
     return this;
   }
