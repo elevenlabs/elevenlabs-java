@@ -490,6 +490,98 @@ Every client also has `onConnected`, `onDisconnected`, `onError` and `onMessage`
 handlers, and `getReadyState()`. A connection that drops with a code other than 1000 is reopened
 automatically; tune that with `reconnectOptions(...)`.
 
+## Speech Engine
+
+With [Speech Engine](https://elevenlabs.io/docs/overview/capabilities/speech-engine) you run the
+conversation logic (your own LLM, tools and state) and ElevenLabs handles speech-to-text and
+text-to-speech. Your server hosts a WebSocket endpoint that the ElevenLabs API dials into: it sends
+you user transcripts and you reply with text to speak.
+
+Use `ElevenLabsClient` (a subclass of `ElevenlabsApiClient`) for this. Its `speechEngine()` returns
+the generated client with `create`, `get`, `update` and `duplicate` returning a
+`SpeechEngineResource`. The resource is still a `SpeechEngineResponse`, so all of its getters work,
+and it carries the client's API key, which verifies that inbound connections come from ElevenLabs.
+
+```java
+import com.elevenlabs.api.ElevenLabsClient;
+import com.elevenlabs.api.resources.speechengine.requests.CreateSpeechEngineRequest;
+import com.elevenlabs.api.speechengine.SpeechEngineCallbacks;
+import com.elevenlabs.api.speechengine.SpeechEngineResource;
+import com.elevenlabs.api.types.SpeechEngineConfig;
+
+ElevenLabsClient client = ElevenLabsClient.builder().build();
+
+SpeechEngineResource engine = client
+  .speechEngine()
+  .create(
+    CreateSpeechEngineRequest.builder()
+      .speechEngine(SpeechEngineConfig.builder().wsUrl("wss://your-server.example.com/ws").build())
+      .name("My engine")
+      .build()
+  );
+// Or fetch an existing one: client.speechEngine().get("seng_123")
+
+engine.serve(
+  3001,
+  "/ws",
+  new SpeechEngineCallbacks()
+    .onTranscript((transcript, signal, session) -> {
+      String reply = myLlm.reply(transcript); // List<ConversationMessage>, oldest first
+      session.sendResponse(reply);
+    })
+    .onError((error, session) -> error.printStackTrace())
+);
+```
+
+`serve` blocks until the server is stopped; `start(port, path, callbacks)` returns a running
+`SpeechEngineServer` instead. Each connection is checked during the WebSocket handshake: the
+`X-ElevenLabs-Speech-Engine-Authorization` header must hold a JWT signed with your API key, or the
+upgrade is refused. `disableAuth(true)` turns this off, which is only safe behind an IP allowlist.
+
+The standalone server uses [Java-WebSocket](https://github.com/TooTallNate/Java-WebSocket), an
+optional dependency of this SDK, so add it to your build:
+
+```groovy
+implementation 'org.java-websocket:Java-WebSocket:1.5.7'
+```
+
+### Responses and interruptions
+
+Transcript handlers run on their own thread, so they can block on an LLM call. `sendResponse`
+takes a `String`, or an `Iterable` or `Stream` of chunks for a streamed reply. A chunk is either
+text or an OpenAI, Anthropic or Gemini stream event (as a Jackson `JsonNode`, a `Map`, or any object
+Jackson can serialise), and the text is extracted from it.
+
+When the user speaks again, a new transcript arrives and the previous turn's `AbortSignal` fires.
+Use it to cancel the LLM call (`signal.onAbort(call::cancel)`) or check `signal.isAborted()`. A
+streamed reply stops by itself once its turn is interrupted.
+
+### Serving from an existing servlet container
+
+To serve Speech Engine from Tomcat 10+, Jetty 11+, Undertow or Spring Boot 3, attach it to the
+servlet context while the application starts. It registers a filter that answers `401` to
+unverified requests before the upgrade, and a Jakarta WebSocket endpoint on the path:
+
+```java
+import com.elevenlabs.api.speechengine.SpeechEngineJakarta;
+import org.springframework.boot.web.servlet.ServletContextInitializer;
+
+@Bean
+ServletContextInitializer speechEngine(ElevenLabsClient client) {
+  return servletContext ->
+    SpeechEngineJakarta.attach(servletContext, client.speechEngine(), "/ws", callbacks);
+}
+```
+
+The container provides the Jakarta Servlet and WebSocket APIs. For any other transport, verify the
+upgrade request with `engine.verifyRequest(headers)` and drive the connection with
+`engine.createSession(send, close, callbacks)`, passing each inbound text frame to
+`session.handleRawMessage(frame)` and calling `session.handleDisconnect()` when it closes.
+
+`AsyncElevenlabsApiClient` is not wired: its `speechEngine()` methods return the plain
+`CompletableFuture<SpeechEngineResponse>`. Wrap a response with
+`new SpeechEngineResource(response, apiKey)` to serve it.
+
 ## Advanced
 
 ### Retries

@@ -9,6 +9,33 @@ src/main/java/com/elevenlabs/api/agentworkflows/
 src/test/java/com/elevenlabs/api/agentworkflows/
 src/test/resources/agentworkflows/
 
+# Hand-written Speech Engine server model (the developer hosts a WebSocket server that the
+# ElevenLabs API dials into). The generator produces only the client-dials-out upstream socket
+# (resources/speechengine/websocket); this package adds the inbound-connection JWT verifier, the
+# per-connection session/protocol, the standalone Java-WebSocket server, the Jakarta servlet
+# container integration, the engine resource and the wired speech engine client.
+src/main/java/com/elevenlabs/api/speechengine/
+src/test/java/com/elevenlabs/api/speechengine/
+
+# Hand-written root client wiring: ElevenLabsClient extends the generated ElevenlabsApiClient and
+# overrides speechEngine() to return the SpeechEngineClientWrapper (whose create/get/update/
+# duplicate return a SpeechEngineResource). The generator emits only ElevenlabsApiClient.
+src/main/java/com/elevenlabs/api/ElevenLabsClient.java
+src/main/java/com/elevenlabs/api/ElevenLabsClientBuilder.java
+
+# Hand-edited generated model: made non-final with a protected constructor so SpeechEngineResource
+# can extend it, which is what lets the wrapper return the resource through a covariant override
+# (Java cannot otherwise change an overridden method's return type). The only change is those two
+# modifiers. When the API changes this model, regenerate it, then re-apply them: a frozen copy
+# that falls behind fails loudly, because the regenerated SpeechEngineResponseTest and wire tests
+# stop compiling against it.
+src/main/java/com/elevenlabs/api/types/SpeechEngineResponse.java
+
+# Frozen for the Speech Engine server's compileOnly dependencies (Java-WebSocket and the Jakarta
+# Servlet/WebSocket APIs) and the test dependencies that exercise them (embedded Tomcat 10.0).
+# Dependencies or settings the generator adds later must be merged in by hand.
+build.gradle
+
 # Music compose_detailed, parsed: POST /v1/music/detailed returns multipart/mixed (a JSON part, then the
 # audio), which the generated MusicClient.composeDetailed decodes as JSON and gets null. MusicDetailed
 # sends the same request and splits the parts. Remove once the generator handles multipart responses.
