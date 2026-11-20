@@ -3,6 +3,7 @@ package com.elevenlabs.api.agentbuilder;
 import com.elevenlabs.api.agenttools.Tool;
 import com.elevenlabs.api.agenttools.ToolKind;
 import com.elevenlabs.api.agentworkflows.CanonicalJson;
+import com.elevenlabs.api.core.ElevenlabsApiHttpResponse;
 import com.elevenlabs.api.core.RequestOptions;
 import com.elevenlabs.api.resources.agents.AgentsClient;
 import com.elevenlabs.api.resources.agents.requests.BodyCreateAgentV1ConvaiAgentsCreatePost;
@@ -18,6 +19,7 @@ import com.elevenlabs.api.types.ToolResponseModelToolConfig;
 import com.elevenlabs.api.types.ToolsResponseModel;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ObjectNode;
+import java.nio.charset.StandardCharsets;
 import java.util.ArrayList;
 import java.util.HashSet;
 import java.util.Iterator;
@@ -181,8 +183,9 @@ final class AgentPush {
     if (project != null) {
       project.checkBranchById(agentId, branchId);
     }
-    GetAgentResponseModel response = getAgent(agentId, branchId, requestOptions);
-    JsonNode live = wire(response);
+    // The response's own JSON, not the typed model: the generated workflow node union recasts node types it doesn't
+    // know, so a config read back from the typed model could disagree with the server's.
+    JsonNode live = rawAgent(agentId, branchId, requestOptions);
     // The CLI's pulled-config shape: these keys only, so ids and server metadata stay out of the file.
     ObjectNode config = Wire.NODES.objectNode();
     config.set("name", orElse(live.get("name"), Wire.NODES.nullNode()));
@@ -197,7 +200,7 @@ final class AgentPush {
     Map<String, Tool> toolsById = new LinkedHashMap<>();
     Map<String, JsonNode> toolConfigs = new LinkedHashMap<>();
     for (String id : Wire.toolIdsIn(config)) {
-      JsonNode wire = toolWire(tools.get(id, requestOptions));
+      JsonNode wire = rawToolConfig(id, requestOptions);
       Tool tool = Tool.fromJson(wire);
       // tools.json lists webhook and client tools; others (MCP...) stay attached by id.
       if (tool.getKind() == ToolKind.WEBHOOK || tool.getKind() == ToolKind.CLIENT) {
@@ -211,7 +214,8 @@ final class AgentPush {
       for (Map.Entry<String, Tool> entry : toolsById.entrySet()) {
         project.recordTool(entry.getValue(), entry.getKey(), toolConfigs.get(entry.getKey()), true);
       }
-      project.recordAgent(agent, agentId, config, branchId, response.getVersionId().orElse(null), true);
+      JsonNode versionId = live.get("version_id");
+      project.recordAgent(agent, agentId, config, branchId, versionId != null && versionId.isTextual() ? versionId.textValue() : null, true);
       if (project.getDir().isPresent()) {
         project.save();
       }
@@ -224,7 +228,7 @@ final class AgentPush {
    * they come from the branch's config, by id.
    */
   private List<ToolResponseModel> toolsOnBranch(String agentId, String branchId, RequestOptions requestOptions) {
-    JsonNode branch = wire(getAgent(agentId, branchId, requestOptions));
+    JsonNode branch = rawAgent(agentId, branchId, requestOptions);
     List<ToolResponseModel> result = new ArrayList<>();
     for (String id : Wire.toolIdsIn(branch)) {
       result.add(tools.get(id, requestOptions));
@@ -246,8 +250,28 @@ final class AgentPush {
     return all;
   }
 
-  private GetAgentResponseModel getAgent(String agentId, String branchId, RequestOptions requestOptions) {
-    return agents.get(agentId, GetAgentsRequest.builder().branchId(Optional.ofNullable(branchId)).build(), requestOptions);
+  /**
+   * {@code GET /v1/convai/agents/{id}} (with {@code branch_id}) as the server's JSON, without the {@code null}s. Sent by
+   * the generated client, so auth, headers, retries and error mapping are the same as for every other call.
+   */
+  private JsonNode rawAgent(String agentId, String branchId, RequestOptions requestOptions) {
+    ElevenlabsApiHttpResponse<GetAgentResponseModel> response = agents
+      .withRawResponse()
+      .get(agentId, GetAgentsRequest.builder().branchId(Optional.ofNullable(branchId)).build(), requestOptions);
+    return Wire.withoutNulls(bodyJson(response));
+  }
+
+  /** {@code GET /v1/convai/tools/{id}}'s {@code tool_config} as the server's JSON, without the {@code null}s. */
+  private JsonNode rawToolConfig(String toolId, RequestOptions requestOptions) {
+    JsonNode config = bodyJson(tools.withRawResponse().get(toolId, requestOptions)).get("tool_config");
+    if (config == null || !config.isObject()) {
+      throw new IllegalStateException("Tool " + toolId + " came back without a tool_config");
+    }
+    return Wire.withoutNulls(config);
+  }
+
+  private static JsonNode bodyJson(ElevenlabsApiHttpResponse<?> response) {
+    return CanonicalJson.parse(new String(response.getRaw().getBodyBytes(), StandardCharsets.UTF_8));
   }
 
   /**

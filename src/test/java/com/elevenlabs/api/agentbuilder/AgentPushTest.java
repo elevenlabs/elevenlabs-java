@@ -476,6 +476,24 @@ class AgentPushTest {
     assertEquals(mcpConfig, server.tools.get("tool_mcp").config);
   }
 
+  @Test
+  void pullWritesTheServersWorkflowAsItIsWithANodeTypeTheSdkDoesNotKnow() {
+    String workflow =
+      "{\"edges\":{\"e1\":{\"forward_condition\":{\"type\":\"unconditional\"},\"reroutes\":[],\"source\":\"start_node\",\"target\":\"survey\"}}," +
+      "\"nodes\":{\"start_node\":{\"edge_order\":[\"e1\"],\"type\":\"start\"}," +
+      "\"survey\":{\"edge_order\":[],\"label\":\"Survey\",\"questions\":[{\"text\":\"How was it?\"}],\"type\":\"future_survey\"}}," +
+      "\"prevent_subagent_loops\":false}";
+    String config =
+      "{\"conversation_config\":{\"agent\":{\"prompt\":{\"prompt\":\"p\"}}},\"name\":\"Survey line\",\"platform_settings\":{}," +
+      "\"tags\":[],\"workflow\":" + workflow + "}";
+    server.addAgent("agent_wf", (ObjectNode) json(config));
+
+    AgentProject project = AgentProject.fromFiles(null);
+    client.agents().pull("agent_wf", new AgentPullOptions().project(project));
+
+    assertEquals(ProjectFormat.formatConfig(json(config)), project.toFiles().get("agent_configs/Survey-line.json"));
+  }
+
   private static List<String> sorted(java.util.Collection<String> values) {
     List<String> list = new ArrayList<>(values);
     Collections.sort(list);
