@@ -272,6 +272,13 @@ class AgentTest {
       json("[\"tool_mcp\",\"tool_g\"]"),
       agent.toJson(ids("get_order", "tool_g")).at("/conversation_config/agent/prompt/tool_ids")
     );
+
+    // Adding the loaded MCP object back while its id is still in toolIds attaches it once.
+    agent.addTool(byId.get("tool_mcp"));
+    assertEquals(
+      json("[\"tool_mcp\",\"tool_g\"]"),
+      agent.toJson(ids("get_order", "tool_g")).at("/conversation_config/agent/prompt/tool_ids")
+    );
   }
 
   @Test

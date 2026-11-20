@@ -489,7 +489,11 @@ public final class Agent {
       if (tool.getKind() == ToolKind.SYSTEM) {
         system.add(tool);
       } else {
-        managedIds.add(idOf(tool, ids));
+        String id = idOf(tool, ids);
+        // A kind push doesn't manage goes by its loaded id, which toolIds may already hold.
+        if (isManaged(tool) || !managedIds.contains(id)) {
+          managedIds.add(id);
+        }
       }
     }
     if (toolListGiven) {
