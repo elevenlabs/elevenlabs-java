@@ -1,6 +1,8 @@
 plugins {
     id 'java-library'
-    id 'maven-publish'
+    // Publishes to Maven Central through the Central Portal and signs every artifact, the same plugin
+    // elevenlabs-android uses. It applies maven-publish and signing itself.
+    id 'com.vanniktech.maven.publish' version '0.34.0'
 }
 
 repositories {
@@ -45,8 +47,6 @@ java {
     // both 8 and 9. Fern still emits the project-property form, so this is a deliberate divergence.
     sourceCompatibility = JavaVersion.toVersion(8)
     targetCompatibility = JavaVersion.toVersion(8)
-    withSourcesJar()
-    withJavadocJar()
 }
 
 group = 'io.elevenlabs'
@@ -57,51 +57,36 @@ jar {
     archiveBaseName = 'elevenlabs-java'
 }
 
-sourcesJar {
-    archiveBaseName = 'elevenlabs-java'
-}
+mavenPublishing {
+    // The plugin builds the sources and javadoc jars Maven Central requires, so the java block no
+    // longer calls withSourcesJar()/withJavadocJar(): doing both registers the jars twice.
+    // Credentials and the signing key come from ORG_GRADLE_PROJECT_* environment variables set by
+    // .github/workflows/release.yml (mavenCentralUsername, mavenCentralPassword, signingInMemoryKey,
+    // signingInMemoryKeyId, signingInMemoryKeyPassword), the same names elevenlabs-android uses.
+    publishToMavenCentral(true)
+    signAllPublications()
 
-javadocJar {
-    archiveBaseName = 'elevenlabs-java'
-}
+    coordinates('io.elevenlabs', 'elevenlabs-java', project.version.toString())
 
-publishing {
-    publications {
-        maven(MavenPublication) {
-            groupId = 'io.elevenlabs'
-            artifactId = 'elevenlabs-java'
-            version = '1.0.0'
-            from components.java
-            pom {
-                name = 'ElevenLabs'
-                description = 'The official Java SDK for ElevenLabs.'
-                url = 'https://github.com/elevenlabs/elevenlabs-java'
-                licenses {
-                    license {
-                        name = 'MIT'
-                        url = 'https://opensource.org/licenses/MIT'
-                    }
-                }
-                scm {
-                    connection = 'scm:git:git://github.com/elevenlabs/elevenlabs-java.git'
-                    developerConnection = 'scm:git:ssh://github.com/elevenlabs/elevenlabs-java.git'
-                    url = 'https://github.com/elevenlabs/elevenlabs-java'
-                }
-                developers {
-                    developer {
-                        name = 'ElevenLabs'
-                        email = 'developers@elevenlabs.io'
-                    }
-                }
+    pom {
+        name = 'ElevenLabs'
+        description = 'The official Java SDK for ElevenLabs.'
+        url = 'https://github.com/elevenlabs/elevenlabs-java'
+        licenses {
+            license {
+                name = 'MIT'
+                url = 'https://opensource.org/licenses/MIT'
             }
         }
-    }
-    repositories {
-        maven {
-            url "$System.env.MAVEN_PUBLISH_REGISTRY_URL"
-            credentials {
-                username "$System.env.MAVEN_USERNAME"
-                password "$System.env.MAVEN_PASSWORD"
+        scm {
+            connection = 'scm:git:git://github.com/elevenlabs/elevenlabs-java.git'
+            developerConnection = 'scm:git:ssh://github.com/elevenlabs/elevenlabs-java.git'
+            url = 'https://github.com/elevenlabs/elevenlabs-java'
+        }
+        developers {
+            developer {
+                name = 'ElevenLabs'
+                email = 'developers@elevenlabs.io'
             }
         }
     }

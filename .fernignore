@@ -1,6 +1,12 @@
 # Specify files that shouldn't be modified by Fern
 README.md
 
+# Hand-written release workflow: runs only when a GitHub release is published and publishes to Maven
+# Central with the same account and signing key as elevenlabs-android.
+.github/workflows/release.yml
+# Gives Gradle enough heap to build the javadoc and sources jars a Maven Central release needs.
+gradle.properties
+
 # Hand-written agent workflows-as-code builder (spec: elevenlabs-js docs/agents-as-code/workflow-spec.md).
 # Fern doesn't generate it; it sits on top of the generated AgentWorkflowRequestModel. Its CanonicalJson
 # writer and Destination type are public so a later agent tools builder can reuse them. The fixtures are
