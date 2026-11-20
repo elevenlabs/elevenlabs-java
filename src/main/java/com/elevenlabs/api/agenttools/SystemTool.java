@@ -274,7 +274,8 @@ public final class SystemTool extends Tool {
     }
     // A loaded transfer_to_number tool may use transfer_rules instead of transfers; the API takes exactly one.
     boolean hasTransfers = hasEntries(params.get("transfers"));
-    boolean hasRules = hasEntries(params.get("transfer_rules"));
+    // Only transfer_to_number has transfer_rules; transfer_to_agent needs transfers.
+    boolean hasRules = "transfer_to_number".equals(systemToolType) && hasEntries(params.get("transfer_rules"));
     if (!hasTransfers && !hasRules) {
       issues.add(ToolIssue.error("no_transfers", "transfer", systemToolType + " needs at least one transfer()"));
     } else if (hasTransfers && hasRules) {

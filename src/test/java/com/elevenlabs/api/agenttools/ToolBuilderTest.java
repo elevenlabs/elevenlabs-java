@@ -625,4 +625,27 @@ class ToolBuilderTest {
     assertFalse(any.asClient().isPresent());
     assertFalse(any.asSystem().isPresent());
   }
+
+  private static final String TRANSFER_RULE =
+    "{\"condition\":\"Caller asks for the front desk\",\"provider_configs\":[{\"config\":{\"transfer_destination\":"
+      + "{\"destination\":\"+15551234567\",\"type\":\"phone\"},\"type\":\"twilio_cold_blind_transfer\"},\"type\":\"twilio\"}]}";
+
+  private static Tool loadedTransfer(String systemToolType) {
+    return Tool.fromJson(
+      "{\"type\":\"system\",\"name\":\"" + systemToolType + "\",\"params\":{\"system_tool_type\":\"" + systemToolType
+        + "\",\"transfers\":[],\"transfer_rules\":[" + TRANSFER_RULE + "]}}"
+    );
+  }
+
+  @Test
+  void transferRulesDoNotSatisfyAnAgentTransfer() {
+    assertEquals(Collections.singletonList("no_transfers"), codes(() -> loadedTransfer("transfer_to_agent").build()));
+  }
+
+  @Test
+  void buildSendsLoadedTransferRules() throws Exception {
+    ToolRequestModel request = loadedTransfer("transfer_to_number").build();
+    JsonNode sent = json(ObjectMappers.JSON_MAPPER.writeValueAsString(request));
+    assertEquals(json("[" + TRANSFER_RULE + "]"), sent.path("tool_config").path("params").path("transfer_rules"));
+  }
 }
