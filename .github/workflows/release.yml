@@ -1,0 +1,75 @@
+name: Release
+
+# Runs only when a GitHub release is published, never on a push to main. Hand-written and listed in
+# .fernignore. Mirrors elevenlabs-android's publish.yml: the same Maven Central account, the same
+# signing key and the same secret names, all under the verified io.elevenlabs namespace.
+on:
+  release:
+    types: [published]
+
+permissions:
+  contents: read
+
+jobs:
+  publish:
+    runs-on: ubuntu-latest
+    steps:
+      - name: Checkout code
+        uses: actions/checkout@v4
+
+      # The JDK that runs Gradle. The SDK itself still compiles to Java 8 (see build.gradle).
+      - name: Set up JDK 17
+        uses: actions/setup-java@v4
+        with:
+          java-version: '17'
+          distribution: 'temurin'
+
+      # The repo has no Gradle wrapper, so pin Gradle here instead of using the runner's.
+      - name: Set up Gradle
+        uses: gradle/actions/setup-gradle@v4
+        with:
+          gradle-version: '9.9.1'
+
+      - name: Verify SDK version matches release tag
+        env:
+          RELEASE_TAG: ${{ github.event.release.tag_name }}
+        run: |
+          TAG_VERSION="${RELEASE_TAG#v}"
+          SDK_VERSION=$(gradle -q properties | grep '^version:' | cut -d' ' -f2)
+
+          if [ -z "$SDK_VERSION" ]; then
+            echo "::error::Could not read the SDK version."
+            exit 1
+          fi
+
+          if [ "$SDK_VERSION" != "$TAG_VERSION" ]; then
+            echo "::error::Release tag v$TAG_VERSION does not match SDK version $SDK_VERSION. Bump the version in build.gradle before releasing."
+            exit 1
+          fi
+
+          HTTP_CODE=$(curl -s -o /dev/null -w "%{http_code}" "https://repo1.maven.org/maven2/io/elevenlabs/elevenlabs-java/$SDK_VERSION/")
+          if [ "$HTTP_CODE" = "200" ]; then
+            echo "::error::Version $SDK_VERSION is already published to Maven Central."
+            exit 1
+          elif [ "$HTTP_CODE" != "404" ]; then
+            echo "::error::Could not verify Maven Central status for $SDK_VERSION (HTTP $HTTP_CODE)."
+            exit 1
+          fi
+
+      - name: Run tests
+        run: gradle test
+
+      - name: Publish to Maven Central
+        run: gradle publishToMavenCentral
+        env:
+          ORG_GRADLE_PROJECT_mavenCentralUsername: ${{ secrets.MAVEN_CENTRAL_USERNAME }}
+          ORG_GRADLE_PROJECT_mavenCentralPassword: ${{ secrets.MAVEN_CENTRAL_PASSWORD }}
+          ORG_GRADLE_PROJECT_signingInMemoryKey: ${{ secrets.SIGNING_IN_MEMORY_KEY }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyId: ${{ secrets.SIGNING_KEY_ID }}
+          ORG_GRADLE_PROJECT_signingInMemoryKeyPassword: ${{ secrets.SIGNING_PASSWORD }}
+
+      - name: Upload SDK artifacts
+        uses: actions/upload-artifact@v4
+        with:
+          name: sdk-release-artifacts
+          path: build/libs/
