@@ -16,6 +16,15 @@ src/main/java/com/elevenlabs/api/agenttools/
 src/test/java/com/elevenlabs/api/agenttools/
 src/test/resources/agenttools/
 
+# Hand-written agents-as-code builder (spec: elevenlabs-js docs/agents-as-code/agent-spec.md): the Agent builder,
+# agents().push()/pull() and AgentProject, the ElevenLabs CLI's project layout. Fern doesn't generate it; it sits on
+# top of the generated agents and tools clients and reuses the workflow and tools builders above. AgentsClientWrapper
+# extends the generated AgentsClient and ElevenLabsClient.agents() returns it. The cli-graph fixture is the shared
+# cross-SDK project, vendored byte for byte so the SDKs can't drift silently.
+src/main/java/com/elevenlabs/api/agentbuilder/
+src/test/java/com/elevenlabs/api/agentbuilder/
+src/test/resources/agentbuilder/
+
 # Hand-written Speech Engine server model (the developer hosts a WebSocket server that the
 # ElevenLabs API dials into). The generator produces only the client-dials-out upstream socket
 # (resources/speechengine/websocket); this package adds the inbound-connection JWT verifier, the
@@ -26,7 +35,8 @@ src/test/java/com/elevenlabs/api/speechengine/
 
 # Hand-written root client wiring: ElevenLabsClient extends the generated ElevenlabsApiClient and
 # overrides speechEngine() to return the SpeechEngineClientWrapper (whose create/get/update/
-# duplicate return a SpeechEngineResource). The generator emits only ElevenlabsApiClient.
+# duplicate return a SpeechEngineResource), and agents() to return the AgentsClientWrapper (which adds push/pull for
+# agents as code). The generator emits only ElevenlabsApiClient.
 src/main/java/com/elevenlabs/api/ElevenLabsClient.java
 src/main/java/com/elevenlabs/api/ElevenLabsClientBuilder.java
 

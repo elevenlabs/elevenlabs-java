@@ -1,5 +1,6 @@
 package com.elevenlabs.api.agentworkflows;
 
+import com.elevenlabs.api.agenttools.Tool;
 import com.fasterxml.jackson.databind.JsonNode;
 import com.fasterxml.jackson.databind.node.ArrayNode;
 import com.fasterxml.jackson.databind.node.JsonNodeFactory;
@@ -11,6 +12,7 @@ import java.util.Iterator;
 import java.util.LinkedHashMap;
 import java.util.List;
 import java.util.Map;
+import java.util.function.Function;
 
 /**
  * Mutable state shared by a {@link Workflow} and every handle created from it. Nodes are kept in wire format, in
@@ -81,6 +83,102 @@ final class WorkflowGraph {
   /** Each loaded node's {@code edge_order}, as edges. {@code build()} keeps this order and appends edges added since. */
   final Map<String, List<GraphEdge>> loadedOrder = new HashMap<>();
 
+  /** {@link Tool} objects referenced by nodes, by placeholder, in the order they were first used. */
+  final Map<String, Tool> toolRefs = new LinkedHashMap<>();
+
+  /** The placeholder a {@link Tool} object stands under in the graph until {@code build()} swaps in its id. */
+  static String toolPlaceholder(String name) {
+    return "<tool:" + name + ">";
+  }
+
+  /** A tool id as shown in messages: the tool's name for a {@link Tool} object's placeholder. */
+  static String displayTool(String id) {
+    if (id.startsWith("<tool:") && id.endsWith(">")) {
+      return id.substring("<tool:".length(), id.length() - 1);
+    }
+    return id;
+  }
+
+  /**
+   * Swaps {@link Tool} objects for placeholders, remembering each one. A different tool of the same name conflicts if
+   * this node or another node still uses that name; one left behind by a removed or edited node doesn't.
+   */
+  List<String> refTools(String nodeId, List<Tool> tools) {
+    List<String> keys = new ArrayList<>();
+    Map<String, Tool> inThisNode = new HashMap<>();
+    for (Tool tool : tools) {
+      String key = toolPlaceholder(tool.getName());
+      Tool known = toolRefs.get(key);
+      Tool clash = inThisNode.get(key);
+      if (clash == null && known != null && usesPlaceholder(key, nodeId)) {
+        clash = known;
+      }
+      inThisNode.put(key, tool);
+      if (clash != null && clash != tool) {
+        issue("duplicate_tool_name", "Node \"" + nodeId + "\" uses a different tool also named \"" + tool.getName() + "\"", nodeId);
+      }
+      toolRefs.put(key, tool);
+      keys.add(key);
+    }
+    return keys;
+  }
+
+  private boolean usesPlaceholder(String key, String exceptNodeId) {
+    for (Map.Entry<String, ObjectNode> entry : nodes.entrySet()) {
+      if (!entry.getKey().equals(exceptNodeId) && nodeToolIds(entry.getValue()).contains(key)) {
+        return true;
+      }
+    }
+    return false;
+  }
+
+  /** The tool ids (or placeholders) a node uses: a tool node's tools, or a subagent's extra tools. */
+  static List<String> nodeToolIds(JsonNode model) {
+    List<String> ids = new ArrayList<>();
+    JsonNode tools = model.get("tools");
+    if (tools != null && tools.isArray()) {
+      for (JsonNode tool : tools) {
+        JsonNode id = tool.get("tool_id");
+        if (id != null && id.isTextual()) {
+          ids.add(id.textValue());
+        }
+      }
+    }
+    JsonNode extra = model.get("additional_tool_ids");
+    if (extra != null && extra.isArray()) {
+      for (JsonNode id : extra) {
+        if (id.isTextual()) {
+          ids.add(id.textValue());
+        }
+      }
+    }
+    return ids;
+  }
+
+  /** A copy of a node with each tool id (a tool node's tools, a subagent's extra tools) replaced through {@code map}. */
+  static ObjectNode mapNodeToolIds(ObjectNode model, Function<String, String> map) {
+    ObjectNode node = model.deepCopy();
+    String type = typeOf(node);
+    JsonNode tools = node.get("tools");
+    if ("tool".equals(type) && tools != null && tools.isArray()) {
+      for (JsonNode tool : tools) {
+        JsonNode id = tool.get("tool_id");
+        if (tool.isObject() && id != null && id.isTextual()) {
+          ((ObjectNode) tool).put("tool_id", map.apply(id.textValue()));
+        }
+      }
+    }
+    JsonNode extra = node.get("additional_tool_ids");
+    if ("override_agent".equals(type) && extra != null && extra.isArray()) {
+      ArrayNode mapped = NODES.arrayNode();
+      for (JsonNode id : extra) {
+        mapped.add(id.isTextual() ? NODES.textNode(map.apply(id.textValue())) : id);
+      }
+      node.set("additional_tool_ids", mapped);
+    }
+    return node;
+  }
+
   List<String> nodeOrder() {
     return Collections.unmodifiableList(new ArrayList<>(nodes.keySet()));
   }
@@ -115,18 +213,37 @@ final class WorkflowGraph {
   }
 
   /**
-   * Applies canonical options to a node model, returning a new model. {@code destination}, {@code toolIds} and
-   * {@code schemaOverrides} are handled specially; {@code rest} maps through the node kind's field map.
+   * Applies canonical options to a node model, returning a new model. {@code destination}, {@code toolIds},
+   * {@code tools} and {@code schemaOverrides} are handled specially; {@code rest} maps through the node kind's field
+   * map. {@code tools} are {@link Tool} objects, which stand under placeholders after {@code toolIds}; giving either
+   * replaces the node's tools.
    */
   ObjectNode applyOptions(
     String id,
     ObjectNode model,
     Destination destination,
     List<String> toolIds,
+    List<Tool> tools,
     JsonNode schemaOverrides,
     Map<String, JsonNode> rest
   ) {
     ObjectNode node = model.deepCopy();
+    if (tools != null) {
+      List<String> combined = toolIds == null ? new ArrayList<>() : new ArrayList<>(toolIds);
+      combined.addAll(refTools(id, tools));
+      toolIds = combined;
+    }
+    if (schemaOverrides != null && schemaOverrides.isObject() && !toolRefs.isEmpty()) {
+      // A Tool object's overrides may be keyed by its name.
+      ObjectNode byPlaceholder = NODES.objectNode();
+      Iterator<Map.Entry<String, JsonNode>> entries = schemaOverrides.fields();
+      while (entries.hasNext()) {
+        Map.Entry<String, JsonNode> entry = entries.next();
+        String placeholder = toolPlaceholder(entry.getKey());
+        byPlaceholder.set(toolRefs.containsKey(placeholder) ? placeholder : entry.getKey(), entry.getValue());
+      }
+      schemaOverrides = byPlaceholder;
+    }
 
     if (destination != null) {
       String type = typeOf(node);
@@ -171,13 +288,13 @@ final class WorkflowGraph {
           if (!ids.contains(toolId)) {
             issue(
               "invalid_option",
-              "Node \"" + id + "\" has schema overrides for tool \"" + toolId + "\", which it doesn't run",
+              "Node \"" + id + "\" has schema overrides for tool \"" + displayTool(toolId) + "\", which it doesn't run",
               id
             );
           }
         }
       }
-      ArrayNode tools = NODES.arrayNode();
+      ArrayNode locators = NODES.arrayNode();
       for (String toolId : ids) {
         JsonNode overrides = null;
         if (schemaOverrides != null && schemaOverrides.has(toolId)) {
@@ -196,9 +313,9 @@ final class WorkflowGraph {
         if (overrides != null) {
           tool.set("schema_overrides", overrides);
         }
-        tools.add(tool);
+        locators.add(tool);
       }
-      node.set("tools", tools);
+      node.set("tools", locators);
     } else {
       if (schemaOverrides != null) {
         invalidOption(id, "schema_overrides", nodeType);
@@ -235,6 +352,7 @@ final class WorkflowGraph {
     edges = new ArrayList<>();
     issues.clear();
     loadedOrder.clear();
+    toolRefs.clear();
     JsonNode psl = workflow.get("prevent_subagent_loops");
     preventSubagentLoops = psl != null && psl.isBoolean() ? psl.booleanValue() : null;
 
