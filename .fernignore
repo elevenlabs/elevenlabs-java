@@ -9,6 +9,13 @@ src/main/java/com/elevenlabs/api/agentworkflows/
 src/test/java/com/elevenlabs/api/agentworkflows/
 src/test/resources/agentworkflows/
 
+# Hand-written agent tools-as-code builder (spec: elevenlabs-js docs/agents-as-code/tool-spec.md). Fern doesn't
+# generate it; it sits on top of the generated ToolRequestModel and reuses the workflow builder's CanonicalJson and
+# Destination. The fixtures are the shared cross-SDK golden files, vendored so they can't drift silently.
+src/main/java/com/elevenlabs/api/agenttools/
+src/test/java/com/elevenlabs/api/agenttools/
+src/test/resources/agenttools/
+
 # Hand-written Speech Engine server model (the developer hosts a WebSocket server that the
 # ElevenLabs API dials into). The generator produces only the client-dials-out upstream socket
 # (resources/speechengine/websocket); this package adds the inbound-connection JWT verifier, the
