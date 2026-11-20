@@ -457,6 +457,25 @@ class AgentPushTest {
     assertEquals(Collections.singletonList("tool_mcp"), agent.getToolIds());
   }
 
+  @Test
+  void pushLeavesAnOtherKindOfToolAttachedByIdWithoutCreatingOrUpdatingIt() {
+    JsonNode mcpConfig = json("{\"type\":\"mcp\",\"name\":\"docs_search\",\"description\":\"Search the docs\",\"mcp_server_id\":\"mcp_1\"}");
+    server.addTool("tool_mcp", mcpConfig, "agent_1");
+    ObjectNode config = (ObjectNode) json(
+      "{\"name\":\"A\",\"conversation_config\":{\"agent\":{\"prompt\":{\"prompt\":\"p\",\"tool_ids\":[\"tool_mcp\"]}}}}"
+    );
+    server.addAgent("agent_1", config);
+    Agent agent = Agent.fromJson(config, Collections.singletonMap("tool_mcp", Tool.fromJson(mcpConfig)));
+    agent.update(new AgentOptions().firstMessage("Hi"));
+
+    AgentPushResult result = client.agents().push(agent, new AgentPushOptions().agentId("agent_1"));
+
+    assertEquals(Collections.singletonList("PATCH /v1/convai/agents/agent_1"), server.writes());
+    assertTrue(result.getTools().isEmpty(), result.getTools().toString());
+    assertEquals(json("[\"tool_mcp\"]"), server.agents.get("agent_1").at("/conversation_config/agent/prompt/tool_ids"));
+    assertEquals(mcpConfig, server.tools.get("tool_mcp").config);
+  }
+
   private static List<String> sorted(java.util.Collection<String> values) {
     List<String> list = new ArrayList<>(values);
     Collections.sort(list);

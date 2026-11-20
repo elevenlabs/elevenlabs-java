@@ -233,6 +233,48 @@ class AgentTest {
     );
   }
 
+  static Tool mcpTool() {
+    return Tool.fromJson(json("{\"type\":\"mcp\",\"name\":\"docs_search\",\"description\":\"Search the docs\",\"mcp_server_id\":\"mcp_1\"}"));
+  }
+
+  @Test
+  void keepsOtherToolKindsAttachedByTheIdTheyWereLoadedWith() {
+    Tool mcp = mcpTool();
+    Agent agent = Agent.fromJson(
+      json("{\"name\":\"A\",\"conversation_config\":{\"agent\":{\"prompt\":{\"prompt\":\"p\",\"tool_ids\":[\"tool_mcp\"]}}}}"),
+      Collections.singletonMap("tool_mcp", mcp)
+    );
+    agent.addTool(AgentPushTest.getOrder());
+    // Push manages only webhook and client tools.
+    assertEquals(Collections.singletonList("get_order"), names(agent.tools()));
+    assertEquals(
+      json("[\"tool_mcp\",\"tool_g\"]"),
+      agent.toJson(ids("get_order", "tool_g")).at("/conversation_config/agent/prompt/tool_ids")
+    );
+  }
+
+  @Test
+  void rejectsAnOtherKindOfToolWithoutAnId() {
+    Agent agent = new Agent("A", new AgentOptions().prompt("p")).addTool(mcpTool());
+    assertTrue(agent.tools().isEmpty());
+    AgentValidationException e = assertThrows(AgentValidationException.class, agent::validate);
+    assertEquals(1, e.getIssues().size());
+    AgentIssue issue = e.getIssues().get(0);
+    assertEquals("invalid_tool", issue.getCode());
+    assertEquals("tools.docs_search", issue.getPath().orElse(""));
+    assertEquals(
+      "Tool \"docs_search\" has type \"mcp\", which push doesn't create or update: load it with its id or attach it with toolIds",
+      issue.getMessage()
+    );
+
+    Workflow wf = new Workflow();
+    wf.tool("search", mcpTool());
+    assertEquals(
+      Collections.singletonList("invalid_tool@tools.docs_search"),
+      issuesOf(new Agent("B", new AgentOptions().prompt("p").workflow(wf))::validate)
+    );
+  }
+
   @Test
   void attachesAToolAddedWithAddTool() {
     Agent agent = new Agent("A", new AgentOptions().prompt("p")).addTool(AgentPushTest.getOrder());

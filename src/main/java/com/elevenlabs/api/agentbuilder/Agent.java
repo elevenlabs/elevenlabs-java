@@ -283,7 +283,8 @@ public final class Agent {
 
   /**
    * Every webhook and client tool the agent and its workflow use, each once, in first-use order: the tools
-   * {@code agents().push()} creates or updates. System tools aren't included; they live inside the agent's config.
+   * {@code agents().push()} creates or updates. System tools aren't included; they live inside the agent's config. Nor
+   * are other kinds, such as MCP tools: they stay attached by the id the agent was loaded with.
    */
   public List<Tool> tools() {
     Set<Tool> seen = Collections.newSetFromMap(new IdentityHashMap<Tool, Boolean>());
@@ -291,7 +292,7 @@ public final class Agent {
     List<Tool> every = new ArrayList<>(tools);
     every.addAll(workflowTools());
     for (Tool tool : every) {
-      if (tool.getKind() != ToolKind.SYSTEM && seen.add(tool)) {
+      if (isManaged(tool) && seen.add(tool)) {
         result.add(tool);
       }
     }
@@ -469,6 +470,16 @@ public final class Agent {
           issues.add(AgentIssue.error("invalid_tool", e.getMessage(), "tools." + tool.getName()));
         }
       }
+      if (!isManaged(tool) && tool.getKind() != ToolKind.SYSTEM && knownId(tool) == null) {
+        issues.add(
+          AgentIssue.error(
+            "invalid_tool",
+            "Tool \"" + tool.getName() + "\" has type \"" + toolType(tool) + "\", which push doesn't create or update:"
+              + " load it with its id or attach it with toolIds",
+            "tools." + tool.getName()
+          )
+        );
+      }
     }
 
     List<String> managedIds = new ArrayList<>(toolIds);
@@ -540,7 +551,7 @@ public final class Agent {
         "workflow",
         Wire.mapRawWorkflowToolIds(rawWorkflow.deepCopy(), id -> {
           Tool tool = toolsById.get(id);
-          String mapped = tool == null || ids == null ? null : ids.get(tool.getName());
+          String mapped = tool == null || ids == null || !isManaged(tool) ? null : ids.get(tool.getName());
           return mapped == null ? id : mapped;
         })
       );
@@ -601,9 +612,37 @@ public final class Agent {
     return (ObjectNode) CanonicalJson.canonicalize(config);
   }
 
-  private static String idOf(Tool tool, Map<String, String> ids) {
-    String id = ids == null ? null : ids.get(tool.getName());
+  /**
+   * The id a tool goes under: a managed tool's from {@code ids}, else a placeholder; any other kind's, the id the agent
+   * was loaded with.
+   */
+  private String idOf(Tool tool, Map<String, String> ids) {
+    String id = isManaged(tool) ? (ids == null ? null : ids.get(tool.getName())) : knownId(tool);
     return id == null ? "<tool:" + tool.getName() + ">" : id;
+  }
+
+  /** Webhook and client tools: the kinds {@code agents().push()} creates and updates. */
+  private static boolean isManaged(Tool tool) {
+    return tool.getKind() == ToolKind.WEBHOOK || tool.getKind() == ToolKind.CLIENT;
+  }
+
+  /** The id this tool object was loaded under, through {@code fromJson}'s {@code toolsById}. */
+  private String knownId(Tool tool) {
+    for (Map.Entry<String, Tool> entry : toolsById.entrySet()) {
+      if (entry.getValue() == tool) {
+        return entry.getKey();
+      }
+    }
+    return null;
+  }
+
+  private static String toolType(Tool tool) {
+    try {
+      JsonNode type = tool.toJson().get("type");
+      return type == null || !type.isTextual() ? "unknown" : type.asText();
+    } catch (RuntimeException e) {
+      return "unknown";
+    }
   }
 
   /** {@code ids} with the ones in {@code loaded} first, in that order, then the rest as they are. */
