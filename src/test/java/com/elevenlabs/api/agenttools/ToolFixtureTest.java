@@ -31,7 +31,7 @@ import org.junit.jupiter.api.TestFactory;
 class ToolFixtureTest {
 
   // Bump when vendoring new fixtures, so a missing file fails loudly instead of being skipped.
-  private static final int FIXTURE_COUNT = 21;
+  private static final int FIXTURE_COUNT = 23;
 
   @TestFactory
   Stream<DynamicTest> fixtures() throws IOException, URISyntaxException {

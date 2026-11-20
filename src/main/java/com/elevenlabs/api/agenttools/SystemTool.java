@@ -269,11 +269,28 @@ public final class SystemTool extends Tool {
   List<ToolIssue> validate() {
     List<ToolIssue> issues = new ArrayList<>();
     boolean isTransfer = "transfer_to_number".equals(systemToolType) || "transfer_to_agent".equals(systemToolType);
-    JsonNode transfers = params.get("transfers");
-    if (isTransfer && (transfers == null || !transfers.isArray() || transfers.size() == 0)) {
+    if (!isTransfer) {
+      return issues;
+    }
+    // A loaded transfer_to_number tool may use transfer_rules instead of transfers; the API takes exactly one.
+    boolean hasTransfers = hasEntries(params.get("transfers"));
+    boolean hasRules = hasEntries(params.get("transfer_rules"));
+    if (!hasTransfers && !hasRules) {
       issues.add(ToolIssue.error("no_transfers", "transfer", systemToolType + " needs at least one transfer()"));
+    } else if (hasTransfers && hasRules) {
+      issues.add(
+        ToolIssue.error(
+          "conflicting_transfers",
+          "transfer",
+          systemToolType + " has both transfers and transfer_rules; the API takes only one"
+        )
+      );
     }
     return issues;
+  }
+
+  private static boolean hasEntries(JsonNode node) {
+    return node != null && node.isArray() && node.size() > 0;
   }
 
   @Override
