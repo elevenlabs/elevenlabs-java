@@ -60,13 +60,13 @@ public final class NumberSchema {
   }
 
   @JsonIgnore
-  public Optional<List<Double>> getEnum_() {
+  public Optional<List<Double>> getEnum() {
     return enum_ == null ? Optional.empty() : enum_;
   }
 
   @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
   @JsonProperty("enum")
-  private Optional<List<Double>> _getEnum_() {
+  private Optional<List<Double>> _getEnum() {
     return enum_;
   }
 
@@ -121,7 +121,7 @@ public final class NumberSchema {
     public Builder from(NumberSchema other) {
       title(other.getTitle());
       description(other.getDescription());
-      enum_(other.getEnum_());
+      enum_(other.getEnum());
       return this;
     }
 

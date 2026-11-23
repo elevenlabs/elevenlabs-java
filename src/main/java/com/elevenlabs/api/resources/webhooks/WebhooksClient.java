@@ -83,8 +83,11 @@ public class WebhooksClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -235,7 +238,7 @@ public class WebhooksClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/webhooks"
     )
       .setHeader("Accept", "application/json")
@@ -280,7 +283,7 @@ public class WebhooksClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/webhooks"
     )
       .setHeader("Accept", "application/json")
@@ -335,7 +338,7 @@ public class WebhooksClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/webhooks/{webhook_id}"
     )
       .setHeader("Accept", "application/json")
@@ -404,7 +407,7 @@ public class WebhooksClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/webhooks/{webhook_id}"
     )
       .setHeader("Accept", "application/json")
@@ -451,7 +454,7 @@ public class WebhooksClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/webhooks/{webhook_id}/test"
     )
       .setHeader("Accept", "application/json")
@@ -462,7 +465,7 @@ public class WebhooksClient {
   }
 
   /**
-   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
    *
    * @param webhookId String The ID of the webhook.
    * @param deliveryId String The ID of the delivery to send again.
@@ -473,7 +476,7 @@ public class WebhooksClient {
   }
 
   /**
-   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
    *
    * @param webhookId String The ID of the webhook.
    * @param deliveryId String The ID of the delivery to send again.
@@ -493,7 +496,7 @@ public class WebhooksClient {
   }
 
   /**
-   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
    *
    * @param webhookId String The ID of the webhook.
    * @param deliveryId String The ID of the delivery to send again.
@@ -509,7 +512,7 @@ public class WebhooksClient {
   }
 
   /**
-   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+   * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
    *
    * @param webhookId String The ID of the webhook.
    * @param deliveryId String The ID of the delivery to send again.
@@ -535,7 +538,7 @@ public class WebhooksClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/webhooks/{webhook_id}/deliveries/{delivery_id}/redeliver"
     )
       .setHeader("Accept", "application/json")
@@ -840,7 +843,7 @@ public class WebhooksClient {
     }
 
     /**
-     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
      *
      * @param webhookId String The ID of the webhook.
      * @param deliveryId String The ID of the delivery to send again.
@@ -854,7 +857,7 @@ public class WebhooksClient {
     }
 
     /**
-     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
      *
      * @param webhookId String The ID of the webhook.
      * @param deliveryId String The ID of the delivery to send again.
@@ -874,7 +877,7 @@ public class WebhooksClient {
     }
 
     /**
-     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
      *
      * @param webhookId String The ID of the webhook.
      * @param deliveryId String The ID of the delivery to send again.
@@ -890,7 +893,7 @@ public class WebhooksClient {
     }
 
     /**
-     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+     * Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
      *
      * @param webhookId String The ID of the webhook.
      * @param deliveryId String The ID of the delivery to send again.

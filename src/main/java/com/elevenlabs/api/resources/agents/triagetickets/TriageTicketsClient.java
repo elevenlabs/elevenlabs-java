@@ -96,8 +96,11 @@ public class TriageTicketsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -325,7 +328,7 @@ public class TriageTicketsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/triage-tickets"
     )
       .setHeader("Accept", "application/json")
@@ -360,12 +363,6 @@ public class TriageTicketsClient {
       builder.setOptionalQueryParameter(
         "sort_by",
         requestParameters.getSortBy().orElse(null).toString()
-      );
-    }
-    if (requestParameters.getIssueType().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "issue_type",
-        requestParameters.getIssueType().orElse(null).toString()
       );
     }
     return builder.build();
@@ -409,7 +406,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/triage-tickets"
     )
       .setHeader("Accept", "application/json")
@@ -473,7 +470,7 @@ public class TriageTicketsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets"
     )
       .setHeader("Accept", "application/json")
@@ -504,12 +501,6 @@ public class TriageTicketsClient {
       builder.setOptionalQueryParameter(
         "sort_by",
         requestParameters.getSortBy().orElse(null).toString()
-      );
-    }
-    if (requestParameters.getIssueType().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "issue_type",
-        requestParameters.getIssueType().orElse(null).toString()
       );
     }
     return builder.build();
@@ -548,7 +539,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets"
     )
       .setHeader("Accept", "application/json")
@@ -625,7 +616,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/triage-tickets/assignable-users"
     )
       .setHeader("Accept", "application/json")
@@ -693,7 +684,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets/{agentqa_ticket_id}"
     )
       .setHeader("Accept", "application/json")
@@ -767,7 +758,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets/{agentqa_ticket_id}"
     )
       .setHeader("Accept", "application/json")
@@ -830,7 +821,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets/{agentqa_ticket_id}"
     )
       .setPathParameter("agentqa_ticket_id", agentqaTicketId)
@@ -876,7 +867,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets/{agentqa_ticket_id}/comments"
     )
       .setHeader("Accept", "application/json")
@@ -924,7 +915,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets/{agentqa_ticket_id}/merge"
     )
       .setHeader("Accept", "application/json")
@@ -972,7 +963,7 @@ public class TriageTicketsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/triage-tickets/{agentqa_ticket_id}/turn-comments"
     )
       .setHeader("Accept", "application/json")

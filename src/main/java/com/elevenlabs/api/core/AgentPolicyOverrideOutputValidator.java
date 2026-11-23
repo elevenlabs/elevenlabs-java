@@ -8,6 +8,7 @@ import com.elevenlabs.api.core.Violation;
 import com.elevenlabs.api.core.ViolationAggregator;
 import com.elevenlabs.api.types.AgentPolicyOverrideOutput;
 import com.elevenlabs.api.types.CallingPeriod;
+import com.elevenlabs.api.types.DateOverride;
 
 /**
  * Validator implementation for AgentPolicyOverrideOutput model.
@@ -50,6 +51,13 @@ public class AgentPolicyOverrideOutputValidator
           .itemValidator(new CallingPeriodValidator().required())
           .optional()
           .validate(agentPolicyOverrideOutput.getCallingPeriods().orElse(null))
+      )
+      .add(
+        new ListValidator<DateOverride>("dateOverrides")
+          .maxLength(100)
+          .itemValidator(new DateOverrideValidator().required())
+          .optional()
+          .validate(agentPolicyOverrideOutput.getDateOverrides().orElse(null))
       )
       .add(
         new DataCollectionConfigValidator("dataCollection")

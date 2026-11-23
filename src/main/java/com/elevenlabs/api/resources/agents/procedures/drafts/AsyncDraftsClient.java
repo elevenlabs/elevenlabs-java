@@ -73,8 +73,11 @@ public class AsyncDraftsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -226,7 +229,7 @@ public class AsyncDraftsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft"
     )
       .setHeader("Accept", "application/json")
@@ -285,7 +288,7 @@ public class AsyncDraftsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft"
     )
       .setHeader("Accept", "application/json")
@@ -380,7 +383,7 @@ public class AsyncDraftsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{branch_id}/procedures/{procedure_id}/draft"
     )
       .setHeader("Accept", "application/json")

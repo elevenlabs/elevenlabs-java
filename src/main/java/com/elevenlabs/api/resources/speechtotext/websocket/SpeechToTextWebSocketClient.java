@@ -3,8 +3,10 @@
  */
 package com.elevenlabs.api.resources.speechtotext.websocket;
 
+import com.elevenlabs.api.core.ApiConfig;
 import com.elevenlabs.api.core.ClientOptions;
 import com.elevenlabs.api.core.DisconnectReason;
+import com.elevenlabs.api.core.Environment;
 import com.elevenlabs.api.core.ObjectMappers;
 import com.elevenlabs.api.core.ReconnectingWebSocketListener;
 import com.elevenlabs.api.core.RequestOptions;
@@ -31,6 +33,8 @@ public class SpeechToTextWebSocketClient implements AutoCloseable {
 
   protected final ClientOptions clientOptions;
 
+  private final ApiConfig config;
+
   private final ObjectMapper objectMapper;
 
   private final OkHttpClient okHttpClient;
@@ -54,9 +58,31 @@ public class SpeechToTextWebSocketClient implements AutoCloseable {
   private volatile Consumer<ReceiveTranscription> subscribeHandler;
 
   public SpeechToTextWebSocketClient(ClientOptions clientOptions) {
+    this(clientOptions, null);
+  }
+
+  /**
+   * Builds the client against the SDK configuration its parent client shares, so an environment or
+   * base URL set on the root client after construction reaches this channel too.
+   */
+  public SpeechToTextWebSocketClient(ClientOptions clientOptions, ApiConfig config) {
     this.clientOptions = clientOptions;
+    this.config = config;
     this.objectMapper = ObjectMappers.JSON_MAPPER;
     this.okHttpClient = clientOptions.httpClient();
+  }
+
+  private String resolveBaseUrl() {
+    if (config != null && config.getBaseUrl() != null) {
+      return config.getBaseUrl();
+    }
+    if (clientOptions.baseUrl() != null) {
+      return clientOptions.baseUrl();
+    }
+    Environment environment = config != null && config.getEnvironment() != null
+      ? config.getEnvironment()
+      : clientOptions.environment();
+    return environment.getBaseURL();
   }
 
   public CompletableFuture<Void> realtime(
@@ -72,9 +98,7 @@ public class SpeechToTextWebSocketClient implements AutoCloseable {
     }
     final CompletableFuture<Void> future = new CompletableFuture<>();
     connectionFuture = future;
-    String baseUrl = clientOptions.baseUrl() != null
-      ? clientOptions.baseUrl()
-      : clientOptions.environment().getUrl();
+    String baseUrl = resolveBaseUrl();
     StringBuilder pathBuilder = new StringBuilder();
     pathBuilder.append("/v1/speech-to-text/realtime");
     String fullPath = pathBuilder.toString();

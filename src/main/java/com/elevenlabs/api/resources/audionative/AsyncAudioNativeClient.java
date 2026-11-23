@@ -86,8 +86,11 @@ public class AsyncAudioNativeClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -391,7 +394,7 @@ public class AsyncAudioNativeClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/audio-native"
     )
       .setHeader("Accept", "application/json")
@@ -467,7 +470,7 @@ public class AsyncAudioNativeClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/audio-native/{project_id}/settings"
     )
       .setHeader("Accept", "application/json")
@@ -652,7 +655,7 @@ public class AsyncAudioNativeClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/audio-native/{project_id}/content"
     )
       .setHeader("Accept", "application/json")
@@ -701,7 +704,7 @@ public class AsyncAudioNativeClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/audio-native/content"
     )
       .setHeader("Accept", "application/json")

@@ -93,8 +93,11 @@ public class AsyncTestsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -254,7 +257,7 @@ public class AsyncTestsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agent-testing/create"
     )
       .setHeader("Accept", "application/json")
@@ -296,7 +299,7 @@ public class AsyncTestsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agent-testing/bulk-move"
     )
       .setHeader("Accept", "application/json")
@@ -360,7 +363,7 @@ public class AsyncTestsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agent-testing/{test_id}"
     )
       .setHeader("Accept", "application/json")
@@ -407,7 +410,7 @@ public class AsyncTestsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PUT,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agent-testing/{test_id}"
     )
       .setHeader("Accept", "application/json")
@@ -472,7 +475,7 @@ public class AsyncTestsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agent-testing/{test_id}"
     )
       .setHeader("Accept", "application/json")
@@ -514,7 +517,7 @@ public class AsyncTestsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agent-testing/summaries"
     )
       .setHeader("Accept", "application/json")
@@ -572,7 +575,7 @@ public class AsyncTestsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agent-testing"
     )
       .setHeader("Accept", "application/json")

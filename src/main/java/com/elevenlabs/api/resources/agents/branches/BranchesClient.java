@@ -16,14 +16,13 @@ import com.elevenlabs.api.core.RequestOptions;
 import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.resources.agents.branches.requests.BodyCreateANewBranchV1ConvaiAgentsAgentIdBranchesPost;
 import com.elevenlabs.api.resources.agents.branches.requests.BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranchesSourceBranchIdMergePost;
+import com.elevenlabs.api.resources.agents.branches.requests.BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost;
 import com.elevenlabs.api.resources.agents.branches.requests.BodyUpdateAgentBranchV1ConvaiAgentsAgentIdBranchesBranchIdPatch;
 import com.elevenlabs.api.resources.agents.branches.requests.GetBranchesRequest;
 import com.elevenlabs.api.resources.agents.branches.requests.ListBranchesRequest;
 import com.elevenlabs.api.resources.agents.branches.requests.PreviewMergeBranchesRequest;
 import com.elevenlabs.api.resources.agents.branches.requests.PreviewRebaseBranchesRequest;
-import com.elevenlabs.api.resources.agents.branches.requests.RebaseBranchesRequest;
 import com.elevenlabs.api.types.AgentBranchResponse;
-import com.elevenlabs.api.types.BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost;
 import com.elevenlabs.api.types.CreateAgentBranchResponseModel;
 import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.ListResponseAgentBranchSummary_;
@@ -87,8 +86,11 @@ public class BranchesClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -274,7 +276,7 @@ public class BranchesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches"
     )
       .setHeader("Accept", "application/json")
@@ -330,7 +332,7 @@ public class BranchesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches"
     )
       .setHeader("Accept", "application/json")
@@ -403,7 +405,7 @@ public class BranchesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{branch_id}"
     )
       .setHeader("Accept", "application/json")
@@ -501,7 +503,7 @@ public class BranchesClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{branch_id}"
     )
       .setHeader("Accept", "application/json")
@@ -515,7 +517,7 @@ public class BranchesClient {
   }
 
   /**
-   * Returns the result of merging the source branch into the target branch without performing the merge. Useful for showing an accurate diff before confirming.
+   * Returns the result of merging the source branch into the target branch without performing the merge. When <code>conflicts</code> is not empty, the merge itself is rejected unless <code>conflict_resolutions</code> settles every conflict or <code>force</code> is set; until then the returned configuration shows one side of each conflict only as a placeholder.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -531,7 +533,7 @@ public class BranchesClient {
   }
 
   /**
-   * Returns the result of merging the source branch into the target branch without performing the merge. Useful for showing an accurate diff before confirming.
+   * Returns the result of merging the source branch into the target branch without performing the merge. When <code>conflicts</code> is not empty, the merge itself is rejected unless <code>conflict_resolutions</code> settles every conflict or <code>force</code> is set; until then the returned configuration shows one side of each conflict only as a placeholder.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -557,7 +559,7 @@ public class BranchesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge-preview"
     )
       .setHeader("Accept", "application/json")
@@ -574,7 +576,7 @@ public class BranchesClient {
   }
 
   /**
-   * Merge a branch into a target branch
+   * Merge a branch into a target branch. If both branches changed the same field, the merge returns 409 unless <code>conflict_resolutions</code> settles every conflict the merge preview reports, or <code>force</code> is set.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -590,7 +592,7 @@ public class BranchesClient {
   }
 
   /**
-   * Merge a branch into a target branch
+   * Merge a branch into a target branch. If both branches changed the same field, the merge returns 409 unless <code>conflict_resolutions</code> settles every conflict the merge preview reports, or <code>force</code> is set.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -616,7 +618,7 @@ public class BranchesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{source_branch_id}/merge"
     )
       .setHeader("Accept", "application/json")
@@ -629,7 +631,7 @@ public class BranchesClient {
   }
 
   /**
-   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param branchId String Unique identifier for the source branch to merge from.
@@ -640,7 +642,7 @@ public class BranchesClient {
   }
 
   /**
-   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param branchId String Unique identifier for the source branch to merge from.
@@ -660,7 +662,7 @@ public class BranchesClient {
   }
 
   /**
-   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param branchId String Unique identifier for the source branch to merge from.
@@ -676,7 +678,7 @@ public class BranchesClient {
   }
 
   /**
-   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+   * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param branchId String Unique identifier for the source branch to merge from.
@@ -702,7 +704,7 @@ public class BranchesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{branch_id}/rebase-preview"
     )
       .setHeader("Accept", "application/json")
@@ -721,89 +723,64 @@ public class BranchesClient {
   }
 
   /**
-   * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+   * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param branchId String Unique identifier for the source branch to merge from.
    * @return response of {@code Object}
    */
   public Object rebase(String agentId, String branchId) {
-    return this.rebase(agentId, branchId, RebaseBranchesRequest.builder().build());
+    return this.rebase(
+        agentId,
+        branchId,
+        BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder().build()
+      );
   }
 
   /**
-   * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+   * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param branchId String Unique identifier for the source branch to merge from.
    * @return response of {@code Object}
    */
   public Object rebase(String agentId, String branchId, RequestOptions requestOptions) {
-    return this.rebase(agentId, branchId, RebaseBranchesRequest.builder().build(), requestOptions);
-  }
-
-  /**
-   * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
-   *
-   * @param agentId String The id of an agent. This is returned on agent creation.
-   * @param branchId String Unique identifier for the source branch to merge from.
-   * @param body {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Body
-   * @return response of {@code Object}
-   */
-  public Object rebase(
-    String agentId,
-    String branchId,
-    BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost body
-  ) {
-    return this.rebase(agentId, branchId, RebaseBranchesRequest.builder().body(body).build());
-  }
-
-  /**
-   * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
-   *
-   * @param agentId String The id of an agent. This is returned on agent creation.
-   * @param branchId String Unique identifier for the source branch to merge from.
-   * @param body {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Body
-   * @return response of {@code Object}
-   */
-  public Object rebase(
-    String agentId,
-    String branchId,
-    BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost body,
-    RequestOptions requestOptions
-  ) {
     return this.rebase(
         agentId,
         branchId,
-        RebaseBranchesRequest.builder().body(body).build(),
+        BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder().build(),
         requestOptions
       );
   }
 
   /**
-   * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+   * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
    *
    * @param agentId String The id of an agent. This is returned on agent creation.
    * @param branchId String Unique identifier for the source branch to merge from.
-   * @param requestParameters {@link RebaseBranchesRequest} Request Parameters Object
-   * @return response of {@code Object}
-   */
-  public Object rebase(String agentId, String branchId, RebaseBranchesRequest requestParameters) {
-    return this.rebase(agentId, branchId, requestParameters, null);
-  }
-
-  /**
-   * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
-   *
-   * @param agentId String The id of an agent. This is returned on agent creation.
-   * @param branchId String Unique identifier for the source branch to merge from.
-   * @param requestParameters {@link RebaseBranchesRequest} Request Parameters Object
+   * @param requestParameters {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Parameters Object
    * @return response of {@code Object}
    */
   public Object rebase(
     String agentId,
     String branchId,
-    RebaseBranchesRequest requestParameters,
+    BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost requestParameters
+  ) {
+    return this.rebase(agentId, branchId, requestParameters, null);
+  }
+
+  /**
+   * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
+   *
+   * @param agentId String The id of an agent. This is returned on agent creation.
+   * @param branchId String Unique identifier for the source branch to merge from.
+   * @param requestParameters {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Parameters Object
+   * @return response of {@code Object}
+   */
+  public Object rebase(
+    String agentId,
+    String branchId,
+    BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost requestParameters,
     RequestOptions requestOptions
   ) {
     return withRawResponse().rebase(agentId, branchId, requestParameters, requestOptions).getData();
@@ -812,12 +789,12 @@ public class BranchesClient {
   private Request buildRebaseRequest(
     String agentId,
     String branchId,
-    RebaseBranchesRequest requestParameters,
+    BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost requestParameters,
     RequestConfig resolvedConfig
   ) {
-    RequestBuilder builder = new RequestBuilder(
+    return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/branches/{branch_id}/rebase"
     )
       .setHeader("Accept", "application/json")
@@ -827,11 +804,9 @@ public class BranchesClient {
       .setOptionalQueryParameter(
         "source_branch_id",
         requestParameters.getSourceBranchId().orElse(null)
-      );
-    if (requestParameters.getBody().orElse(null) != null) {
-      builder.setJsonContent(requestParameters.getBody().orElse(null));
-    }
-    return builder.build();
+      )
+      .setJsonContent(requestParameters)
+      .build();
   }
 
   /**
@@ -1129,7 +1104,7 @@ public class BranchesClient {
     }
 
     /**
-     * Returns the result of merging the source branch into the target branch without performing the merge. Useful for showing an accurate diff before confirming.
+     * Returns the result of merging the source branch into the target branch without performing the merge. When <code>conflicts</code> is not empty, the merge itself is rejected unless <code>conflict_resolutions</code> settles every conflict or <code>force</code> is set; until then the returned configuration shows one side of each conflict only as a placeholder.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -1145,7 +1120,7 @@ public class BranchesClient {
     }
 
     /**
-     * Returns the result of merging the source branch into the target branch without performing the merge. Useful for showing an accurate diff before confirming.
+     * Returns the result of merging the source branch into the target branch without performing the merge. When <code>conflicts</code> is not empty, the merge itself is rejected unless <code>conflict_resolutions</code> settles every conflict or <code>force</code> is set; until then the returned configuration shows one side of each conflict only as a placeholder.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -1181,7 +1156,7 @@ public class BranchesClient {
     }
 
     /**
-     * Merge a branch into a target branch
+     * Merge a branch into a target branch. If both branches changed the same field, the merge returns 409 unless <code>conflict_resolutions</code> settles every conflict the merge preview reports, or <code>force</code> is set.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -1197,7 +1172,7 @@ public class BranchesClient {
     }
 
     /**
-     * Merge a branch into a target branch
+     * Merge a branch into a target branch. If both branches changed the same field, the merge returns 409 unless <code>conflict_resolutions</code> settles every conflict the merge preview reports, or <code>force</code> is set.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param sourceBranchId String Unique identifier for the source branch to merge from.
@@ -1233,7 +1208,7 @@ public class BranchesClient {
     }
 
     /**
-     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
@@ -1247,7 +1222,7 @@ public class BranchesClient {
     }
 
     /**
-     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
@@ -1267,7 +1242,7 @@ public class BranchesClient {
     }
 
     /**
-     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
@@ -1283,7 +1258,7 @@ public class BranchesClient {
     }
 
     /**
-     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+     * Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When <code>conflicts</code> is not empty, the rebase itself is rejected unless <code>conflict_resolutions</code> settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
@@ -1319,18 +1294,22 @@ public class BranchesClient {
     }
 
     /**
-     * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+     * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
      * @return response of {@code ElevenlabsApiHttpResponse<Object>}
      */
     public ElevenlabsApiHttpResponse<Object> rebase(String agentId, String branchId) {
-      return this.rebase(agentId, branchId, RebaseBranchesRequest.builder().build());
+      return this.rebase(
+          agentId,
+          branchId,
+          BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder().build()
+        );
     }
 
     /**
-     * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+     * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
@@ -1344,77 +1323,40 @@ public class BranchesClient {
       return this.rebase(
           agentId,
           branchId,
-          RebaseBranchesRequest.builder().build(),
+          BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder()
+            .build(),
           requestOptions
         );
     }
 
     /**
-     * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+     * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
-     * @param body {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Body
+     * @param requestParameters {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Parameters Object
      * @return response of {@code ElevenlabsApiHttpResponse<Object>}
      */
     public ElevenlabsApiHttpResponse<Object> rebase(
       String agentId,
       String branchId,
-      BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost body
-    ) {
-      return this.rebase(agentId, branchId, RebaseBranchesRequest.builder().body(body).build());
-    }
-
-    /**
-     * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
-     *
-     * @param agentId String The id of an agent. This is returned on agent creation.
-     * @param branchId String Unique identifier for the source branch to merge from.
-     * @param body {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Body
-     * @return response of {@code ElevenlabsApiHttpResponse<Object>}
-     */
-    public ElevenlabsApiHttpResponse<Object> rebase(
-      String agentId,
-      String branchId,
-      BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost body,
-      RequestOptions requestOptions
-    ) {
-      return this.rebase(
-          agentId,
-          branchId,
-          RebaseBranchesRequest.builder().body(body).build(),
-          requestOptions
-        );
-    }
-
-    /**
-     * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
-     *
-     * @param agentId String The id of an agent. This is returned on agent creation.
-     * @param branchId String Unique identifier for the source branch to merge from.
-     * @param requestParameters {@link RebaseBranchesRequest} Request Parameters Object
-     * @return response of {@code ElevenlabsApiHttpResponse<Object>}
-     */
-    public ElevenlabsApiHttpResponse<Object> rebase(
-      String agentId,
-      String branchId,
-      RebaseBranchesRequest requestParameters
+      BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost requestParameters
     ) {
       return this.rebase(agentId, branchId, requestParameters, null);
     }
 
     /**
-     * Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+     * Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless <code>conflict_resolutions</code> settles every conflict the rebase preview reports.
      *
      * @param agentId String The id of an agent. This is returned on agent creation.
      * @param branchId String Unique identifier for the source branch to merge from.
-     * @param requestParameters {@link RebaseBranchesRequest} Request Parameters Object
+     * @param requestParameters {@link BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost} Request Parameters Object
      * @return response of {@code ElevenlabsApiHttpResponse<Object>}
      */
     public ElevenlabsApiHttpResponse<Object> rebase(
       String agentId,
       String branchId,
-      RebaseBranchesRequest requestParameters,
+      BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost requestParameters,
       RequestOptions requestOptions
     ) {
       RequestConfig resolvedConfig = getResolvedConfig(

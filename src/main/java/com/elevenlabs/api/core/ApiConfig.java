@@ -30,6 +30,8 @@ public class ApiConfig {
   @Setter
   private String baseUrl;
 
+  private Environment environment;
+
   @NonNull
   @Builder.Default
   private RetryConfig retryConfig = RetryConfig.builder().build();
@@ -69,6 +71,7 @@ public class ApiConfig {
   private LogConfig logConfig = LogConfig.builder().build();
 
   public void setEnvironment(Environment environment) {
-    this.baseUrl = environment.getUrl();
+    this.environment = environment;
+    this.baseUrl = null;
   }
 }

@@ -7,7 +7,6 @@ import com.elevenlabs.api.core.ModelConverter;
 import com.elevenlabs.api.core.Nullable;
 import com.elevenlabs.api.core.NullableNonemptyFilter;
 import com.elevenlabs.api.resources.texttodialogue.types.BodyTextToDialogueMultiVoiceV1TextToDialoguePostApplyTextNormalization;
-import com.elevenlabs.api.resources.texttodialogue.types.ConvertTextToDialogueRequestOutputFormat;
 import com.elevenlabs.api.types.DialogueInput;
 import com.elevenlabs.api.types.EffectsSpecInput;
 import com.elevenlabs.api.types.PronunciationDictionaryVersionLocatorRequestModel;
@@ -32,7 +31,7 @@ import java.util.Optional;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public final class BodyTextToDialogueMultiVoiceV1TextToDialoguePost {
 
-  private final Optional<ConvertTextToDialogueRequestOutputFormat> outputFormat;
+  private final Optional<String> outputFormat;
   private final Optional<Boolean> enableLogging;
   private final List<DialogueInput> inputs;
   private final Optional<String> modelId;
@@ -76,7 +75,7 @@ public final class BodyTextToDialogueMultiVoiceV1TextToDialoguePost {
    * @return Output format of the generated audio. Formatted as codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at 32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate requires you to be subscribed to Creator tier or above. PCM and WAV formats with 44.1kHz sample rate requires you to be subscribed to Pro tier or above. Note that the μ-law format (sometimes written mu-law, often approximated as u-law) is commonly used for Twilio audio inputs.
    */
   @JsonIgnore
-  public Optional<ConvertTextToDialogueRequestOutputFormat> getOutputFormat() {
+  public Optional<String> getOutputFormat() {
     return outputFormat == null ? Optional.empty() : outputFormat;
   }
 
@@ -317,7 +316,7 @@ public final class BodyTextToDialogueMultiVoiceV1TextToDialoguePost {
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class Builder {
 
-    private Optional<ConvertTextToDialogueRequestOutputFormat> outputFormat = Optional.empty();
+    private Optional<String> outputFormat = Optional.empty();
     private Optional<Boolean> enableLogging = Optional.empty();
     private List<DialogueInput> inputs = new ArrayList<>();
     private Optional<String> modelId = Optional.empty();
@@ -362,17 +361,17 @@ public final class BodyTextToDialogueMultiVoiceV1TextToDialoguePost {
     }
 
     @JsonSetter(value = "output_format", nulls = Nulls.SKIP)
-    public Builder outputFormat(Optional<ConvertTextToDialogueRequestOutputFormat> outputFormat) {
+    public Builder outputFormat(Optional<String> outputFormat) {
       this.outputFormat = outputFormat;
       return this;
     }
 
-    public Builder outputFormat(ConvertTextToDialogueRequestOutputFormat outputFormat) {
+    public Builder outputFormat(String outputFormat) {
       this.outputFormat = Optional.ofNullable(outputFormat);
       return this;
     }
 
-    public Builder outputFormat(Nullable<ConvertTextToDialogueRequestOutputFormat> outputFormat) {
+    public Builder outputFormat(Nullable<String> outputFormat) {
       if (outputFormat.isNull()) {
         this.outputFormat = null;
       } else if (outputFormat.isEmpty()) {

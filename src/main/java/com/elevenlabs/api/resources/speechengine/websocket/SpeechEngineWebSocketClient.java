@@ -3,8 +3,10 @@
  */
 package com.elevenlabs.api.resources.speechengine.websocket;
 
+import com.elevenlabs.api.core.ApiConfig;
 import com.elevenlabs.api.core.ClientOptions;
 import com.elevenlabs.api.core.DisconnectReason;
+import com.elevenlabs.api.core.Environment;
 import com.elevenlabs.api.core.ObjectMappers;
 import com.elevenlabs.api.core.ReconnectingWebSocketListener;
 import com.elevenlabs.api.core.RequestOptions;
@@ -30,6 +32,8 @@ public class SpeechEngineWebSocketClient implements AutoCloseable {
 
   protected final ClientOptions clientOptions;
 
+  private final ApiConfig config;
+
   private final ObjectMapper objectMapper;
 
   private final OkHttpClient okHttpClient;
@@ -53,9 +57,31 @@ public class SpeechEngineWebSocketClient implements AutoCloseable {
   private volatile Consumer<ReceiveUpstreamMessage> subscribeHandler;
 
   public SpeechEngineWebSocketClient(ClientOptions clientOptions) {
+    this(clientOptions, null);
+  }
+
+  /**
+   * Builds the client against the SDK configuration its parent client shares, so an environment or
+   * base URL set on the root client after construction reaches this channel too.
+   */
+  public SpeechEngineWebSocketClient(ClientOptions clientOptions, ApiConfig config) {
     this.clientOptions = clientOptions;
+    this.config = config;
     this.objectMapper = ObjectMappers.JSON_MAPPER;
     this.okHttpClient = clientOptions.httpClient();
+  }
+
+  private String resolveBaseUrl() {
+    if (config != null && config.getBaseUrl() != null) {
+      return config.getBaseUrl();
+    }
+    if (clientOptions.baseUrl() != null) {
+      return clientOptions.baseUrl();
+    }
+    Environment environment = config != null && config.getEnvironment() != null
+      ? config.getEnvironment()
+      : clientOptions.environment();
+    return environment.getBaseURL();
   }
 
   public CompletableFuture<Void> upstream(RequestOptions requestOptions) {
@@ -68,9 +94,7 @@ public class SpeechEngineWebSocketClient implements AutoCloseable {
     }
     final CompletableFuture<Void> future = new CompletableFuture<>();
     connectionFuture = future;
-    String baseUrl = clientOptions.baseUrl() != null
-      ? clientOptions.baseUrl()
-      : clientOptions.environment().getUrl();
+    String baseUrl = resolveBaseUrl();
     StringBuilder pathBuilder = new StringBuilder();
     pathBuilder.append("/speech-engine/upstream");
     String fullPath = pathBuilder.toString();

@@ -54,6 +54,7 @@ import com.elevenlabs.api.resources.agents.triagetickets.TriageTicketsClient;
 import com.elevenlabs.api.resources.agents.twilio.TwilioClient;
 import com.elevenlabs.api.resources.agents.users.UsersClient;
 import com.elevenlabs.api.resources.agents.versions.VersionsClient;
+import com.elevenlabs.api.resources.agents.websocket.AgentsWebSocketClient;
 import com.elevenlabs.api.resources.agents.whatsapp.WhatsappClient;
 import com.elevenlabs.api.resources.agents.whatsappaccounts.WhatsappAccountsClient;
 import com.elevenlabs.api.resources.agents.widget.WidgetClient;
@@ -195,8 +196,11 @@ public class AgentsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -392,6 +396,11 @@ public class AgentsClient {
     return this.realtimeClient;
   }
 
+  /** Creates a new WebSocket client for the v1_convai_conversation channel. */
+  public AgentsWebSocketClient agentsWebSocket() {
+    return new AgentsWebSocketClient(clientOptions, config);
+  }
+
   /**
    * Sets method-level configuration for {@code create}.
    * Method-level overrides take precedence over service-level configuration but are
@@ -553,7 +562,7 @@ public class AgentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/create"
     )
       .setHeader("Accept", "application/json")
@@ -619,7 +628,7 @@ public class AgentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}"
     )
       .setHeader("Accept", "application/json")
@@ -687,7 +696,7 @@ public class AgentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}"
     )
       .setHeader("Accept", "application/json")
@@ -759,7 +768,7 @@ public class AgentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}"
     )
       .setPathParameter("agent_id", agentId)
@@ -815,7 +824,7 @@ public class AgentsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents"
     )
       .setHeader("Accept", "application/json")
@@ -913,7 +922,7 @@ public class AgentsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/duplicate"
     )
       .setHeader("Accept", "application/json")
@@ -961,7 +970,7 @@ public class AgentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/agents/{agent_id}/run-tests"
     )
       .setHeader("Accept", "application/json")
@@ -992,7 +1001,7 @@ public class AgentsClient {
   private Request buildRagIndexOverviewRequest(RequestConfig resolvedConfig) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/rag-index"
     )
       .setHeader("Accept", "application/json")
@@ -1068,7 +1077,7 @@ public class AgentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}/rag-index"
     )
       .setHeader("Accept", "application/json")
@@ -1158,7 +1167,7 @@ public class AgentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}/rag-index/{rag_index_id}"
     )
       .setHeader("Accept", "application/json")

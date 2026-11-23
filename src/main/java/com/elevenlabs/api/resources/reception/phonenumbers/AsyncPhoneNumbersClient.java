@@ -80,8 +80,11 @@ public class AsyncPhoneNumbersClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -192,7 +195,7 @@ public class AsyncPhoneNumbersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/phone-numbers/assignments"
     )
       .setHeader("Accept", "application/json")
@@ -234,7 +237,7 @@ public class AsyncPhoneNumbersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/phone-numbers/assignments"
     )
       .setHeader("Accept", "application/json")
@@ -282,7 +285,7 @@ public class AsyncPhoneNumbersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/phone-numbers/assignments/{phone_assignment_id}"
     )
       .setHeader("Accept", "application/json")
@@ -331,7 +334,7 @@ public class AsyncPhoneNumbersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/phone-numbers/assignments/{phone_assignment_id}"
     )
       .setPathParameter("phone_assignment_id", phoneAssignmentId)

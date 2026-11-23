@@ -99,8 +99,11 @@ public class AsyncSpeechToTextClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -133,7 +136,7 @@ public class AsyncSpeechToTextClient {
 
   /** Creates a new WebSocket client for the v1_speech-to-text_realtime channel. */
   public SpeechToTextWebSocketClient speechToTextWebSocket() {
-    return new SpeechToTextWebSocketClient(clientOptions);
+    return new SpeechToTextWebSocketClient(clientOptions, config);
   }
 
   /**
@@ -849,7 +852,7 @@ public class AsyncSpeechToTextClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/speech-to-text"
     )
       .setHeader("Accept", "application/json")

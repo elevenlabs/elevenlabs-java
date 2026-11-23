@@ -16,7 +16,7 @@ import com.elevenlabs.api.core.RequestOptions;
 import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.resources.reception.workspaces.requests.CompleteOnboardingWorkspacesRequest;
 import com.elevenlabs.api.resources.reception.workspaces.requests.ListWorkspacesRequest;
-import com.elevenlabs.api.resources.reception.workspaces.requests.ProvisionResellerWorkspaceRequest;
+import com.elevenlabs.api.resources.reception.workspaces.requests.ReceptionProvisionResellerWorkspaceRequest;
 import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.ProvisionResellerWorkspaceResponse;
 import com.elevenlabs.api.types.ResellerWorkspaceOnboardingResponse;
@@ -79,8 +79,11 @@ public class AsyncWorkspacesClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -196,7 +199,7 @@ public class AsyncWorkspacesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces"
     )
       .setHeader("Accept", "application/json")
@@ -209,42 +212,42 @@ public class AsyncWorkspacesClient {
   /**
    * Create a workspace for one of your customers, optionally with a tier, a phone number and team invites.
    *
-   * @param provisionResellerWorkspaceRequest {@link ProvisionResellerWorkspaceRequest} Request Body
+   * @param receptionProvisionResellerWorkspaceRequest {@link ReceptionProvisionResellerWorkspaceRequest} Request Body
    * @return response of {@code CompletableFuture<ProvisionResellerWorkspaceResponse>}
    */
   public CompletableFuture<ProvisionResellerWorkspaceResponse> create(
-    ProvisionResellerWorkspaceRequest provisionResellerWorkspaceRequest
+    ReceptionProvisionResellerWorkspaceRequest receptionProvisionResellerWorkspaceRequest
   ) {
-    return this.create(provisionResellerWorkspaceRequest, null);
+    return this.create(receptionProvisionResellerWorkspaceRequest, null);
   }
 
   /**
    * Create a workspace for one of your customers, optionally with a tier, a phone number and team invites.
    *
-   * @param provisionResellerWorkspaceRequest {@link ProvisionResellerWorkspaceRequest} Request Body
+   * @param receptionProvisionResellerWorkspaceRequest {@link ReceptionProvisionResellerWorkspaceRequest} Request Body
    * @return response of {@code CompletableFuture<ProvisionResellerWorkspaceResponse>}
    */
   public CompletableFuture<ProvisionResellerWorkspaceResponse> create(
-    ProvisionResellerWorkspaceRequest provisionResellerWorkspaceRequest,
+    ReceptionProvisionResellerWorkspaceRequest receptionProvisionResellerWorkspaceRequest,
     RequestOptions requestOptions
   ) {
     return withRawResponse()
-      .create(provisionResellerWorkspaceRequest, requestOptions)
+      .create(receptionProvisionResellerWorkspaceRequest, requestOptions)
       .thenApply(response -> response.getData());
   }
 
   private Request buildCreateRequest(
-    ProvisionResellerWorkspaceRequest provisionResellerWorkspaceRequest,
+    ReceptionProvisionResellerWorkspaceRequest receptionProvisionResellerWorkspaceRequest,
     RequestConfig resolvedConfig
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces"
     )
       .setHeader("Accept", "application/json")
       .applyRequestConfig(resolvedConfig)
-      .setJsonContent(provisionResellerWorkspaceRequest)
+      .setJsonContent(receptionProvisionResellerWorkspaceRequest)
       .build();
   }
 
@@ -318,7 +321,7 @@ public class AsyncWorkspacesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces/{workspace_id}/complete-onboarding"
     )
       .setHeader("Accept", "application/json")
@@ -407,23 +410,23 @@ public class AsyncWorkspacesClient {
     /**
      * Create a workspace for one of your customers, optionally with a tier, a phone number and team invites.
      *
-     * @param provisionResellerWorkspaceRequest {@link ProvisionResellerWorkspaceRequest} Request Body
+     * @param receptionProvisionResellerWorkspaceRequest {@link ReceptionProvisionResellerWorkspaceRequest} Request Body
      * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>>}
      */
     public CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>> create(
-      ProvisionResellerWorkspaceRequest provisionResellerWorkspaceRequest
+      ReceptionProvisionResellerWorkspaceRequest receptionProvisionResellerWorkspaceRequest
     ) {
-      return this.create(provisionResellerWorkspaceRequest, null);
+      return this.create(receptionProvisionResellerWorkspaceRequest, null);
     }
 
     /**
      * Create a workspace for one of your customers, optionally with a tier, a phone number and team invites.
      *
-     * @param provisionResellerWorkspaceRequest {@link ProvisionResellerWorkspaceRequest} Request Body
+     * @param receptionProvisionResellerWorkspaceRequest {@link ReceptionProvisionResellerWorkspaceRequest} Request Body
      * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>>}
      */
     public CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>> create(
-      ProvisionResellerWorkspaceRequest provisionResellerWorkspaceRequest,
+      ReceptionProvisionResellerWorkspaceRequest receptionProvisionResellerWorkspaceRequest,
       RequestOptions requestOptions
     ) {
       RequestConfig resolvedConfig = getResolvedConfig(
@@ -433,7 +436,10 @@ public class AsyncWorkspacesClient {
       addErrorMapping(422, HttpValidationError.class, (message, code, body, rawResponse) ->
         new UnprocessableEntityError((HttpValidationError) body, rawResponse)
       );
-      Request request = buildCreateRequest(provisionResellerWorkspaceRequest, resolvedConfig);
+      Request request = buildCreateRequest(
+        receptionProvisionResellerWorkspaceRequest,
+        resolvedConfig
+      );
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
       return futureResponse.thenApplyAsync(response -> {
         byte[] bodyBytes = ModelConverter.readBytes(response);

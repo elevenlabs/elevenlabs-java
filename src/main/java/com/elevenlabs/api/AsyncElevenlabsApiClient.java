@@ -407,7 +407,7 @@ public class AsyncElevenlabsApiClient implements AutoCloseable {
    * @param environment The environment to use (e.g., DEFAULT, PRODUCTION, STAGING)
    */
   public void setEnvironment(Environment environment) {
-    setBaseUrl(environment.getUrl());
+    this.config.setEnvironment(environment);
   }
 
   /**

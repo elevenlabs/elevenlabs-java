@@ -3,34 +3,247 @@
  */
 package com.elevenlabs.api.core;
 
-import lombok.Getter;
-
 /**
- * Predefined environment configurations for the SDK, or a custom base URL.
+ * Predefined environment configurations for the SDK, or a custom set of base URLs.
+ *
+ * This API declares a URL per name rather than a single one, so each environment holds all of them
+ * and exposes one accessor per name.
  */
-@Getter
 public final class Environment {
 
-  public static final Environment DEFAULT = new Environment("https://api.elevenlabs.io/");
-  public static final Environment PRODUCTION = new Environment("https://api.elevenlabs.io/");
-  public static final Environment PRODUCTION_US = new Environment("https://api.us.elevenlabs.io/");
+  public static final Environment DEFAULT = new Environment(
+    "https://api.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
+  public static final Environment PRODUCTION = new Environment(
+    "https://api.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
+  public static final Environment PRODUCTION_US = new Environment(
+    "https://api.us.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
   public static final Environment PRODUCTION_EU = new Environment(
-    "https://api.eu.residency.elevenlabs.io"
+    "https://api.eu.residency.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
   );
   public static final Environment PRODUCTION_INDIA = new Environment(
-    "https://api.in.residency.elevenlabs.io"
+    "https://api.in.residency.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
   );
   public static final Environment PRODUCTION_SINGAPORE = new Environment(
-    "https://api.sg.residency.elevenlabs.io"
+    "https://api.sg.residency.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
+  public static final Environment API = new Environment(
+    "wss://api.elevenlabs.io",
+    "https://api.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
+  public static final Environment PRODUCTION_ROUTED_ONLY_TO_THE_US_REGION = new Environment(
+    "wss://api.us.elevenlabs.io",
+    "https://api.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
+  public static final Environment API_EU = new Environment(
+    "wss://api.eu.residency.elevenlabs.io",
+    "https://api.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
+  public static final Environment API_IN = new Environment(
+    "wss://api.in.residency.elevenlabs.io",
+    "https://api.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
+  );
+  public static final Environment API_SG = new Environment(
+    "wss://api.sg.residency.elevenlabs.io",
+    "https://api.elevenlabs.io",
+    "wss://api.elevenlabs.io",
+    "wss://api.us.elevenlabs.io",
+    "wss://api.eu.residency.elevenlabs.io",
+    "wss://api.in.residency.elevenlabs.io",
+    "wss://api.sg.residency.elevenlabs.io"
   );
 
+  private final String base_;
+  private final String production;
+  private final String productionUs;
+  private final String productionEu;
+  private final String productionIndia;
+  private final String productionSingapore;
   private final String url;
 
-  private Environment(String url) {
+  Environment(
+    String base_,
+    String production,
+    String productionUs,
+    String productionEu,
+    String productionIndia,
+    String productionSingapore
+  ) {
+    this.base_ = base_;
+    this.production = production;
+    this.productionUs = productionUs;
+    this.productionEu = productionEu;
+    this.productionIndia = productionIndia;
+    this.productionSingapore = productionSingapore;
+    this.url = base_;
+  }
+
+  private Environment(
+    String url,
+    String base_,
+    String production,
+    String productionUs,
+    String productionEu,
+    String productionIndia,
+    String productionSingapore
+  ) {
+    this.base_ = base_;
+    this.production = production;
+    this.productionUs = productionUs;
+    this.productionEu = productionEu;
+    this.productionIndia = productionIndia;
+    this.productionSingapore = productionSingapore;
     this.url = url;
   }
 
+  /** This environment's base URL. */
+  public String getBaseURL() {
+    return this.base_;
+  }
+
+  /** This environment's Production URL. */
+  public String getProductionURL() {
+    return this.production;
+  }
+
+  /** This environment's Production-US URL. */
+  public String getProductionUsURL() {
+    return this.productionUs;
+  }
+
+  /** This environment's Production-EU URL. */
+  public String getProductionEuURL() {
+    return this.productionEu;
+  }
+
+  /** This environment's Production-India URL. */
+  public String getProductionIndiaURL() {
+    return this.productionIndia;
+  }
+
+  /** This environment's Production-Singapore URL. */
+  public String getProductionSingaporeURL() {
+    return this.productionSingapore;
+  }
+
+  /**
+   * The URL this environment resolves to when a caller does not ask for one by name: its
+   * base URL, or the single URL it was built with through {@link #custom(String)}.
+   */
+  public String getUrl() {
+    return this.url;
+  }
+
+  /** Builds an environment with a URL per name this API declares. */
+  public static Builder custom() {
+    return new Builder();
+  }
+
+  /** Builds an environment that uses one URL for every name this API declares. */
   public static Environment custom(String url) {
-    return new Environment(url);
+    return new Environment(url, url, url, url, url, url, url);
+  }
+
+  public static class Builder {
+
+    private String base_;
+    private String production;
+    private String productionUs;
+    private String productionEu;
+    private String productionIndia;
+    private String productionSingapore;
+
+    public Builder base_(String base_) {
+      this.base_ = base_;
+      return this;
+    }
+
+    public Builder production(String production) {
+      this.production = production;
+      return this;
+    }
+
+    public Builder productionUs(String productionUs) {
+      this.productionUs = productionUs;
+      return this;
+    }
+
+    public Builder productionEu(String productionEu) {
+      this.productionEu = productionEu;
+      return this;
+    }
+
+    public Builder productionIndia(String productionIndia) {
+      this.productionIndia = productionIndia;
+      return this;
+    }
+
+    public Builder productionSingapore(String productionSingapore) {
+      this.productionSingapore = productionSingapore;
+      return this;
+    }
+
+    public Environment build() {
+      return new Environment(
+        base_,
+        production,
+        productionUs,
+        productionEu,
+        productionIndia,
+        productionSingapore
+      );
+    }
   }
 }

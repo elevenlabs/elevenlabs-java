@@ -82,8 +82,11 @@ public class AsyncInvocationsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -227,7 +230,7 @@ public class AsyncInvocationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/test-invocations"
     )
       .setHeader("Accept", "application/json")
@@ -309,7 +312,7 @@ public class AsyncInvocationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/test-invocations/{test_invocation_id}"
     )
       .setHeader("Accept", "application/json")
@@ -356,7 +359,7 @@ public class AsyncInvocationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/test-invocations/{test_invocation_id}"
     )
       .setHeader("Accept", "application/json")
@@ -428,7 +431,7 @@ public class AsyncInvocationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/test-invocations/{test_invocation_id}/cancel"
     )
       .setPathParameter("test_invocation_id", testInvocationId)
@@ -474,7 +477,7 @@ public class AsyncInvocationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/test-invocations/{test_invocation_id}/resubmit"
     )
       .setHeader("Accept", "application/json")

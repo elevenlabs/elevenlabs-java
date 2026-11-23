@@ -772,12 +772,7 @@ class AgentsClientWireTest {
       RunAgentTestsRequestModel.builder()
         .name("test-value")
         .tests(java.util.List.of(SingleTestRunRequestModel.builder().testId("test-value").build()))
-        .agentConfigOverride(
-          AdhocAgentConfigOverrideForTestRequestModel.builder()
-            .conversationConfig(ConversationalConfig.builder().build())
-            .platformSettings(AgentPlatformSettingsRequestModel.builder().build())
-            .build()
-        )
+        .agentConfigOverride(AdhocAgentConfigOverrideForTestRequestModel.builder().build())
         .branchId("test-value")
         .repeatCount(1)
         .build()
@@ -830,12 +825,7 @@ class AgentsClientWireTest {
           .tests(
             java.util.List.of(SingleTestRunRequestModel.builder().testId("test-value").build())
           )
-          .agentConfigOverride(
-            AdhocAgentConfigOverrideForTestRequestModel.builder()
-              .conversationConfig(ConversationalConfig.builder().build())
-              .platformSettings(AgentPlatformSettingsRequestModel.builder().build())
-              .build()
-          )
+          .agentConfigOverride(AdhocAgentConfigOverrideForTestRequestModel.builder().build())
           .branchId("test-value")
           .repeatCount(1)
           .build()
@@ -871,12 +861,7 @@ class AgentsClientWireTest {
           .tests(
             java.util.List.of(SingleTestRunRequestModel.builder().testId("test-value").build())
           )
-          .agentConfigOverride(
-            AdhocAgentConfigOverrideForTestRequestModel.builder()
-              .conversationConfig(ConversationalConfig.builder().build())
-              .platformSettings(AgentPlatformSettingsRequestModel.builder().build())
-              .build()
-          )
+          .agentConfigOverride(AdhocAgentConfigOverrideForTestRequestModel.builder().build())
           .branchId("test-value")
           .repeatCount(1)
           .build()

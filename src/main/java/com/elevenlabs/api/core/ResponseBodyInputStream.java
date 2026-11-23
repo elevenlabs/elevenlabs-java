@@ -14,6 +14,8 @@ import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
 import okhttp3.ResponseBody;
+import okio.AsyncTimeout;
+import okio.Timeout;
 
 /**
  * A response stream that releases its underlying OkHttp response when closed. Closing it from a
@@ -29,7 +31,7 @@ public class ResponseBodyInputStream extends FilterInputStream {
   private volatile boolean closeRequested;
 
   public ResponseBodyInputStream(Response response) throws IOException {
-    super(requireBody(response).byteStream());
+    super(requireBody(endCallTimeout(response)).byteStream());
     this.response = response;
     CallHandle handle = response.request().tag(CallHandle.class);
     this.call = handle == null ? null : handle.call;
@@ -46,6 +48,21 @@ public class ResponseBodyInputStream extends FilterInputStream {
   private static final class CallHandle {
 
     private volatile Call call;
+  }
+
+  /**
+   * Ends the call timeout of a response whose body the caller reads at its own pace, so a slowly
+   * consumed stream is not cut off mid-body (SDK-2520). The client's read timeout still bounds
+   * each read.
+   */
+  public static Response endCallTimeout(Response response) {
+    CallHandle handle = response.request().tag(CallHandle.class);
+    Call call = handle == null ? null : handle.call;
+    Timeout timeout = call == null ? null : call.timeout();
+    if (timeout instanceof AsyncTimeout) {
+      ((AsyncTimeout) timeout).exit();
+    }
+    return response;
   }
 
   /**

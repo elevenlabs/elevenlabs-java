@@ -74,13 +74,13 @@ public final class WidgetStyles {
    * @return The base background color.
    */
   @JsonIgnore
-  public Optional<String> getBase_() {
+  public Optional<String> getBase() {
     return base_ == null ? Optional.empty() : base_;
   }
 
   @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
   @JsonProperty("base")
-  private Optional<String> _getBase_() {
+  private Optional<String> _getBase() {
     return base_;
   }
 
@@ -449,7 +449,7 @@ public final class WidgetStyles {
     private Builder() {}
 
     public Builder from(WidgetStyles other) {
-      base_(other.getBase_());
+      base_(other.getBase());
       baseHover(other.getBaseHover());
       baseActive(other.getBaseActive());
       baseBorder(other.getBaseBorder());

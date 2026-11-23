@@ -46,6 +46,6 @@ public class TranslationClient {
 
   /** Creates a new WebSocket client for the v1_translation_realtime channel. */
   public TranslationWebSocketClient translationWebSocket() {
-    return new TranslationWebSocketClient(clientOptions);
+    return new TranslationWebSocketClient(clientOptions, config);
   }
 }

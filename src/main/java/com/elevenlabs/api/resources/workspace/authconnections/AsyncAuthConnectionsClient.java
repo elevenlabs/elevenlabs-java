@@ -81,8 +81,11 @@ public class AsyncAuthConnectionsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -181,7 +184,7 @@ public class AsyncAuthConnectionsClient {
   private Request buildListRequest(RequestConfig resolvedConfig) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/auth-connections"
     )
       .setHeader("Accept", "application/json")
@@ -222,7 +225,7 @@ public class AsyncAuthConnectionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/auth-connections"
     )
       .setHeader("Accept", "application/json")
@@ -269,7 +272,7 @@ public class AsyncAuthConnectionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/auth-connections/{auth_connection_id}"
     )
       .setHeader("Accept", "application/json")
@@ -341,7 +344,7 @@ public class AsyncAuthConnectionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/workspace/auth-connections/{auth_connection_id}"
     )
       .setHeader("Accept", "application/json")

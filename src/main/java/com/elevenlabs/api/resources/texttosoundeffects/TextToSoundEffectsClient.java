@@ -73,8 +73,11 @@ public class TextToSoundEffectsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -142,24 +145,19 @@ public class TextToSoundEffectsClient {
     CreateSoundEffectRequest requestParameters,
     RequestConfig resolvedConfig
   ) {
-    RequestBuilder builder = new RequestBuilder(
+    return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/sound-generation"
     )
       .applyRequestConfig(resolvedConfig)
+      .setOptionalQueryParameter("output_format", requestParameters.getOutputFormat().orElse(null))
       .setOptionalQueryParameter(
         "enable_logging",
         requestParameters.getEnableLogging().orElse(null)
       )
-      .setJsonContent(requestParameters);
-    if (requestParameters.getOutputFormat().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "output_format",
-        requestParameters.getOutputFormat().orElse(null).toString()
-      );
-    }
-    return builder.build();
+      .setJsonContent(requestParameters)
+      .build();
   }
 
   /**

@@ -84,8 +84,11 @@ public class AsyncTextToSpeechClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -113,7 +116,7 @@ public class AsyncTextToSpeechClient {
 
   /** Creates a new WebSocket client for the v1_text-to-speech_voice_id_stream-input channel. */
   public TextToSpeechWebSocketClient textToSpeechWebSocket(String voiceId) {
-    return new TextToSpeechWebSocketClient(clientOptions, voiceId);
+    return new TextToSpeechWebSocketClient(clientOptions, config, voiceId);
   }
 
   /**
@@ -208,7 +211,7 @@ public class AsyncTextToSpeechClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-speech/{voice_id}"
     )
       .setPathParameter("voice_id", voiceId)
@@ -269,7 +272,7 @@ public class AsyncTextToSpeechClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-speech/{voice_id}/with-timestamps"
     )
       .setHeader("Accept", "application/json")
@@ -333,7 +336,7 @@ public class AsyncTextToSpeechClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-speech/{voice_id}/stream"
     )
       .setPathParameter("voice_id", voiceId)
@@ -398,7 +401,7 @@ public class AsyncTextToSpeechClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-speech/{voice_id}/stream/with-timestamps"
     )
       .setHeader("Accept", "application/json")

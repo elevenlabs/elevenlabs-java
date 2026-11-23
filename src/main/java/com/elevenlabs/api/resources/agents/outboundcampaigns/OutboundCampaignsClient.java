@@ -108,8 +108,11 @@ public class OutboundCampaignsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -332,7 +335,7 @@ public class OutboundCampaignsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns"
     )
       .setHeader("Accept", "application/json")
@@ -378,7 +381,7 @@ public class OutboundCampaignsClient {
   private Request buildPauseAllRequest(RequestConfig resolvedConfig) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/pause-all"
     )
       .setHeader("Accept", "application/json")
@@ -407,7 +410,7 @@ public class OutboundCampaignsClient {
   private Request buildStopAllRequest(RequestConfig resolvedConfig) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/stop-all"
     )
       .setHeader("Accept", "application/json")
@@ -444,7 +447,7 @@ public class OutboundCampaignsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/submit"
     )
       .setHeader("Accept", "application/json")
@@ -506,7 +509,7 @@ public class OutboundCampaignsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/{campaign_id}"
     )
       .setHeader("Accept", "application/json")
@@ -575,7 +578,7 @@ public class OutboundCampaignsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/{campaign_id}/progress"
     )
       .setHeader("Accept", "application/json")
@@ -652,7 +655,7 @@ public class OutboundCampaignsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/{campaign_id}/follow-up-requests"
     )
       .setHeader("Accept", "application/json")
@@ -717,7 +720,7 @@ public class OutboundCampaignsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/{campaign_id}/pause"
     )
       .setHeader("Accept", "application/json")
@@ -786,7 +789,7 @@ public class OutboundCampaignsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/{campaign_id}/resume"
     )
       .setHeader("Accept", "application/json")
@@ -848,7 +851,7 @@ public class OutboundCampaignsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/outbound-campaigns/campaigns/{campaign_id}/stop"
     )
       .setHeader("Accept", "application/json")

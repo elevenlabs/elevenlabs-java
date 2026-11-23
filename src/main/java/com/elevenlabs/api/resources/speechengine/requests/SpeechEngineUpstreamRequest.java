@@ -20,17 +20,17 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public final class SpeechEngineUpstreamRequest {
 
-  private final String xElevenLabsSpeechEngineAuthorization;
+  private final String elevenLabsSpeechEngineAuthorization;
   private final Map<String, Object> additionalProperties;
 
   private SpeechEngineUpstreamRequest(Builder builder) {
-    this.xElevenLabsSpeechEngineAuthorization = builder.xElevenLabsSpeechEngineAuthorization;
+    this.elevenLabsSpeechEngineAuthorization = builder.elevenLabsSpeechEngineAuthorization;
     this.additionalProperties = builder.additionalProperties;
   }
 
   @JsonIgnore
-  public String getXElevenLabsSpeechEngineAuthorization() {
-    return xElevenLabsSpeechEngineAuthorization;
+  public String getElevenLabsSpeechEngineAuthorization() {
+    return elevenLabsSpeechEngineAuthorization;
   }
 
   @JsonAnyGetter
@@ -44,14 +44,14 @@ public final class SpeechEngineUpstreamRequest {
     if (!(other instanceof SpeechEngineUpstreamRequest)) return false;
     SpeechEngineUpstreamRequest that = (SpeechEngineUpstreamRequest) other;
     return Objects.equals(
-      xElevenLabsSpeechEngineAuthorization,
-      that.xElevenLabsSpeechEngineAuthorization
+      elevenLabsSpeechEngineAuthorization,
+      that.elevenLabsSpeechEngineAuthorization
     );
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.xElevenLabsSpeechEngineAuthorization);
+    return Objects.hash(this.elevenLabsSpeechEngineAuthorization);
   }
 
   @java.lang.Override
@@ -59,13 +59,13 @@ public final class SpeechEngineUpstreamRequest {
     return ModelConverter.modelToJson(this);
   }
 
-  public static XElevenLabsSpeechEngineAuthorizationStage builder() {
+  public static ElevenLabsSpeechEngineAuthorizationStage builder() {
     return new Builder();
   }
 
-  public interface XElevenLabsSpeechEngineAuthorizationStage {
-    _FinalStage xElevenLabsSpeechEngineAuthorization(
-      @NotNull String xElevenLabsSpeechEngineAuthorization
+  public interface ElevenLabsSpeechEngineAuthorizationStage {
+    _FinalStage elevenLabsSpeechEngineAuthorization(
+      @NotNull String elevenLabsSpeechEngineAuthorization
     );
 
     Builder from(SpeechEngineUpstreamRequest other);
@@ -81,9 +81,9 @@ public final class SpeechEngineUpstreamRequest {
 
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class Builder
-    implements XElevenLabsSpeechEngineAuthorizationStage, _FinalStage {
+    implements ElevenLabsSpeechEngineAuthorizationStage, _FinalStage {
 
-    private String xElevenLabsSpeechEngineAuthorization;
+    private String elevenLabsSpeechEngineAuthorization;
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -91,18 +91,18 @@ public final class SpeechEngineUpstreamRequest {
     private Builder() {}
 
     public Builder from(SpeechEngineUpstreamRequest other) {
-      xElevenLabsSpeechEngineAuthorization(other.getXElevenLabsSpeechEngineAuthorization());
+      elevenLabsSpeechEngineAuthorization(other.getElevenLabsSpeechEngineAuthorization());
       return this;
     }
 
     @java.lang.Override
     @JsonSetter("X-ElevenLabs-Speech-Engine-Authorization")
-    public _FinalStage xElevenLabsSpeechEngineAuthorization(
-      @NotNull String xElevenLabsSpeechEngineAuthorization
+    public _FinalStage elevenLabsSpeechEngineAuthorization(
+      @NotNull String elevenLabsSpeechEngineAuthorization
     ) {
-      this.xElevenLabsSpeechEngineAuthorization = Objects.requireNonNull(
-        xElevenLabsSpeechEngineAuthorization,
-        "xElevenLabsSpeechEngineAuthorization must not be null"
+      this.elevenLabsSpeechEngineAuthorization = Objects.requireNonNull(
+        elevenLabsSpeechEngineAuthorization,
+        "elevenLabsSpeechEngineAuthorization must not be null"
       );
       return this;
     }

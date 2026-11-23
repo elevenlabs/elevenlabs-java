@@ -50,6 +50,6 @@ public class AsyncTextToDialogueMultiContextClient {
 
   /** Creates a new WebSocket client for the v1_text-to-dialogue_multi-stream-input channel. */
   public TextToDialogueMultiContextWebSocketClient textToDialogueMultiContextWebSocket() {
-    return new TextToDialogueMultiContextWebSocketClient(clientOptions);
+    return new TextToDialogueMultiContextWebSocketClient(clientOptions, config);
   }
 }

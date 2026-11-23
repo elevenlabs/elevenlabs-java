@@ -91,6 +91,8 @@ public final class ConversationInitiationSource {
     new ConversationInitiationSource(Value.INTERCOM_INTEGRATION, "intercom_integration");
   public static final ConversationInitiationSource FRESHDESK_INTEGRATION =
     new ConversationInitiationSource(Value.FRESHDESK_INTEGRATION, "freshdesk_integration");
+  public static final ConversationInitiationSource PLAIN_INTEGRATION =
+    new ConversationInitiationSource(Value.PLAIN_INTEGRATION, "plain_integration");
   public static final ConversationInitiationSource SALESFORCE_INTEGRATION =
     new ConversationInitiationSource(Value.SALESFORCE_INTEGRATION, "salesforce_integration");
   public static final ConversationInitiationSource TEMPLATE_PREVIEW =
@@ -185,6 +187,8 @@ public final class ConversationInitiationSource {
         return visitor.visitIntercomIntegration();
       case FRESHDESK_INTEGRATION:
         return visitor.visitFreshdeskIntegration();
+      case PLAIN_INTEGRATION:
+        return visitor.visitPlainIntegration();
       case SALESFORCE_INTEGRATION:
         return visitor.visitSalesforceIntegration();
       case TEMPLATE_PREVIEW:
@@ -253,6 +257,8 @@ public final class ConversationInitiationSource {
         return INTERCOM_INTEGRATION;
       case "freshdesk_integration":
         return FRESHDESK_INTEGRATION;
+      case "plain_integration":
+        return PLAIN_INTEGRATION;
       case "salesforce_integration":
         return SALESFORCE_INTEGRATION;
       case "template_preview":
@@ -292,6 +298,7 @@ public final class ConversationInitiationSource {
     TELEGRAM_INTEGRATION,
     INTERCOM_INTEGRATION,
     FRESHDESK_INTEGRATION,
+    PLAIN_INTEGRATION,
     SALESFORCE_INTEGRATION,
     TEMPLATE_PREVIEW,
     GENESYS_BOT_CONNECTOR,
@@ -324,6 +331,7 @@ public final class ConversationInitiationSource {
     T visitTelegramIntegration();
     T visitIntercomIntegration();
     T visitFreshdeskIntegration();
+    T visitPlainIntegration();
     T visitSalesforceIntegration();
     T visitTemplatePreview();
     T visitGenesysBotConnector();

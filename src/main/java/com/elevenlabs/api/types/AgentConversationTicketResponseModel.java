@@ -33,7 +33,7 @@ public final class AgentConversationTicketResponseModel {
   private final String agentId;
   private final boolean needsClustering;
   private final String title;
-  private final AgentConversationTicketIssueType issueType;
+  private final Optional<Object> issueType;
   private final List<String> labels;
   private final List<String> conversationIds;
   private final Integer firstSeenUnixSecs;
@@ -115,8 +115,17 @@ public final class AgentConversationTicketResponseModel {
     return title;
   }
 
+  /**
+   * @return Always null. Issue types are labels, written as <code>issue_type:&lt;value&gt;</code>.
+   */
+  @JsonIgnore
+  public Optional<Object> getIssueType() {
+    return issueType == null ? Optional.empty() : issueType;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
   @JsonProperty("issue_type")
-  public AgentConversationTicketIssueType getIssueType() {
+  private Optional<Object> _getIssueType() {
     return issueType;
   }
 
@@ -323,11 +332,7 @@ public final class AgentConversationTicketResponseModel {
   }
 
   public interface NeedsClusteringStage {
-    IssueTypeStage needsClustering(boolean needsClustering);
-  }
-
-  public interface IssueTypeStage {
-    StatusStage issueType(@NotNull AgentConversationTicketIssueType issueType);
+    StatusStage needsClustering(boolean needsClustering);
   }
 
   public interface StatusStage {
@@ -358,6 +363,12 @@ public final class AgentConversationTicketResponseModel {
     _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
     _FinalStage title(String title);
+
+    _FinalStage issueType(Optional<Object> issueType);
+
+    _FinalStage issueType(Object issueType);
+
+    _FinalStage issueType(Nullable<Object> issueType);
 
     _FinalStage labels(List<String> labels);
 
@@ -424,7 +435,6 @@ public final class AgentConversationTicketResponseModel {
       OwnerUserIdStage,
       AgentIdStage,
       NeedsClusteringStage,
-      IssueTypeStage,
       StatusStage,
       PriorityStage,
       SourceStage,
@@ -438,7 +448,7 @@ public final class AgentConversationTicketResponseModel {
     private String agentId;
     private boolean needsClustering;
     private String title;
-    private AgentConversationTicketIssueType issueType;
+    private Optional<Object> issueType = Optional.empty();
     private List<String> labels = new ArrayList<>();
     private List<String> conversationIds = new ArrayList<>();
     private Integer firstSeenUnixSecs;
@@ -523,15 +533,8 @@ public final class AgentConversationTicketResponseModel {
 
     @java.lang.Override
     @JsonSetter("needs_clustering")
-    public IssueTypeStage needsClustering(boolean needsClustering) {
+    public StatusStage needsClustering(boolean needsClustering) {
       this.needsClustering = needsClustering;
-      return this;
-    }
-
-    @java.lang.Override
-    @JsonSetter("issue_type")
-    public StatusStage issueType(@NotNull AgentConversationTicketIssueType issueType) {
-      this.issueType = Objects.requireNonNull(issueType, "issueType must not be null");
       return this;
     }
 
@@ -574,6 +577,31 @@ public final class AgentConversationTicketResponseModel {
     @JsonSetter("title")
     public _FinalStage title(String title) {
       this.title = title;
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "issue_type", nulls = Nulls.SKIP)
+    public _FinalStage issueType(Optional<Object> issueType) {
+      this.issueType = issueType;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage issueType(Object issueType) {
+      this.issueType = Optional.ofNullable(issueType);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage issueType(Nullable<Object> issueType) {
+      if (issueType.isNull()) {
+        this.issueType = null;
+      } else if (issueType.isEmpty()) {
+        this.issueType = Optional.empty();
+      } else {
+        this.issueType = Optional.of(issueType.get());
+      }
       return this;
     }
 

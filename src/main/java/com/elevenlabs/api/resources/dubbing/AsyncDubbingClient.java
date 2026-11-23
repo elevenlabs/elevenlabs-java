@@ -96,8 +96,11 @@ public class AsyncDubbingClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -140,7 +143,7 @@ public class AsyncDubbingClient {
 
   /** Creates a new WebSocket client for the v1_dubbing_live channel. */
   public DubbingWebSocketClient dubbingWebSocket() {
-    return new DubbingWebSocketClient(clientOptions);
+    return new DubbingWebSocketClient(clientOptions, config);
   }
 
   /**
@@ -246,7 +249,7 @@ public class AsyncDubbingClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing"
     )
       .setHeader("Accept", "application/json")
@@ -436,7 +439,7 @@ public class AsyncDubbingClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing"
     )
       .setHeader("Accept", "application/json")
@@ -506,7 +509,7 @@ public class AsyncDubbingClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing/{dubbing_id}"
     )
       .setHeader("Accept", "application/json")
@@ -576,7 +579,7 @@ public class AsyncDubbingClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing/{dubbing_id}"
     )
       .setHeader("Accept", "application/json")

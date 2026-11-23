@@ -92,8 +92,11 @@ public class AsyncChaptersClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -263,7 +266,7 @@ public class AsyncChaptersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/studio/projects/{project_id}/chapters"
     )
       .setHeader("Accept", "application/json")
@@ -310,7 +313,7 @@ public class AsyncChaptersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/studio/projects/{project_id}/chapters"
     )
       .setHeader("Accept", "application/json")
@@ -392,7 +395,7 @@ public class AsyncChaptersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/studio/projects/{project_id}/chapters/{chapter_id}"
     )
       .setHeader("Accept", "application/json")
@@ -490,7 +493,7 @@ public class AsyncChaptersClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/studio/projects/{project_id}/chapters/{chapter_id}"
     )
       .setHeader("Accept", "application/json")
@@ -577,7 +580,7 @@ public class AsyncChaptersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/studio/projects/{project_id}/chapters/{chapter_id}"
     )
       .setHeader("Accept", "application/json")
@@ -664,7 +667,7 @@ public class AsyncChaptersClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/studio/projects/{project_id}/chapters/{chapter_id}/convert"
     )
       .setHeader("Accept", "application/json")

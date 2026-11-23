@@ -7,6 +7,7 @@ import com.elevenlabs.api.core.HttpMethod;
 import java.net.ProtocolException;
 import java.net.SocketException;
 import java.net.SocketTimeoutException;
+import java.time.Duration;
 import java.util.Arrays;
 import java.util.Collections;
 import java.util.List;
@@ -26,10 +27,10 @@ public class RetryConfig {
   private int maxRetries = 3;
 
   @Builder.Default
-  private int initialDelay = 150;
+  private int initialDelay = 1000;
 
   @Builder.Default
-  private int maxDelay = 5000;
+  private int maxDelay = 60000;
 
   @Builder.Default
   private int maxRetryAfterDelay = 60000;
@@ -47,6 +48,13 @@ public class RetryConfig {
    */
   @Builder.Default
   private double jitterFactor = 0.2;
+
+  /**
+   * An explicit retry schedule (Fern's `retryDelays`): the n-th retry waits for the n-th duration and
+   * the count of retries is its size. Empty means the exponential backoff above is used.
+   */
+  @Builder.Default
+  private List<Duration> retryDelays = Collections.emptyList();
 
   @Builder.Default
   private List<Integer> statusCodesToRetry = Collections.emptyList();

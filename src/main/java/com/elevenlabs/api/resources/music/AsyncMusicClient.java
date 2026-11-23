@@ -27,7 +27,6 @@ import com.elevenlabs.api.resources.music.requests.BodyStreamComposedMusicWithAD
 import com.elevenlabs.api.resources.music.requests.BodyUploadMusicV1MusicUploadPost;
 import com.elevenlabs.api.resources.music.requests.SeparateStemsMusicRequest;
 import com.elevenlabs.api.resources.music.requests.VideoToMusicMusicRequest;
-import com.elevenlabs.api.resources.music.types.ComposeDetailedMusicResponse;
 import com.elevenlabs.api.resources.music.types.UploadMusicRequestExtractCompositionPlan;
 import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.MusicModelId;
@@ -100,8 +99,11 @@ public class AsyncMusicClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -372,7 +374,7 @@ public class AsyncMusicClient {
     }
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/music/video-to-music"
     )
       .applyRequestConfig(resolvedConfig)
@@ -443,7 +445,7 @@ public class AsyncMusicClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/music"
     )
       .applyRequestConfig(resolvedConfig)
@@ -464,9 +466,10 @@ public class AsyncMusicClient {
   /**
    * Compose a song from a prompt or a composition plan.
    *
-   * @return response of {@code CompletableFuture<ComposeDetailedMusicResponse>}
+   * @return response of {@code CompletableFuture<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public CompletableFuture<ComposeDetailedMusicResponse> composeDetailed() {
+  public CompletableFuture<InputStream> composeDetailed() {
     return this.composeDetailed(
         BodyComposeMusicWithADetailedResponseV1MusicDetailedPost.builder().build()
       );
@@ -475,11 +478,10 @@ public class AsyncMusicClient {
   /**
    * Compose a song from a prompt or a composition plan.
    *
-   * @return response of {@code CompletableFuture<ComposeDetailedMusicResponse>}
+   * @return response of {@code CompletableFuture<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public CompletableFuture<ComposeDetailedMusicResponse> composeDetailed(
-    RequestOptions requestOptions
-  ) {
+  public CompletableFuture<InputStream> composeDetailed(RequestOptions requestOptions) {
     return this.composeDetailed(
         BodyComposeMusicWithADetailedResponseV1MusicDetailedPost.builder().build(),
         requestOptions
@@ -490,9 +492,10 @@ public class AsyncMusicClient {
    * Compose a song from a prompt or a composition plan.
    *
    * @param requestParameters {@link BodyComposeMusicWithADetailedResponseV1MusicDetailedPost} Request Parameters Object
-   * @return response of {@code CompletableFuture<ComposeDetailedMusicResponse>}
+   * @return response of {@code CompletableFuture<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public CompletableFuture<ComposeDetailedMusicResponse> composeDetailed(
+  public CompletableFuture<InputStream> composeDetailed(
     BodyComposeMusicWithADetailedResponseV1MusicDetailedPost requestParameters
   ) {
     return this.composeDetailed(requestParameters, null);
@@ -502,9 +505,10 @@ public class AsyncMusicClient {
    * Compose a song from a prompt or a composition plan.
    *
    * @param requestParameters {@link BodyComposeMusicWithADetailedResponseV1MusicDetailedPost} Request Parameters Object
-   * @return response of {@code CompletableFuture<ComposeDetailedMusicResponse>}
+   * @return response of {@code CompletableFuture<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public CompletableFuture<ComposeDetailedMusicResponse> composeDetailed(
+  public CompletableFuture<InputStream> composeDetailed(
     BodyComposeMusicWithADetailedResponseV1MusicDetailedPost requestParameters,
     RequestOptions requestOptions
   ) {
@@ -519,7 +523,7 @@ public class AsyncMusicClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/music/detailed"
     )
       .applyRequestConfig(resolvedConfig)
@@ -593,7 +597,7 @@ public class AsyncMusicClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/music/detailed/stream"
     )
       .applyRequestConfig(resolvedConfig)
@@ -666,7 +670,7 @@ public class AsyncMusicClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/music/stream"
     )
       .applyRequestConfig(resolvedConfig)
@@ -841,7 +845,7 @@ public class AsyncMusicClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/music/upload"
     )
       .setHeader("Accept", "application/json")
@@ -924,7 +928,7 @@ public class AsyncMusicClient {
     }
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/music/stem-separation"
     )
       .applyRequestConfig(resolvedConfig)
@@ -1067,11 +1071,10 @@ public class AsyncMusicClient {
     /**
      * Compose a song from a prompt or a composition plan.
      *
-     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>>}
+     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<InputStream>>}
+     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
      */
-    public CompletableFuture<
-      ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>
-    > composeDetailed() {
+    public CompletableFuture<ElevenlabsApiHttpResponse<InputStream>> composeDetailed() {
       return this.composeDetailed(
           BodyComposeMusicWithADetailedResponseV1MusicDetailedPost.builder().build()
         );
@@ -1080,11 +1083,12 @@ public class AsyncMusicClient {
     /**
      * Compose a song from a prompt or a composition plan.
      *
-     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>>}
+     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<InputStream>>}
+     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
      */
-    public CompletableFuture<
-      ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>
-    > composeDetailed(RequestOptions requestOptions) {
+    public CompletableFuture<ElevenlabsApiHttpResponse<InputStream>> composeDetailed(
+      RequestOptions requestOptions
+    ) {
       return this.composeDetailed(
           BodyComposeMusicWithADetailedResponseV1MusicDetailedPost.builder().build(),
           requestOptions
@@ -1095,11 +1099,12 @@ public class AsyncMusicClient {
      * Compose a song from a prompt or a composition plan.
      *
      * @param requestParameters {@link BodyComposeMusicWithADetailedResponseV1MusicDetailedPost} Request Parameters Object
-     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>>}
+     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<InputStream>>}
+     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
      */
-    public CompletableFuture<
-      ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>
-    > composeDetailed(BodyComposeMusicWithADetailedResponseV1MusicDetailedPost requestParameters) {
+    public CompletableFuture<ElevenlabsApiHttpResponse<InputStream>> composeDetailed(
+      BodyComposeMusicWithADetailedResponseV1MusicDetailedPost requestParameters
+    ) {
       return this.composeDetailed(requestParameters, null);
     }
 
@@ -1107,11 +1112,10 @@ public class AsyncMusicClient {
      * Compose a song from a prompt or a composition plan.
      *
      * @param requestParameters {@link BodyComposeMusicWithADetailedResponseV1MusicDetailedPost} Request Parameters Object
-     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>>}
+     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<InputStream>>}
+     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
      */
-    public CompletableFuture<
-      ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>
-    > composeDetailed(
+    public CompletableFuture<ElevenlabsApiHttpResponse<InputStream>> composeDetailed(
       BodyComposeMusicWithADetailedResponseV1MusicDetailedPost requestParameters,
       RequestOptions requestOptions
     ) {
@@ -1125,11 +1129,10 @@ public class AsyncMusicClient {
       Request request = buildComposeDetailedRequest(requestParameters, resolvedConfig);
       CompletableFuture<Response> futureResponse = executeAsync(request, resolvedConfig);
       return futureResponse.thenApplyAsync(response -> {
-        byte[] bodyBytes = ModelConverter.readBytes(response);
         return new ElevenlabsApiHttpResponse<>(
           response,
-          bodyBytes,
-          ModelConverter.convert(bodyBytes, new TypeReference<ComposeDetailedMusicResponse>() {})
+          new byte[0],
+          ResponseBodyInputStream.of(response)
         );
       });
     }

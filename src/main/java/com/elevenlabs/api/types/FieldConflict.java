@@ -27,6 +27,8 @@ public final class FieldConflict {
   private final Optional<Object> baseValue;
   private final Optional<Object> sourceValue;
   private final Optional<Object> targetValue;
+  private final Optional<String> id;
+  private final Optional<Boolean> acceptsCustomValue;
   private final Map<String, Object> additionalProperties;
 
   private FieldConflict(Builder builder) {
@@ -35,6 +37,8 @@ public final class FieldConflict {
     this.baseValue = builder.baseValue;
     this.sourceValue = builder.sourceValue;
     this.targetValue = builder.targetValue;
+    this.id = builder.id;
+    this.acceptsCustomValue = builder.acceptsCustomValue;
     this.additionalProperties = builder.additionalProperties;
   }
 
@@ -75,6 +79,22 @@ public final class FieldConflict {
     return targetValue;
   }
 
+  /**
+   * @return Stable identifier of this conflict within a merge.
+   */
+  @JsonProperty("id")
+  public Optional<String> getId() {
+    return id;
+  }
+
+  /**
+   * @return Whether a resolution of this conflict may use <code>custom</code> with a <code>custom_value</code> instead of keeping a side.
+   */
+  @JsonProperty("accepts_custom_value")
+  public Optional<Boolean> getAcceptsCustomValue() {
+    return acceptsCustomValue;
+  }
+
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() {
     return this.additionalProperties;
@@ -90,7 +110,9 @@ public final class FieldConflict {
       Objects.equals(section, that.section) &&
       Objects.equals(baseValue, that.baseValue) &&
       Objects.equals(sourceValue, that.sourceValue) &&
-      Objects.equals(targetValue, that.targetValue)
+      Objects.equals(targetValue, that.targetValue) &&
+      Objects.equals(id, that.id) &&
+      Objects.equals(acceptsCustomValue, that.acceptsCustomValue)
     );
   }
 
@@ -101,7 +123,9 @@ public final class FieldConflict {
       this.section,
       this.baseValue,
       this.sourceValue,
-      this.targetValue
+      this.targetValue,
+      this.id,
+      this.acceptsCustomValue
     );
   }
 
@@ -145,6 +169,14 @@ public final class FieldConflict {
     _FinalStage targetValue(Optional<Object> targetValue);
 
     _FinalStage targetValue(Object targetValue);
+
+    _FinalStage id(Optional<String> id);
+
+    _FinalStage id(String id);
+
+    _FinalStage acceptsCustomValue(Optional<Boolean> acceptsCustomValue);
+
+    _FinalStage acceptsCustomValue(Boolean acceptsCustomValue);
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
@@ -155,6 +187,8 @@ public final class FieldConflict {
     private Optional<Object> baseValue = Optional.empty();
     private Optional<Object> sourceValue = Optional.empty();
     private Optional<Object> targetValue = Optional.empty();
+    private Optional<String> id = Optional.empty();
+    private Optional<Boolean> acceptsCustomValue = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -167,6 +201,8 @@ public final class FieldConflict {
       baseValue(other.getBaseValue());
       sourceValue(other.getSourceValue());
       targetValue(other.getTargetValue());
+      id(other.getId());
+      acceptsCustomValue(other.getAcceptsCustomValue());
       return this;
     }
 
@@ -220,6 +256,32 @@ public final class FieldConflict {
     @java.lang.Override
     public _FinalStage targetValue(Object targetValue) {
       this.targetValue = Optional.ofNullable(targetValue);
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "id", nulls = Nulls.SKIP)
+    public _FinalStage id(Optional<String> id) {
+      this.id = id;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage id(String id) {
+      this.id = Optional.ofNullable(id);
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "accepts_custom_value", nulls = Nulls.SKIP)
+    public _FinalStage acceptsCustomValue(Optional<Boolean> acceptsCustomValue) {
+      this.acceptsCustomValue = acceptsCustomValue;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage acceptsCustomValue(Boolean acceptsCustomValue) {
+      this.acceptsCustomValue = Optional.ofNullable(acceptsCustomValue);
       return this;
     }
 

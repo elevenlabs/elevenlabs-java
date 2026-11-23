@@ -34,6 +34,7 @@ class AlertingSettingsResponseTest {
         )
       )
       .autoResolveAfterInactiveMinutes(1)
+      .environments(java.util.List.of("test-value"))
       .notifiers(
         java.util.List.of(
           AlertingSettingsResponseNotifiersItem.webhook(
@@ -54,6 +55,7 @@ class AlertingSettingsResponseTest {
   void roundTrips_omit_monitorConfigs() throws Exception {
     AlertingSettingsResponse value = AlertingSettingsResponse.builder()
       .autoResolveAfterInactiveMinutes(1)
+      .environments(java.util.List.of("test-value"))
       .notifiers(
         java.util.List.of(
           AlertingSettingsResponseNotifiersItem.webhook(
@@ -88,6 +90,7 @@ class AlertingSettingsResponseTest {
             .build()
         )
       )
+      .environments(java.util.List.of("test-value"))
       .notifiers(
         java.util.List.of(
           AlertingSettingsResponseNotifiersItem.webhook(
@@ -123,6 +126,78 @@ class AlertingSettingsResponseTest {
         )
       )
       .autoResolveAfterInactiveMinutes((Integer) null)
+      .environments(java.util.List.of("test-value"))
+      .notifiers(
+        java.util.List.of(
+          AlertingSettingsResponseNotifiersItem.webhook(
+            AlertingWebhookNotifierResponse.builder().webhookId("test-value").build()
+          )
+        )
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    AlertingSettingsResponse roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      AlertingSettingsResponse.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_environments() throws Exception {
+    AlertingSettingsResponse value = AlertingSettingsResponse.builder()
+      .monitorConfigs(
+        java.util.Map.of(
+          "key",
+          AlertingMonitorConfig.builder()
+            .enabled(true)
+            .threshold(0d)
+            .relativeIncreaseThreshold(0d)
+            .minFailureCount(1)
+            .minHistoryBucketCount(1)
+            .minSampleCount(1)
+            .suspectTriggerThreshold(1)
+            .autoResolveAfterInactiveMinutes(1)
+            .build()
+        )
+      )
+      .autoResolveAfterInactiveMinutes(1)
+      .notifiers(
+        java.util.List.of(
+          AlertingSettingsResponseNotifiersItem.webhook(
+            AlertingWebhookNotifierResponse.builder().webhookId("test-value").build()
+          )
+        )
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    AlertingSettingsResponse roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      AlertingSettingsResponse.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_environments() throws Exception {
+    AlertingSettingsResponse value = AlertingSettingsResponse.builder()
+      .monitorConfigs(
+        java.util.Map.of(
+          "key",
+          AlertingMonitorConfig.builder()
+            .enabled(true)
+            .threshold(0d)
+            .relativeIncreaseThreshold(0d)
+            .minFailureCount(1)
+            .minHistoryBucketCount(1)
+            .minSampleCount(1)
+            .suspectTriggerThreshold(1)
+            .autoResolveAfterInactiveMinutes(1)
+            .build()
+        )
+      )
+      .autoResolveAfterInactiveMinutes(1)
+      .environments((java.util.List<String>) null)
       .notifiers(
         java.util.List.of(
           AlertingSettingsResponseNotifiersItem.webhook(
@@ -158,6 +233,7 @@ class AlertingSettingsResponseTest {
         )
       )
       .autoResolveAfterInactiveMinutes(1)
+      .environments(java.util.List.of("test-value"))
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     AlertingSettingsResponse roundTripped = ObjectMappers.JSON_MAPPER.readValue(

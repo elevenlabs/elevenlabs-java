@@ -84,8 +84,11 @@ public class AsyncLanguageClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -229,7 +232,7 @@ public class AsyncLanguageClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing/project/{project_id}/language"
     )
       .setHeader("Accept", "application/json")
@@ -295,7 +298,7 @@ public class AsyncLanguageClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing/project/{project_id}/language"
     )
       .setHeader("Accept", "application/json")
@@ -374,7 +377,7 @@ public class AsyncLanguageClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing/project/{project_id}/language/{language_id}"
     )
       .setHeader("Accept", "application/json")
@@ -458,7 +461,7 @@ public class AsyncLanguageClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/dubbing/project/{project_id}/language/{language_id}"
     )
       .setPathParameter("project_id", projectId)

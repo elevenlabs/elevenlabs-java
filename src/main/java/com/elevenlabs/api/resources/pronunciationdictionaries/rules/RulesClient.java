@@ -73,8 +73,11 @@ public class RulesClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -185,7 +188,7 @@ public class RulesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/pronunciation-dictionaries/{pronunciation_dictionary_id}/set-rules"
     )
       .setHeader("Accept", "application/json")
@@ -235,7 +238,7 @@ public class RulesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/pronunciation-dictionaries/{pronunciation_dictionary_id}/add-rules"
     )
       .setHeader("Accept", "application/json")
@@ -283,7 +286,7 @@ public class RulesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/pronunciation-dictionaries/{pronunciation_dictionary_id}/remove-rules"
     )
       .setHeader("Accept", "application/json")

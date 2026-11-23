@@ -84,8 +84,11 @@ public class AsyncTextToDialogueClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -113,7 +116,7 @@ public class AsyncTextToDialogueClient {
 
   /** Creates a new WebSocket client for the v1_text-to-dialogue_stream-input channel. */
   public TextToDialogueWebSocketClient textToDialogueWebSocket() {
-    return new TextToDialogueWebSocketClient(clientOptions);
+    return new TextToDialogueWebSocketClient(clientOptions, config);
   }
 
   /**
@@ -201,24 +204,19 @@ public class AsyncTextToDialogueClient {
     BodyTextToDialogueMultiVoiceV1TextToDialoguePost requestParameters,
     RequestConfig resolvedConfig
   ) {
-    RequestBuilder builder = new RequestBuilder(
+    return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-dialogue"
     )
       .applyRequestConfig(resolvedConfig)
+      .setOptionalQueryParameter("output_format", requestParameters.getOutputFormat().orElse(null))
       .setOptionalQueryParameter(
         "enable_logging",
         requestParameters.getEnableLogging().orElse(null)
       )
-      .setJsonContent(requestParameters);
-    if (requestParameters.getOutputFormat().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "output_format",
-        requestParameters.getOutputFormat().orElse(null).toString()
-      );
-    }
-    return builder.build();
+      .setJsonContent(requestParameters)
+      .build();
   }
 
   /**
@@ -256,7 +254,7 @@ public class AsyncTextToDialogueClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-dialogue/stream"
     )
       .applyRequestConfig(resolvedConfig)
@@ -309,7 +307,7 @@ public class AsyncTextToDialogueClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-dialogue/stream/with-timestamps"
     )
       .setHeader("Accept", "application/json")
@@ -359,25 +357,20 @@ public class AsyncTextToDialogueClient {
     BodyTextToDialogueFullWithTimestamps requestParameters,
     RequestConfig resolvedConfig
   ) {
-    RequestBuilder builder = new RequestBuilder(
+    return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/text-to-dialogue/with-timestamps"
     )
       .setHeader("Accept", "application/json")
       .applyRequestConfig(resolvedConfig)
+      .setOptionalQueryParameter("output_format", requestParameters.getOutputFormat().orElse(null))
       .setOptionalQueryParameter(
         "enable_logging",
         requestParameters.getEnableLogging().orElse(null)
       )
-      .setJsonContent(requestParameters);
-    if (requestParameters.getOutputFormat().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "output_format",
-        requestParameters.getOutputFormat().orElse(null).toString()
-      );
-    }
-    return builder.build();
+      .setJsonContent(requestParameters)
+      .build();
   }
 
   /**

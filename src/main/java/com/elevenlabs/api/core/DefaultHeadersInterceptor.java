@@ -29,7 +29,9 @@ public class DefaultHeadersInterceptor implements Interceptor {
    * @param config The SDK configuration containing default header values
    */
   public DefaultHeadersInterceptor(ApiConfig config) {
-    defaultHeaders.put("User-Agent", config.getUserAgent());
+    if (config.getUserAgent() != null) {
+      defaultHeaders.put("User-Agent", config.getUserAgent());
+    }
     defaultHeaders.putAll(config.getDefaultHeaders());
     defaultHeaderSuppliers.putAll(config.getDefaultHeaderSuppliers());
     // Fern's SDK-identifying headers, set after the client's own headers as Fern does.

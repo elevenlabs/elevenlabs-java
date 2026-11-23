@@ -17,6 +17,7 @@ import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 import org.jetbrains.annotations.NotNull;
 
 /**
@@ -29,6 +30,7 @@ public final class CampaignPolicySnapshot {
   private final String timezone;
   private final RetryPolicy retry;
   private final List<CallingPeriodPolicy> callingPeriods;
+  private final Optional<List<DateOverridePolicy>> dateOverrides;
   private final DataCollectionPolicy dataCollection;
   private final FollowupContextPolicy followupContext;
   private final Map<String, Object> additionalProperties;
@@ -37,6 +39,7 @@ public final class CampaignPolicySnapshot {
     this.timezone = builder.timezone;
     this.retry = builder.retry;
     this.callingPeriods = builder.callingPeriods;
+    this.dateOverrides = builder.dateOverrides;
     this.dataCollection = builder.dataCollection;
     this.followupContext = builder.followupContext;
     this.additionalProperties = builder.additionalProperties;
@@ -55,6 +58,11 @@ public final class CampaignPolicySnapshot {
   @JsonProperty("calling_periods")
   public List<CallingPeriodPolicy> getCallingPeriods() {
     return callingPeriods;
+  }
+
+  @JsonProperty("date_overrides")
+  public Optional<List<DateOverridePolicy>> getDateOverrides() {
+    return dateOverrides;
   }
 
   @JsonProperty("data_collection")
@@ -84,6 +92,7 @@ public final class CampaignPolicySnapshot {
       Objects.equals(timezone, that.timezone) &&
       Objects.equals(retry, that.retry) &&
       Objects.equals(callingPeriods, that.callingPeriods) &&
+      Objects.equals(dateOverrides, that.dateOverrides) &&
       Objects.equals(dataCollection, that.dataCollection) &&
       Objects.equals(followupContext, that.followupContext)
     );
@@ -95,6 +104,7 @@ public final class CampaignPolicySnapshot {
       this.timezone,
       this.retry,
       this.callingPeriods,
+      this.dateOverrides,
       this.dataCollection,
       this.followupContext
     );
@@ -142,6 +152,10 @@ public final class CampaignPolicySnapshot {
     _FinalStage addCallingPeriods(CallingPeriodPolicy callingPeriods);
 
     _FinalStage addAllCallingPeriods(List<CallingPeriodPolicy> callingPeriods);
+
+    _FinalStage dateOverrides(Optional<List<DateOverridePolicy>> dateOverrides);
+
+    _FinalStage dateOverrides(List<DateOverridePolicy> dateOverrides);
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
@@ -151,6 +165,7 @@ public final class CampaignPolicySnapshot {
     private String timezone;
     private RetryPolicy retry;
     private List<CallingPeriodPolicy> callingPeriods = new ArrayList<>();
+    private Optional<List<DateOverridePolicy>> dateOverrides = Optional.empty();
     private DataCollectionPolicy dataCollection;
     private FollowupContextPolicy followupContext;
 
@@ -163,6 +178,7 @@ public final class CampaignPolicySnapshot {
       timezone(other.getTimezone());
       retry(other.getRetry());
       callingPeriods(other.getCallingPeriods());
+      dateOverrides(other.getDateOverrides());
       dataCollection(other.getDataCollection());
       followupContext(other.getFollowupContext());
       return this;
@@ -223,6 +239,19 @@ public final class CampaignPolicySnapshot {
       if (callingPeriods != null) {
         this.callingPeriods.addAll(callingPeriods);
       }
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "date_overrides", nulls = Nulls.SKIP)
+    public _FinalStage dateOverrides(Optional<List<DateOverridePolicy>> dateOverrides) {
+      this.dateOverrides = dateOverrides;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage dateOverrides(List<DateOverridePolicy> dateOverrides) {
+      this.dateOverrides = Optional.ofNullable(dateOverrides);
       return this;
     }
 

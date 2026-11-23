@@ -5,7 +5,6 @@ package com.elevenlabs.api.resources.agents.triagetickets.requests;
 
 import com.elevenlabs.api.core.ModelConverter;
 import com.elevenlabs.api.core.Nullable;
-import com.elevenlabs.api.types.AgentConversationTicketIssueType;
 import com.elevenlabs.api.types.AgentConversationTicketPriority;
 import com.elevenlabs.api.types.AgentConversationTicketSortBy;
 import com.elevenlabs.api.types.AgentConversationTicketSource;
@@ -37,7 +36,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
   private final Optional<AgentConversationTicketSortBy> sortBy;
   private final Optional<String> ownerUserId;
   private final Optional<String> assigneeUserId;
-  private final Optional<AgentConversationTicketIssueType> issueType;
   private final Optional<String> label;
   private final Optional<String> mergedIntoTicketId;
   private final Optional<String> search;
@@ -53,7 +51,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
     this.sortBy = builder.sortBy;
     this.ownerUserId = builder.ownerUserId;
     this.assigneeUserId = builder.assigneeUserId;
-    this.issueType = builder.issueType;
     this.label = builder.label;
     this.mergedIntoTicketId = builder.mergedIntoTicketId;
     this.search = builder.search;
@@ -102,7 +99,7 @@ public final class ListForWorkspaceTriageTicketsRequest {
   }
 
   /**
-   * @return Order by most recently created, by priority (most urgent first, then most recently created), or by most recently reported (the newest report merged into the agent issue, else its creation).
+   * @return Order by most recently created, by priority (most urgent first, then most recently created), by most recently reported (the newest report merged into the agent issue, else its creation), or by report count (most reports merged into the agent issue first, then most recently created).
    */
   @JsonIgnore
   public Optional<AgentConversationTicketSortBy> getSortBy() {
@@ -123,14 +120,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
   @JsonIgnore
   public Optional<String> getAssigneeUserId() {
     return assigneeUserId == null ? Optional.empty() : assigneeUserId;
-  }
-
-  /**
-   * @return Filter agent issues by type.
-   */
-  @JsonIgnore
-  public Optional<AgentConversationTicketIssueType> getIssueType() {
-    return issueType == null ? Optional.empty() : issueType;
   }
 
   /**
@@ -184,7 +173,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
       Objects.equals(sortBy, that.sortBy) &&
       Objects.equals(ownerUserId, that.ownerUserId) &&
       Objects.equals(assigneeUserId, that.assigneeUserId) &&
-      Objects.equals(issueType, that.issueType) &&
       Objects.equals(label, that.label) &&
       Objects.equals(mergedIntoTicketId, that.mergedIntoTicketId) &&
       Objects.equals(search, that.search) &&
@@ -203,7 +191,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
       this.sortBy,
       this.ownerUserId,
       this.assigneeUserId,
-      this.issueType,
       this.label,
       this.mergedIntoTicketId,
       this.search,
@@ -231,7 +218,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
     private Optional<AgentConversationTicketSortBy> sortBy = Optional.empty();
     private Optional<String> ownerUserId = Optional.empty();
     private Optional<String> assigneeUserId = Optional.empty();
-    private Optional<AgentConversationTicketIssueType> issueType = Optional.empty();
     private Optional<String> label = Optional.empty();
     private Optional<String> mergedIntoTicketId = Optional.empty();
     private Optional<String> search = Optional.empty();
@@ -251,7 +237,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
       sortBy(other.getSortBy());
       ownerUserId(other.getOwnerUserId());
       assigneeUserId(other.getAssigneeUserId());
-      issueType(other.getIssueType());
       label(other.getLabel());
       mergedIntoTicketId(other.getMergedIntoTicketId());
       search(other.getSearch());
@@ -431,28 +416,6 @@ public final class ListForWorkspaceTriageTicketsRequest {
         this.assigneeUserId = Optional.empty();
       } else {
         this.assigneeUserId = Optional.of(assigneeUserId.get());
-      }
-      return this;
-    }
-
-    @JsonSetter(value = "issue_type", nulls = Nulls.SKIP)
-    public Builder issueType(Optional<AgentConversationTicketIssueType> issueType) {
-      this.issueType = issueType;
-      return this;
-    }
-
-    public Builder issueType(AgentConversationTicketIssueType issueType) {
-      this.issueType = Optional.ofNullable(issueType);
-      return this;
-    }
-
-    public Builder issueType(Nullable<AgentConversationTicketIssueType> issueType) {
-      if (issueType.isNull()) {
-        this.issueType = null;
-      } else if (issueType.isEmpty()) {
-        this.issueType = Optional.empty();
-      } else {
-        this.issueType = Optional.of(issueType.get());
       }
       return this;
     }

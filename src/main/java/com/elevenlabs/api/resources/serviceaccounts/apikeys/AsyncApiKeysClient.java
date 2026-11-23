@@ -82,8 +82,11 @@ public class AsyncApiKeysClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -235,7 +238,7 @@ public class AsyncApiKeysClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/service-accounts/{service_account_user_id}/api-keys"
     )
       .setHeader("Accept", "application/json")
@@ -290,7 +293,7 @@ public class AsyncApiKeysClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/service-accounts/{service_account_user_id}/api-keys"
     )
       .setHeader("Accept", "application/json")
@@ -392,7 +395,7 @@ public class AsyncApiKeysClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/service-accounts/{service_account_user_id}/api-keys/{api_key_id}"
     )
       .setHeader("Accept", "application/json")
@@ -483,7 +486,7 @@ public class AsyncApiKeysClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/service-accounts/{service_account_user_id}/api-keys/{api_key_id}"
     )
       .setHeader("Accept", "application/json")
@@ -567,7 +570,7 @@ public class AsyncApiKeysClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/service-accounts/{service_account_user_id}/api-keys/{api_key_id}/disable"
     )
       .setHeader("Accept", "application/json")

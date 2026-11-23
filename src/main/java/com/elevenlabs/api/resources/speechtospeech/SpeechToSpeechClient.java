@@ -79,8 +79,11 @@ public class SpeechToSpeechClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -136,32 +139,6 @@ public class SpeechToSpeechClient {
    * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
    *
    * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code InputStream}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public InputStream convert(String voiceId) {
-    return this.convert(voiceId, BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost.builder().build());
-  }
-
-  /**
-   * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code InputStream}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public InputStream convert(String voiceId, RequestOptions requestOptions) {
-    return this.convert(
-        voiceId,
-        BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost.builder().build(),
-        requestOptions
-      );
-  }
-
-  /**
-   * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
    * @param requestParameters {@link BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost} Request Parameters Object
    * @return response of {@code InputStream}
    * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
@@ -198,68 +175,50 @@ public class SpeechToSpeechClient {
       .setType(MultipartBody.FORM);
     multipartBodyBuilder.addFormDataPart(
       "audio",
-      requestParameters.getSpeechToSpeechRequest().orElse(null).getAudio().getFileName(),
-      requestParameters.getSpeechToSpeechRequest().orElse(null).getAudio().toRequestBody()
+      requestParameters.getSpeechToSpeechRequest().getAudio().getFileName(),
+      requestParameters.getSpeechToSpeechRequest().getAudio().toRequestBody()
     );
-    if (
-      requestParameters.getSpeechToSpeechRequest().orElse(null).getModelId().orElse(null) != null
-    ) {
+    if (requestParameters.getSpeechToSpeechRequest().getModelId().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "model_id",
-        requestParameters.getSpeechToSpeechRequest().orElse(null).getModelId().orElse(null)
+        requestParameters.getSpeechToSpeechRequest().getModelId().orElse(null)
       );
     }
-    if (
-      requestParameters.getSpeechToSpeechRequest().orElse(null).getVoiceSettings().orElse(null) !=
-      null
-    ) {
+    if (requestParameters.getSpeechToSpeechRequest().getVoiceSettings().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "voice_settings",
-        requestParameters.getSpeechToSpeechRequest().orElse(null).getVoiceSettings().orElse(null)
+        requestParameters.getSpeechToSpeechRequest().getVoiceSettings().orElse(null)
       );
     }
-    if (requestParameters.getSpeechToSpeechRequest().orElse(null).getSeed().orElse(null) != null) {
+    if (requestParameters.getSpeechToSpeechRequest().getSeed().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "seed",
-        requestParameters.getSpeechToSpeechRequest().orElse(null).getSeed().orElse(null).toString()
+        requestParameters.getSpeechToSpeechRequest().getSeed().orElse(null).toString()
       );
     }
     if (
-      requestParameters
-        .getSpeechToSpeechRequest()
-        .orElse(null)
-        .getRemoveBackgroundNoise()
-        .orElse(null) !=
-      null
+      requestParameters.getSpeechToSpeechRequest().getRemoveBackgroundNoise().orElse(null) != null
     ) {
       multipartBodyBuilder.addFormDataPart(
         "remove_background_noise",
         requestParameters
           .getSpeechToSpeechRequest()
-          .orElse(null)
           .getRemoveBackgroundNoise()
           .orElse(null)
           .toString()
       );
     }
-    if (
-      requestParameters.getSpeechToSpeechRequest().orElse(null).getFileFormat().orElse(null) != null
-    ) {
+    if (requestParameters.getSpeechToSpeechRequest().getFileFormat().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "file_format",
         String.valueOf(
-          requestParameters
-            .getSpeechToSpeechRequest()
-            .orElse(null)
-            .getFileFormat()
-            .orElse(null)
-            .toString()
+          requestParameters.getSpeechToSpeechRequest().getFileFormat().orElse(null).toString()
         )
       );
     }
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/voice-changer/{voice_id}"
     )
       .setPathParameter("voice_id", voiceId)
@@ -280,35 +239,6 @@ public class SpeechToSpeechClient {
       );
     }
     return builder.build();
-  }
-
-  /**
-   * Stream audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code InputStream}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public InputStream stream(String voiceId) {
-    return this.stream(
-        voiceId,
-        BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost.builder().build()
-      );
-  }
-
-  /**
-   * Stream audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code InputStream}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public InputStream stream(String voiceId, RequestOptions requestOptions) {
-    return this.stream(
-        voiceId,
-        BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost.builder().build(),
-        requestOptions
-      );
   }
 
   /**
@@ -351,89 +281,53 @@ public class SpeechToSpeechClient {
       .setType(MultipartBody.FORM);
     multipartBodyBuilder.addFormDataPart(
       "audio",
-      requestParameters.getSpeechToSpeechStreamRequest().orElse(null).getAudio().getFileName(),
-      requestParameters.getSpeechToSpeechStreamRequest().orElse(null).getAudio().toRequestBody()
+      requestParameters.getSpeechToSpeechStreamRequest().getAudio().getFileName(),
+      requestParameters.getSpeechToSpeechStreamRequest().getAudio().toRequestBody()
     );
-    if (
-      requestParameters.getSpeechToSpeechStreamRequest().orElse(null).getModelId().orElse(null) !=
-      null
-    ) {
+    if (requestParameters.getSpeechToSpeechStreamRequest().getModelId().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "model_id",
-        requestParameters.getSpeechToSpeechStreamRequest().orElse(null).getModelId().orElse(null)
+        requestParameters.getSpeechToSpeechStreamRequest().getModelId().orElse(null)
       );
     }
     if (
-      requestParameters
-        .getSpeechToSpeechStreamRequest()
-        .orElse(null)
-        .getVoiceSettings()
-        .orElse(null) !=
-      null
+      requestParameters.getSpeechToSpeechStreamRequest().getVoiceSettings().orElse(null) != null
     ) {
       multipartBodyBuilder.addFormDataPart(
         "voice_settings",
-        requestParameters
-          .getSpeechToSpeechStreamRequest()
-          .orElse(null)
-          .getVoiceSettings()
-          .orElse(null)
+        requestParameters.getSpeechToSpeechStreamRequest().getVoiceSettings().orElse(null)
       );
     }
-    if (
-      requestParameters.getSpeechToSpeechStreamRequest().orElse(null).getSeed().orElse(null) != null
-    ) {
+    if (requestParameters.getSpeechToSpeechStreamRequest().getSeed().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "seed",
-        requestParameters
-          .getSpeechToSpeechStreamRequest()
-          .orElse(null)
-          .getSeed()
-          .orElse(null)
-          .toString()
+        requestParameters.getSpeechToSpeechStreamRequest().getSeed().orElse(null).toString()
       );
     }
     if (
-      requestParameters
-        .getSpeechToSpeechStreamRequest()
-        .orElse(null)
-        .getRemoveBackgroundNoise()
-        .orElse(null) !=
+      requestParameters.getSpeechToSpeechStreamRequest().getRemoveBackgroundNoise().orElse(null) !=
       null
     ) {
       multipartBodyBuilder.addFormDataPart(
         "remove_background_noise",
         requestParameters
           .getSpeechToSpeechStreamRequest()
-          .orElse(null)
           .getRemoveBackgroundNoise()
           .orElse(null)
           .toString()
       );
     }
-    if (
-      requestParameters
-        .getSpeechToSpeechStreamRequest()
-        .orElse(null)
-        .getFileFormat()
-        .orElse(null) !=
-      null
-    ) {
+    if (requestParameters.getSpeechToSpeechStreamRequest().getFileFormat().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "file_format",
         String.valueOf(
-          requestParameters
-            .getSpeechToSpeechStreamRequest()
-            .orElse(null)
-            .getFileFormat()
-            .orElse(null)
-            .toString()
+          requestParameters.getSpeechToSpeechStreamRequest().getFileFormat().orElse(null).toString()
         )
       );
     }
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/voice-changer/{voice_id}/stream"
     )
       .setPathParameter("voice_id", voiceId)
@@ -471,35 +365,6 @@ public class SpeechToSpeechClient {
    * Reuses the enclosing service's request builders and configuration.
    */
   public class WithRawResponse {
-
-    /**
-     * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
-     *
-     * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-     * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-     */
-    public ElevenlabsApiHttpResponse<InputStream> convert(String voiceId) {
-      return this.convert(voiceId, BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost.builder().build());
-    }
-
-    /**
-     * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
-     *
-     * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-     * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-     */
-    public ElevenlabsApiHttpResponse<InputStream> convert(
-      String voiceId,
-      RequestOptions requestOptions
-    ) {
-      return this.convert(
-          voiceId,
-          BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost.builder().build(),
-          requestOptions
-        );
-    }
 
     /**
      * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
@@ -543,38 +408,6 @@ public class SpeechToSpeechClient {
         new byte[0],
         ResponseBodyInputStream.of(response)
       );
-    }
-
-    /**
-     * Stream audio from one voice to another. Maintain full control over emotion, timing and delivery.
-     *
-     * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-     * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-     */
-    public ElevenlabsApiHttpResponse<InputStream> stream(String voiceId) {
-      return this.stream(
-          voiceId,
-          BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost.builder().build()
-        );
-    }
-
-    /**
-     * Stream audio from one voice to another. Maintain full control over emotion, timing and delivery.
-     *
-     * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-     * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-     * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-     */
-    public ElevenlabsApiHttpResponse<InputStream> stream(
-      String voiceId,
-      RequestOptions requestOptions
-    ) {
-      return this.stream(
-          voiceId,
-          BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost.builder().build(),
-          requestOptions
-        );
     }
 
     /**

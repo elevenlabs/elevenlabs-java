@@ -81,8 +81,11 @@ public class SubscriptionsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -211,7 +214,7 @@ public class SubscriptionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces/{workspace_id}/subscription"
     )
       .setHeader("Accept", "application/json")
@@ -259,7 +262,7 @@ public class SubscriptionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces/{workspace_id}/subscription"
     )
       .setHeader("Accept", "application/json")
@@ -329,7 +332,7 @@ public class SubscriptionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces/{workspace_id}/subscription"
     )
       .setHeader("Accept", "application/json")
@@ -394,7 +397,7 @@ public class SubscriptionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces/{workspace_id}/subscription/restore"
     )
       .setHeader("Accept", "application/json")
@@ -471,7 +474,7 @@ public class SubscriptionsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/reception/reseller/workspaces/{workspace_id}/subscription/cancel-downgrade"
     )
       .setHeader("Accept", "application/json")

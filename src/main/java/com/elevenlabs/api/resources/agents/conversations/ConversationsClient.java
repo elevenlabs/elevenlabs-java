@@ -129,8 +129,11 @@ public class ConversationsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -391,7 +394,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversation/get-signed-url"
     )
       .setHeader("Accept", "application/json")
@@ -440,7 +443,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversation/token"
     )
       .setHeader("Accept", "application/json")
@@ -507,7 +510,7 @@ public class ConversationsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations"
     )
       .setHeader("Accept", "application/json")
@@ -706,7 +709,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations"
     )
       .setHeader("Accept", "application/json")
@@ -744,7 +747,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/resolve"
     )
       .setHeader("Accept", "application/json")
@@ -810,7 +813,7 @@ public class ConversationsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}"
     )
       .setHeader("Accept", "application/json")
@@ -882,7 +885,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}"
     )
       .setHeader("Accept", "application/json")
@@ -956,7 +959,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}/summary"
     )
       .setHeader("Accept", "application/json")
@@ -1034,7 +1037,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}/sip-messages"
     )
       .setHeader("Accept", "application/json")
@@ -1083,7 +1086,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}/messages"
     )
       .setHeader("Accept", "application/json")
@@ -1131,7 +1134,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}/messages/stream"
     )
       .setHeader("Accept", "application/json")
@@ -1215,7 +1218,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}/turns/{turn_id}"
     )
       .setHeader("Accept", "application/json")
@@ -1303,7 +1306,7 @@ public class ConversationsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/conversations/{conversation_id}/turns/{turn_id}/events"
     )
       .setHeader("Accept", "application/json")

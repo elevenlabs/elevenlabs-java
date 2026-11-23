@@ -126,8 +126,11 @@ public class AsyncDocumentsClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -409,7 +412,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/url"
     )
       .setHeader("Accept", "application/json")
@@ -548,7 +551,7 @@ public class AsyncDocumentsClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/file"
     )
       .setHeader("Accept", "application/json")
@@ -590,7 +593,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/text"
     )
       .setHeader("Accept", "application/json")
@@ -632,7 +635,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/folder"
     )
       .setHeader("Accept", "application/json")
@@ -702,7 +705,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}"
     )
       .setHeader("Accept", "application/json")
@@ -788,7 +791,7 @@ public class AsyncDocumentsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}"
     )
       .setHeader("Accept", "application/json")
@@ -858,7 +861,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}"
     )
       .setHeader("Accept", "application/json")
@@ -938,7 +941,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}/chunking-override"
     )
       .setHeader("Accept", "application/json")
@@ -993,7 +996,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.PATCH,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}/chunking-override"
     )
       .setHeader("Accept", "application/json")
@@ -1070,7 +1073,7 @@ public class AsyncDocumentsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}/dependent-agents"
     )
       .setHeader("Accept", "application/json")
@@ -1120,7 +1123,7 @@ public class AsyncDocumentsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/dependent-agents"
     )
       .setHeader("Accept", "application/json")
@@ -1202,7 +1205,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}/content"
     )
       .setPathParameter("documentation_id", documentationId)
@@ -1280,7 +1283,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{documentation_id}/source-file-url"
     )
       .setHeader("Accept", "application/json")
@@ -1362,7 +1365,7 @@ public class AsyncDocumentsClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/{document_id}/move"
     )
       .setPathParameter("document_id", documentId)
@@ -1406,7 +1409,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/bulk-move"
     )
       .applyRequestConfig(resolvedConfig)
@@ -1453,7 +1456,7 @@ public class AsyncDocumentsClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/convai/knowledge-base/bulk-delete"
     )
       .setHeader("Accept", "application/json")

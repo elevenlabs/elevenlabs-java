@@ -115,8 +115,11 @@ public class AsyncVoicesClient {
     return this.baseService.getResolvedConfig(methodConfig, requestConfig);
   }
 
-  private String resolveBaseUrl(RequestConfig resolvedConfig, Environment defaultEnvironment) {
-    return this.baseService.resolveBaseUrl(resolvedConfig, defaultEnvironment);
+  private String resolveBaseUrl(
+    RequestConfig resolvedConfig,
+    java.util.function.Function<Environment, String> environmentUrl
+  ) {
+    return this.baseService.resolveBaseUrl(resolvedConfig, environmentUrl);
   }
 
   private <T> void addErrorMapping(
@@ -331,7 +334,7 @@ public class AsyncVoicesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/voices/{voice_id}"
     )
       .setHeader("Accept", "application/json")
@@ -402,7 +405,7 @@ public class AsyncVoicesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.DELETE,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/voices/{voice_id}"
     )
       .setHeader("Accept", "application/json")
@@ -506,7 +509,7 @@ public class AsyncVoicesClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/voices/{voice_id}/edit"
     )
       .setHeader("Accept", "application/json")
@@ -565,7 +568,7 @@ public class AsyncVoicesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v2/voices"
     )
       .setHeader("Accept", "application/json")
@@ -664,7 +667,7 @@ public class AsyncVoicesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/voices/{voice_id}/replicate-to-isolated-environment"
     )
       .setHeader("Accept", "application/json")
@@ -727,7 +730,7 @@ public class AsyncVoicesClient {
   ) {
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/voices/add/{public_user_id}/{voice_id}"
     )
       .setHeader("Accept", "application/json")
@@ -888,7 +891,7 @@ public class AsyncVoicesClient {
     }
     return new RequestBuilder(
       HttpMethod.POST,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/similar-voices"
     )
       .setHeader("Accept", "application/json")
@@ -948,7 +951,7 @@ public class AsyncVoicesClient {
   ) {
     RequestBuilder builder = new RequestBuilder(
       HttpMethod.GET,
-      resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
+      resolveBaseUrl(resolvedConfig, Environment::getBaseURL),
       "v1/shared-voices"
     )
       .setHeader("Accept", "application/json")

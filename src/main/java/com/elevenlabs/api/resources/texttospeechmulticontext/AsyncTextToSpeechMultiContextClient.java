@@ -50,6 +50,6 @@ public class AsyncTextToSpeechMultiContextClient {
 
   /** Creates a new WebSocket client for the v1_text-to-speech_voice_id_multi-stream-input channel. */
   public TextToSpeechMultiContextWebSocketClient textToSpeechMultiContextWebSocket(String voiceId) {
-    return new TextToSpeechMultiContextWebSocketClient(clientOptions, voiceId);
+    return new TextToSpeechMultiContextWebSocketClient(clientOptions, config, voiceId);
   }
 }

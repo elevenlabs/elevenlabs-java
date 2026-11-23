@@ -3,8 +3,10 @@
  */
 package com.elevenlabs.api.resources.texttospeechmulticontext.websocket;
 
+import com.elevenlabs.api.core.ApiConfig;
 import com.elevenlabs.api.core.ClientOptions;
 import com.elevenlabs.api.core.DisconnectReason;
+import com.elevenlabs.api.core.Environment;
 import com.elevenlabs.api.core.ObjectMappers;
 import com.elevenlabs.api.core.ReconnectingWebSocketListener;
 import com.elevenlabs.api.core.RequestOptions;
@@ -29,6 +31,8 @@ import okio.ByteString;
 public class TextToSpeechMultiContextWebSocketClient implements AutoCloseable {
 
   protected final ClientOptions clientOptions;
+
+  private final ApiConfig config;
 
   private final ObjectMapper objectMapper;
 
@@ -55,10 +59,36 @@ public class TextToSpeechMultiContextWebSocketClient implements AutoCloseable {
   private volatile Consumer<ReceiveMessageMulti> subscribeHandler;
 
   public TextToSpeechMultiContextWebSocketClient(ClientOptions clientOptions, String voiceId) {
+    this(clientOptions, null, voiceId);
+  }
+
+  /**
+   * Builds the client against the SDK configuration its parent client shares, so an environment or
+   * base URL set on the root client after construction reaches this channel too.
+   */
+  public TextToSpeechMultiContextWebSocketClient(
+    ClientOptions clientOptions,
+    ApiConfig config,
+    String voiceId
+  ) {
     this.clientOptions = clientOptions;
+    this.config = config;
     this.objectMapper = ObjectMappers.JSON_MAPPER;
     this.okHttpClient = clientOptions.httpClient();
     this.voiceId = voiceId;
+  }
+
+  private String resolveBaseUrl() {
+    if (config != null && config.getBaseUrl() != null) {
+      return config.getBaseUrl();
+    }
+    if (clientOptions.baseUrl() != null) {
+      return clientOptions.baseUrl();
+    }
+    Environment environment = config != null && config.getEnvironment() != null
+      ? config.getEnvironment()
+      : clientOptions.environment();
+    return environment.getBaseURL();
   }
 
   public CompletableFuture<Void> realtime(
@@ -74,9 +104,7 @@ public class TextToSpeechMultiContextWebSocketClient implements AutoCloseable {
     }
     final CompletableFuture<Void> future = new CompletableFuture<>();
     connectionFuture = future;
-    String baseUrl = clientOptions.baseUrl() != null
-      ? clientOptions.baseUrl()
-      : clientOptions.environment().getUrl();
+    String baseUrl = resolveBaseUrl();
     StringBuilder pathBuilder = new StringBuilder();
     pathBuilder.append("/v1/text-to-speech/");
     pathBuilder.append(voiceId);
