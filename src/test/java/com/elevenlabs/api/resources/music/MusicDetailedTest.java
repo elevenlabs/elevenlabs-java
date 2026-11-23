@@ -20,6 +20,7 @@ import com.elevenlabs.api.resources.music.types.ComposeDetailedMusicRequestOutpu
 import com.fasterxml.jackson.databind.JsonNode;
 import java.io.ByteArrayOutputStream;
 import java.io.IOException;
+import java.io.InputStream;
 import java.nio.charset.StandardCharsets;
 import java.util.Arrays;
 import java.util.concurrent.TimeUnit;
@@ -100,6 +101,13 @@ class MusicDetailedTest {
     }
     head.append(lineBreak);
     return concat(bytes(head.toString()), AUDIO, bytes(lineBreak + BOUNDARY + "--" + lineBreak));
+  }
+
+  private static byte[] readAll(InputStream stream) throws IOException {
+    ByteArrayOutputStream out = new ByteArrayOutputStream();
+    byte[] buffer = new byte[8192];
+    for (int n; (n = stream.read(buffer)) != -1; ) out.write(buffer, 0, n);
+    return out.toByteArray();
   }
 
   private static byte[] multipart(String lineBreak) {
@@ -272,14 +280,18 @@ class MusicDetailedTest {
   }
 
   /**
-   * Documents why {@link MusicDetailed} exists: the generated method decodes the multipart body as
-   * JSON and returns null. If this starts failing, the generated method may have been fixed.
+   * Documents why {@link MusicDetailed} exists: the generated method returns the raw multipart body,
+   * boundaries and all, without splitting the metadata from the audio. If this starts failing, the
+   * generated method may have started parsing multipart responses.
    */
   @Test
-  void theGeneratedMethodCannotDecodeTheMultipartBody() {
-    enqueueMultipart(multipart("\r\n"));
+  void theGeneratedMethodReturnsTheUnsplitMultipartBody() throws Exception {
+    byte[] body = multipart("\r\n");
+    enqueueMultipart(body);
 
-    assertNull(client().music().composeDetailed(request()));
+    try (InputStream stream = client().music().composeDetailed(request())) {
+      assertArrayEquals(body, readAll(stream));
+    }
   }
 
   // The parser on its own.

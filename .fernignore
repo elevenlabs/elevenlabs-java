@@ -60,7 +60,7 @@ src/main/java/com/elevenlabs/api/types/SpeechEngineResponse.java
 build.gradle
 
 # Music compose_detailed, parsed: POST /v1/music/detailed returns multipart/mixed (a JSON part, then the
-# audio), which the generated MusicClient.composeDetailed decodes as JSON and gets null. MusicDetailed
+# audio), which the generated MusicClient.composeDetailed returns as one raw InputStream. MusicDetailed
 # sends the same request and splits the parts. Remove once the generator handles multipart responses.
 src/main/java/com/elevenlabs/api/resources/music/MusicDetailed.java
 src/main/java/com/elevenlabs/api/resources/music/ComposeDetailedResponse.java
