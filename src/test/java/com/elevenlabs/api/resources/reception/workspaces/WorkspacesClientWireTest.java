@@ -12,10 +12,11 @@ import com.elevenlabs.api.core.ObjectMappers;
 import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.resources.reception.workspaces.requests.CompleteOnboardingWorkspacesRequest;
 import com.elevenlabs.api.resources.reception.workspaces.requests.ListWorkspacesRequest;
-import com.elevenlabs.api.resources.reception.workspaces.requests.ProvisionResellerWorkspaceRequest;
+import com.elevenlabs.api.resources.reception.workspaces.requests.ReceptionProvisionResellerWorkspaceRequest;
 import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.ProvisionResellerWorkspaceResponse;
 import com.elevenlabs.api.types.ProvisionResellerWorkspaceSubscription;
+import com.elevenlabs.api.types.ReceptionVertical;
 import com.elevenlabs.api.types.ResellerWorkspaceOnboardingResponse;
 import com.elevenlabs.api.types.ResellerWorkspaceSubscription;
 import com.elevenlabs.api.types.ResellerWorkspaceSummary;
@@ -182,8 +183,9 @@ class WorkspacesClientWireTest {
     );
 
     ProvisionResellerWorkspaceResponse result = client.create(
-      ProvisionResellerWorkspaceRequest.builder()
+      ReceptionProvisionResellerWorkspaceRequest.builder()
         .businessName("test-value")
+        .vertical(ReceptionVertical.SALON_BARBERSHOP)
         .subscription(ProvisionResellerWorkspaceSubscription.builder().tierId("test-value").build())
         .phoneNumber("test-value")
         .members(java.util.List.of(TeamInviteRequest.builder().email("test-value").build()))
@@ -225,8 +227,9 @@ class WorkspacesClientWireTest {
     assertEquals("POST", recordedRequest.getMethod());
     assertJsonEquals(
       ObjectMappers.JSON_MAPPER.writeValueAsString(
-        ProvisionResellerWorkspaceRequest.builder()
+        ReceptionProvisionResellerWorkspaceRequest.builder()
           .businessName("test-value")
+          .vertical(ReceptionVertical.SALON_BARBERSHOP)
           .subscription(
             ProvisionResellerWorkspaceSubscription.builder().tierId("test-value").build()
           )
@@ -261,8 +264,9 @@ class WorkspacesClientWireTest {
 
     UnprocessableEntityError thrown = assertThrows(UnprocessableEntityError.class, () ->
       client.create(
-        ProvisionResellerWorkspaceRequest.builder()
+        ReceptionProvisionResellerWorkspaceRequest.builder()
           .businessName("test-value")
+          .vertical(ReceptionVertical.SALON_BARBERSHOP)
           .subscription(
             ProvisionResellerWorkspaceSubscription.builder().tierId("test-value").build()
           )

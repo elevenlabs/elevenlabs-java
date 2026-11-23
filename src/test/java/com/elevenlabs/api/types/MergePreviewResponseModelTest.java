@@ -164,10 +164,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -295,10 +300,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -446,10 +456,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -590,10 +605,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -731,10 +751,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -883,10 +908,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -1044,10 +1074,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -1205,10 +1240,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -1367,10 +1407,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -1528,10 +1573,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -1690,10 +1740,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -1851,10 +1906,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -2013,10 +2073,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -2157,10 +2222,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -2318,10 +2388,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -2479,10 +2554,15 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -2634,6 +2714,9 @@ class MergePreviewResponseModelTest {
       .defaultHoldAudioUrl("test-value")
       .overriddenFields(java.util.List.of("test-value"))
       .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -2792,9 +2875,1013 @@ class MergePreviewResponseModelTest {
             .baseValue((Object) null)
             .sourceValue((Object) null)
             .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
             .build()
         )
       )
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      MergePreviewResponseModel.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_sourceTipVersionId() throws Exception {
+    MergePreviewResponseModel value = MergePreviewResponseModel.builder()
+      .agentId("test-value")
+      .name("test-value")
+      .conversationConfig(
+        ConversationalConfig.builder()
+          .asr(AsrConversationalConfig.builder().build())
+          .turn(TurnConfig.builder().build())
+          .tts(TtsConversationalConfigInput.builder().build())
+          .conversation(ConversationConfigInput.builder().build())
+          .languagePresets(
+            java.util.Map.of(
+              "key",
+              LanguagePresetInput.builder()
+                .overrides(ConversationConfigClientOverrideInput.builder().build())
+                .build()
+            )
+          )
+          .vad(VadConfig.builder().build())
+          .agent(AgentConfig.builder().build())
+          .build()
+      )
+      .metadata(
+        AgentMetadataResponseModel.builder().createdAtUnixSecs(1).updatedAtUnixSecs(1).build()
+      )
+      .platformSettings(
+        AgentPlatformSettingsResponseModel.builder()
+          .evaluation(EvaluationSettingsOutput.builder().build())
+          .widget(WidgetConfig.builder().build())
+          .dataCollection(
+            java.util.Map.of(
+              "key",
+              AnalysisProperty.builder().type(AnalysisPropertyType.BOOLEAN).build()
+            )
+          )
+          .dataCollectionScopes(java.util.Map.of("key", AnalysisScope.CONVERSATION))
+          .analysisItems(AgentAnalysisItemsOutput.builder().build())
+          .overrides(ConversationInitiationClientDataConfigOutput.builder().build())
+          .workspaceOverrides(AgentWorkspaceOverridesOutput.builder().build())
+          .testing(AgentTestingSettings.builder().build())
+          .archived(true)
+          .guardrails(GuardrailsV1Output.builder().build())
+          .summaryLanguage("test-value")
+          .autoTranslateTranscriptToAppLanguage(true)
+          .auth(AuthSettings.builder().build())
+          .callLimits(AgentCallLimits.builder().build())
+          .queueingConfig(AgentQueueingConfig.builder().build())
+          .privacy(PrivacyConfigOutput.builder().build())
+          .trustContext(AgentTrustContext.UNKNOWN)
+          .analysisLlm(Llm.GPT_4_O_MINI)
+          .topicDiscovery(TopicDiscoverySettings.builder().build())
+          .sentimentAnalysis(SentimentAnalysisSettings.builder().build())
+          .alerting(AlertingSettingsResponse.builder().build())
+          .safety(SafetyResponseModel.builder().build())
+          .build()
+      )
+      .phoneNumbers(
+        java.util.List.of(
+          MergePreviewResponseModelPhoneNumbersItem.twilio(
+            GetPhoneNumberTwilioResponseModel.builder()
+              .phoneNumber("test-value")
+              .label("test-value")
+              .phoneNumberId("test-value")
+              .build()
+          )
+        )
+      )
+      .whatsappAccounts(
+        java.util.List.of(
+          GetWhatsAppAccountResponse.builder()
+            .businessAccountId("test-value")
+            .phoneNumberId("test-value")
+            .businessAccountName("test-value")
+            .phoneNumberName("test-value")
+            .phoneNumber("test-value")
+            .accountType(WhatsAppAccountType.CLOUD_API)
+            .assignedAgentId("test-value")
+            .enableMessaging(true)
+            .enableAudioMessageResponse(true)
+            .enableTypingIndicator(true)
+            .assignedAgentName("test-value")
+            .isTokenExpired(true)
+            .build()
+        )
+      )
+      .workflow(
+        AgentWorkflowResponseModel.builder()
+          .preventSubagentLoops(true)
+          .edges(
+            java.util.Map.of(
+              "key",
+              WorkflowEdgeModelOutput.builder().source("test-value").target("test-value").build()
+            )
+          )
+          .nodes(
+            java.util.Map.of(
+              "key",
+              AgentWorkflowResponseModelNodesValue.start(
+                WorkflowStartNodeModelOutput.builder()
+                  .position(PositionOutput.builder().x(1d).y(1d).build())
+                  .build()
+              )
+            )
+          )
+          .build()
+      )
+      .accessInfo(
+        ResourceAccessInfo.builder()
+          .isCreator(true)
+          .creatorName("test-value")
+          .creatorEmail("test-value")
+          .role(ResourceAccessInfoRole.ADMIN)
+          .anonymousAccessLevelOverride(ResourceAccessInfoAnonymousAccessLevelOverride.ADMIN)
+          .accessSource(ResourceAccessInfoAccessSource.CREATOR)
+          .build()
+      )
+      .tags(java.util.List.of("test-value"))
+      .versionId("test-value")
+      .branchId("test-value")
+      .mainBranchId("test-value")
+      .procedures(
+        java.util.Map.of(
+          "key",
+          ProcedureRefResponseModel.builder()
+            .procedureId("test-value")
+            .versionId("test-value")
+            .name("test-value")
+            .type(ProcedureType.FREE_FORM)
+            .trigger("test-value")
+            .referencedToolIds(java.util.List.of("test-value"))
+            .referencedKbIds(java.util.List.of("test-value"))
+            .referencedProcedureIds(java.util.List.of("test-value"))
+            .referencedDynamicVariables(java.util.List.of("test-value"))
+            .writtenDynamicVariables(java.util.List.of("test-value"))
+            .folderParentId("test-value")
+            .build()
+        )
+      )
+      .defaultHoldAudioUrl("test-value")
+      .overriddenFields(java.util.List.of("test-value"))
+      .conflicts(
+        java.util.List.of(
+          FieldConflict.builder()
+            .path("test-value")
+            .section(ConflictSection.CONVERSATION_CONFIG)
+            .baseValue((Object) null)
+            .sourceValue((Object) null)
+            .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
+            .build()
+        )
+      )
+      .sourceIdenticalToTarget(true)
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      MergePreviewResponseModel.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_sourceTipVersionId() throws Exception {
+    MergePreviewResponseModel value = MergePreviewResponseModel.builder()
+      .agentId("test-value")
+      .name("test-value")
+      .conversationConfig(
+        ConversationalConfig.builder()
+          .asr(AsrConversationalConfig.builder().build())
+          .turn(TurnConfig.builder().build())
+          .tts(TtsConversationalConfigInput.builder().build())
+          .conversation(ConversationConfigInput.builder().build())
+          .languagePresets(
+            java.util.Map.of(
+              "key",
+              LanguagePresetInput.builder()
+                .overrides(ConversationConfigClientOverrideInput.builder().build())
+                .build()
+            )
+          )
+          .vad(VadConfig.builder().build())
+          .agent(AgentConfig.builder().build())
+          .build()
+      )
+      .metadata(
+        AgentMetadataResponseModel.builder().createdAtUnixSecs(1).updatedAtUnixSecs(1).build()
+      )
+      .platformSettings(
+        AgentPlatformSettingsResponseModel.builder()
+          .evaluation(EvaluationSettingsOutput.builder().build())
+          .widget(WidgetConfig.builder().build())
+          .dataCollection(
+            java.util.Map.of(
+              "key",
+              AnalysisProperty.builder().type(AnalysisPropertyType.BOOLEAN).build()
+            )
+          )
+          .dataCollectionScopes(java.util.Map.of("key", AnalysisScope.CONVERSATION))
+          .analysisItems(AgentAnalysisItemsOutput.builder().build())
+          .overrides(ConversationInitiationClientDataConfigOutput.builder().build())
+          .workspaceOverrides(AgentWorkspaceOverridesOutput.builder().build())
+          .testing(AgentTestingSettings.builder().build())
+          .archived(true)
+          .guardrails(GuardrailsV1Output.builder().build())
+          .summaryLanguage("test-value")
+          .autoTranslateTranscriptToAppLanguage(true)
+          .auth(AuthSettings.builder().build())
+          .callLimits(AgentCallLimits.builder().build())
+          .queueingConfig(AgentQueueingConfig.builder().build())
+          .privacy(PrivacyConfigOutput.builder().build())
+          .trustContext(AgentTrustContext.UNKNOWN)
+          .analysisLlm(Llm.GPT_4_O_MINI)
+          .topicDiscovery(TopicDiscoverySettings.builder().build())
+          .sentimentAnalysis(SentimentAnalysisSettings.builder().build())
+          .alerting(AlertingSettingsResponse.builder().build())
+          .safety(SafetyResponseModel.builder().build())
+          .build()
+      )
+      .phoneNumbers(
+        java.util.List.of(
+          MergePreviewResponseModelPhoneNumbersItem.twilio(
+            GetPhoneNumberTwilioResponseModel.builder()
+              .phoneNumber("test-value")
+              .label("test-value")
+              .phoneNumberId("test-value")
+              .build()
+          )
+        )
+      )
+      .whatsappAccounts(
+        java.util.List.of(
+          GetWhatsAppAccountResponse.builder()
+            .businessAccountId("test-value")
+            .phoneNumberId("test-value")
+            .businessAccountName("test-value")
+            .phoneNumberName("test-value")
+            .phoneNumber("test-value")
+            .accountType(WhatsAppAccountType.CLOUD_API)
+            .assignedAgentId("test-value")
+            .enableMessaging(true)
+            .enableAudioMessageResponse(true)
+            .enableTypingIndicator(true)
+            .assignedAgentName("test-value")
+            .isTokenExpired(true)
+            .build()
+        )
+      )
+      .workflow(
+        AgentWorkflowResponseModel.builder()
+          .preventSubagentLoops(true)
+          .edges(
+            java.util.Map.of(
+              "key",
+              WorkflowEdgeModelOutput.builder().source("test-value").target("test-value").build()
+            )
+          )
+          .nodes(
+            java.util.Map.of(
+              "key",
+              AgentWorkflowResponseModelNodesValue.start(
+                WorkflowStartNodeModelOutput.builder()
+                  .position(PositionOutput.builder().x(1d).y(1d).build())
+                  .build()
+              )
+            )
+          )
+          .build()
+      )
+      .accessInfo(
+        ResourceAccessInfo.builder()
+          .isCreator(true)
+          .creatorName("test-value")
+          .creatorEmail("test-value")
+          .role(ResourceAccessInfoRole.ADMIN)
+          .anonymousAccessLevelOverride(ResourceAccessInfoAnonymousAccessLevelOverride.ADMIN)
+          .accessSource(ResourceAccessInfoAccessSource.CREATOR)
+          .build()
+      )
+      .tags(java.util.List.of("test-value"))
+      .versionId("test-value")
+      .branchId("test-value")
+      .mainBranchId("test-value")
+      .procedures(
+        java.util.Map.of(
+          "key",
+          ProcedureRefResponseModel.builder()
+            .procedureId("test-value")
+            .versionId("test-value")
+            .name("test-value")
+            .type(ProcedureType.FREE_FORM)
+            .trigger("test-value")
+            .referencedToolIds(java.util.List.of("test-value"))
+            .referencedKbIds(java.util.List.of("test-value"))
+            .referencedProcedureIds(java.util.List.of("test-value"))
+            .referencedDynamicVariables(java.util.List.of("test-value"))
+            .writtenDynamicVariables(java.util.List.of("test-value"))
+            .folderParentId("test-value")
+            .build()
+        )
+      )
+      .defaultHoldAudioUrl("test-value")
+      .overriddenFields(java.util.List.of("test-value"))
+      .conflicts(
+        java.util.List.of(
+          FieldConflict.builder()
+            .path("test-value")
+            .section(ConflictSection.CONVERSATION_CONFIG)
+            .baseValue((Object) null)
+            .sourceValue((Object) null)
+            .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
+            .build()
+        )
+      )
+      .sourceIdenticalToTarget(true)
+      .sourceTipVersionId((String) null)
+      .targetTipVersionId("test-value")
+      .mergeError("test-value")
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      MergePreviewResponseModel.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_targetTipVersionId() throws Exception {
+    MergePreviewResponseModel value = MergePreviewResponseModel.builder()
+      .agentId("test-value")
+      .name("test-value")
+      .conversationConfig(
+        ConversationalConfig.builder()
+          .asr(AsrConversationalConfig.builder().build())
+          .turn(TurnConfig.builder().build())
+          .tts(TtsConversationalConfigInput.builder().build())
+          .conversation(ConversationConfigInput.builder().build())
+          .languagePresets(
+            java.util.Map.of(
+              "key",
+              LanguagePresetInput.builder()
+                .overrides(ConversationConfigClientOverrideInput.builder().build())
+                .build()
+            )
+          )
+          .vad(VadConfig.builder().build())
+          .agent(AgentConfig.builder().build())
+          .build()
+      )
+      .metadata(
+        AgentMetadataResponseModel.builder().createdAtUnixSecs(1).updatedAtUnixSecs(1).build()
+      )
+      .platformSettings(
+        AgentPlatformSettingsResponseModel.builder()
+          .evaluation(EvaluationSettingsOutput.builder().build())
+          .widget(WidgetConfig.builder().build())
+          .dataCollection(
+            java.util.Map.of(
+              "key",
+              AnalysisProperty.builder().type(AnalysisPropertyType.BOOLEAN).build()
+            )
+          )
+          .dataCollectionScopes(java.util.Map.of("key", AnalysisScope.CONVERSATION))
+          .analysisItems(AgentAnalysisItemsOutput.builder().build())
+          .overrides(ConversationInitiationClientDataConfigOutput.builder().build())
+          .workspaceOverrides(AgentWorkspaceOverridesOutput.builder().build())
+          .testing(AgentTestingSettings.builder().build())
+          .archived(true)
+          .guardrails(GuardrailsV1Output.builder().build())
+          .summaryLanguage("test-value")
+          .autoTranslateTranscriptToAppLanguage(true)
+          .auth(AuthSettings.builder().build())
+          .callLimits(AgentCallLimits.builder().build())
+          .queueingConfig(AgentQueueingConfig.builder().build())
+          .privacy(PrivacyConfigOutput.builder().build())
+          .trustContext(AgentTrustContext.UNKNOWN)
+          .analysisLlm(Llm.GPT_4_O_MINI)
+          .topicDiscovery(TopicDiscoverySettings.builder().build())
+          .sentimentAnalysis(SentimentAnalysisSettings.builder().build())
+          .alerting(AlertingSettingsResponse.builder().build())
+          .safety(SafetyResponseModel.builder().build())
+          .build()
+      )
+      .phoneNumbers(
+        java.util.List.of(
+          MergePreviewResponseModelPhoneNumbersItem.twilio(
+            GetPhoneNumberTwilioResponseModel.builder()
+              .phoneNumber("test-value")
+              .label("test-value")
+              .phoneNumberId("test-value")
+              .build()
+          )
+        )
+      )
+      .whatsappAccounts(
+        java.util.List.of(
+          GetWhatsAppAccountResponse.builder()
+            .businessAccountId("test-value")
+            .phoneNumberId("test-value")
+            .businessAccountName("test-value")
+            .phoneNumberName("test-value")
+            .phoneNumber("test-value")
+            .accountType(WhatsAppAccountType.CLOUD_API)
+            .assignedAgentId("test-value")
+            .enableMessaging(true)
+            .enableAudioMessageResponse(true)
+            .enableTypingIndicator(true)
+            .assignedAgentName("test-value")
+            .isTokenExpired(true)
+            .build()
+        )
+      )
+      .workflow(
+        AgentWorkflowResponseModel.builder()
+          .preventSubagentLoops(true)
+          .edges(
+            java.util.Map.of(
+              "key",
+              WorkflowEdgeModelOutput.builder().source("test-value").target("test-value").build()
+            )
+          )
+          .nodes(
+            java.util.Map.of(
+              "key",
+              AgentWorkflowResponseModelNodesValue.start(
+                WorkflowStartNodeModelOutput.builder()
+                  .position(PositionOutput.builder().x(1d).y(1d).build())
+                  .build()
+              )
+            )
+          )
+          .build()
+      )
+      .accessInfo(
+        ResourceAccessInfo.builder()
+          .isCreator(true)
+          .creatorName("test-value")
+          .creatorEmail("test-value")
+          .role(ResourceAccessInfoRole.ADMIN)
+          .anonymousAccessLevelOverride(ResourceAccessInfoAnonymousAccessLevelOverride.ADMIN)
+          .accessSource(ResourceAccessInfoAccessSource.CREATOR)
+          .build()
+      )
+      .tags(java.util.List.of("test-value"))
+      .versionId("test-value")
+      .branchId("test-value")
+      .mainBranchId("test-value")
+      .procedures(
+        java.util.Map.of(
+          "key",
+          ProcedureRefResponseModel.builder()
+            .procedureId("test-value")
+            .versionId("test-value")
+            .name("test-value")
+            .type(ProcedureType.FREE_FORM)
+            .trigger("test-value")
+            .referencedToolIds(java.util.List.of("test-value"))
+            .referencedKbIds(java.util.List.of("test-value"))
+            .referencedProcedureIds(java.util.List.of("test-value"))
+            .referencedDynamicVariables(java.util.List.of("test-value"))
+            .writtenDynamicVariables(java.util.List.of("test-value"))
+            .folderParentId("test-value")
+            .build()
+        )
+      )
+      .defaultHoldAudioUrl("test-value")
+      .overriddenFields(java.util.List.of("test-value"))
+      .conflicts(
+        java.util.List.of(
+          FieldConflict.builder()
+            .path("test-value")
+            .section(ConflictSection.CONVERSATION_CONFIG)
+            .baseValue((Object) null)
+            .sourceValue((Object) null)
+            .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
+            .build()
+        )
+      )
+      .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .mergeError("test-value")
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      MergePreviewResponseModel.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_targetTipVersionId() throws Exception {
+    MergePreviewResponseModel value = MergePreviewResponseModel.builder()
+      .agentId("test-value")
+      .name("test-value")
+      .conversationConfig(
+        ConversationalConfig.builder()
+          .asr(AsrConversationalConfig.builder().build())
+          .turn(TurnConfig.builder().build())
+          .tts(TtsConversationalConfigInput.builder().build())
+          .conversation(ConversationConfigInput.builder().build())
+          .languagePresets(
+            java.util.Map.of(
+              "key",
+              LanguagePresetInput.builder()
+                .overrides(ConversationConfigClientOverrideInput.builder().build())
+                .build()
+            )
+          )
+          .vad(VadConfig.builder().build())
+          .agent(AgentConfig.builder().build())
+          .build()
+      )
+      .metadata(
+        AgentMetadataResponseModel.builder().createdAtUnixSecs(1).updatedAtUnixSecs(1).build()
+      )
+      .platformSettings(
+        AgentPlatformSettingsResponseModel.builder()
+          .evaluation(EvaluationSettingsOutput.builder().build())
+          .widget(WidgetConfig.builder().build())
+          .dataCollection(
+            java.util.Map.of(
+              "key",
+              AnalysisProperty.builder().type(AnalysisPropertyType.BOOLEAN).build()
+            )
+          )
+          .dataCollectionScopes(java.util.Map.of("key", AnalysisScope.CONVERSATION))
+          .analysisItems(AgentAnalysisItemsOutput.builder().build())
+          .overrides(ConversationInitiationClientDataConfigOutput.builder().build())
+          .workspaceOverrides(AgentWorkspaceOverridesOutput.builder().build())
+          .testing(AgentTestingSettings.builder().build())
+          .archived(true)
+          .guardrails(GuardrailsV1Output.builder().build())
+          .summaryLanguage("test-value")
+          .autoTranslateTranscriptToAppLanguage(true)
+          .auth(AuthSettings.builder().build())
+          .callLimits(AgentCallLimits.builder().build())
+          .queueingConfig(AgentQueueingConfig.builder().build())
+          .privacy(PrivacyConfigOutput.builder().build())
+          .trustContext(AgentTrustContext.UNKNOWN)
+          .analysisLlm(Llm.GPT_4_O_MINI)
+          .topicDiscovery(TopicDiscoverySettings.builder().build())
+          .sentimentAnalysis(SentimentAnalysisSettings.builder().build())
+          .alerting(AlertingSettingsResponse.builder().build())
+          .safety(SafetyResponseModel.builder().build())
+          .build()
+      )
+      .phoneNumbers(
+        java.util.List.of(
+          MergePreviewResponseModelPhoneNumbersItem.twilio(
+            GetPhoneNumberTwilioResponseModel.builder()
+              .phoneNumber("test-value")
+              .label("test-value")
+              .phoneNumberId("test-value")
+              .build()
+          )
+        )
+      )
+      .whatsappAccounts(
+        java.util.List.of(
+          GetWhatsAppAccountResponse.builder()
+            .businessAccountId("test-value")
+            .phoneNumberId("test-value")
+            .businessAccountName("test-value")
+            .phoneNumberName("test-value")
+            .phoneNumber("test-value")
+            .accountType(WhatsAppAccountType.CLOUD_API)
+            .assignedAgentId("test-value")
+            .enableMessaging(true)
+            .enableAudioMessageResponse(true)
+            .enableTypingIndicator(true)
+            .assignedAgentName("test-value")
+            .isTokenExpired(true)
+            .build()
+        )
+      )
+      .workflow(
+        AgentWorkflowResponseModel.builder()
+          .preventSubagentLoops(true)
+          .edges(
+            java.util.Map.of(
+              "key",
+              WorkflowEdgeModelOutput.builder().source("test-value").target("test-value").build()
+            )
+          )
+          .nodes(
+            java.util.Map.of(
+              "key",
+              AgentWorkflowResponseModelNodesValue.start(
+                WorkflowStartNodeModelOutput.builder()
+                  .position(PositionOutput.builder().x(1d).y(1d).build())
+                  .build()
+              )
+            )
+          )
+          .build()
+      )
+      .accessInfo(
+        ResourceAccessInfo.builder()
+          .isCreator(true)
+          .creatorName("test-value")
+          .creatorEmail("test-value")
+          .role(ResourceAccessInfoRole.ADMIN)
+          .anonymousAccessLevelOverride(ResourceAccessInfoAnonymousAccessLevelOverride.ADMIN)
+          .accessSource(ResourceAccessInfoAccessSource.CREATOR)
+          .build()
+      )
+      .tags(java.util.List.of("test-value"))
+      .versionId("test-value")
+      .branchId("test-value")
+      .mainBranchId("test-value")
+      .procedures(
+        java.util.Map.of(
+          "key",
+          ProcedureRefResponseModel.builder()
+            .procedureId("test-value")
+            .versionId("test-value")
+            .name("test-value")
+            .type(ProcedureType.FREE_FORM)
+            .trigger("test-value")
+            .referencedToolIds(java.util.List.of("test-value"))
+            .referencedKbIds(java.util.List.of("test-value"))
+            .referencedProcedureIds(java.util.List.of("test-value"))
+            .referencedDynamicVariables(java.util.List.of("test-value"))
+            .writtenDynamicVariables(java.util.List.of("test-value"))
+            .folderParentId("test-value")
+            .build()
+        )
+      )
+      .defaultHoldAudioUrl("test-value")
+      .overriddenFields(java.util.List.of("test-value"))
+      .conflicts(
+        java.util.List.of(
+          FieldConflict.builder()
+            .path("test-value")
+            .section(ConflictSection.CONVERSATION_CONFIG)
+            .baseValue((Object) null)
+            .sourceValue((Object) null)
+            .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
+            .build()
+        )
+      )
+      .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId((String) null)
+      .mergeError("test-value")
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      MergePreviewResponseModel.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_mergeError() throws Exception {
+    MergePreviewResponseModel value = MergePreviewResponseModel.builder()
+      .agentId("test-value")
+      .name("test-value")
+      .conversationConfig(
+        ConversationalConfig.builder()
+          .asr(AsrConversationalConfig.builder().build())
+          .turn(TurnConfig.builder().build())
+          .tts(TtsConversationalConfigInput.builder().build())
+          .conversation(ConversationConfigInput.builder().build())
+          .languagePresets(
+            java.util.Map.of(
+              "key",
+              LanguagePresetInput.builder()
+                .overrides(ConversationConfigClientOverrideInput.builder().build())
+                .build()
+            )
+          )
+          .vad(VadConfig.builder().build())
+          .agent(AgentConfig.builder().build())
+          .build()
+      )
+      .metadata(
+        AgentMetadataResponseModel.builder().createdAtUnixSecs(1).updatedAtUnixSecs(1).build()
+      )
+      .platformSettings(
+        AgentPlatformSettingsResponseModel.builder()
+          .evaluation(EvaluationSettingsOutput.builder().build())
+          .widget(WidgetConfig.builder().build())
+          .dataCollection(
+            java.util.Map.of(
+              "key",
+              AnalysisProperty.builder().type(AnalysisPropertyType.BOOLEAN).build()
+            )
+          )
+          .dataCollectionScopes(java.util.Map.of("key", AnalysisScope.CONVERSATION))
+          .analysisItems(AgentAnalysisItemsOutput.builder().build())
+          .overrides(ConversationInitiationClientDataConfigOutput.builder().build())
+          .workspaceOverrides(AgentWorkspaceOverridesOutput.builder().build())
+          .testing(AgentTestingSettings.builder().build())
+          .archived(true)
+          .guardrails(GuardrailsV1Output.builder().build())
+          .summaryLanguage("test-value")
+          .autoTranslateTranscriptToAppLanguage(true)
+          .auth(AuthSettings.builder().build())
+          .callLimits(AgentCallLimits.builder().build())
+          .queueingConfig(AgentQueueingConfig.builder().build())
+          .privacy(PrivacyConfigOutput.builder().build())
+          .trustContext(AgentTrustContext.UNKNOWN)
+          .analysisLlm(Llm.GPT_4_O_MINI)
+          .topicDiscovery(TopicDiscoverySettings.builder().build())
+          .sentimentAnalysis(SentimentAnalysisSettings.builder().build())
+          .alerting(AlertingSettingsResponse.builder().build())
+          .safety(SafetyResponseModel.builder().build())
+          .build()
+      )
+      .phoneNumbers(
+        java.util.List.of(
+          MergePreviewResponseModelPhoneNumbersItem.twilio(
+            GetPhoneNumberTwilioResponseModel.builder()
+              .phoneNumber("test-value")
+              .label("test-value")
+              .phoneNumberId("test-value")
+              .build()
+          )
+        )
+      )
+      .whatsappAccounts(
+        java.util.List.of(
+          GetWhatsAppAccountResponse.builder()
+            .businessAccountId("test-value")
+            .phoneNumberId("test-value")
+            .businessAccountName("test-value")
+            .phoneNumberName("test-value")
+            .phoneNumber("test-value")
+            .accountType(WhatsAppAccountType.CLOUD_API)
+            .assignedAgentId("test-value")
+            .enableMessaging(true)
+            .enableAudioMessageResponse(true)
+            .enableTypingIndicator(true)
+            .assignedAgentName("test-value")
+            .isTokenExpired(true)
+            .build()
+        )
+      )
+      .workflow(
+        AgentWorkflowResponseModel.builder()
+          .preventSubagentLoops(true)
+          .edges(
+            java.util.Map.of(
+              "key",
+              WorkflowEdgeModelOutput.builder().source("test-value").target("test-value").build()
+            )
+          )
+          .nodes(
+            java.util.Map.of(
+              "key",
+              AgentWorkflowResponseModelNodesValue.start(
+                WorkflowStartNodeModelOutput.builder()
+                  .position(PositionOutput.builder().x(1d).y(1d).build())
+                  .build()
+              )
+            )
+          )
+          .build()
+      )
+      .accessInfo(
+        ResourceAccessInfo.builder()
+          .isCreator(true)
+          .creatorName("test-value")
+          .creatorEmail("test-value")
+          .role(ResourceAccessInfoRole.ADMIN)
+          .anonymousAccessLevelOverride(ResourceAccessInfoAnonymousAccessLevelOverride.ADMIN)
+          .accessSource(ResourceAccessInfoAccessSource.CREATOR)
+          .build()
+      )
+      .tags(java.util.List.of("test-value"))
+      .versionId("test-value")
+      .branchId("test-value")
+      .mainBranchId("test-value")
+      .procedures(
+        java.util.Map.of(
+          "key",
+          ProcedureRefResponseModel.builder()
+            .procedureId("test-value")
+            .versionId("test-value")
+            .name("test-value")
+            .type(ProcedureType.FREE_FORM)
+            .trigger("test-value")
+            .referencedToolIds(java.util.List.of("test-value"))
+            .referencedKbIds(java.util.List.of("test-value"))
+            .referencedProcedureIds(java.util.List.of("test-value"))
+            .referencedDynamicVariables(java.util.List.of("test-value"))
+            .writtenDynamicVariables(java.util.List.of("test-value"))
+            .folderParentId("test-value")
+            .build()
+        )
+      )
+      .defaultHoldAudioUrl("test-value")
+      .overriddenFields(java.util.List.of("test-value"))
+      .conflicts(
+        java.util.List.of(
+          FieldConflict.builder()
+            .path("test-value")
+            .section(ConflictSection.CONVERSATION_CONFIG)
+            .baseValue((Object) null)
+            .sourceValue((Object) null)
+            .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
+            .build()
+        )
+      )
+      .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      MergePreviewResponseModel.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_mergeError() throws Exception {
+    MergePreviewResponseModel value = MergePreviewResponseModel.builder()
+      .agentId("test-value")
+      .name("test-value")
+      .conversationConfig(
+        ConversationalConfig.builder()
+          .asr(AsrConversationalConfig.builder().build())
+          .turn(TurnConfig.builder().build())
+          .tts(TtsConversationalConfigInput.builder().build())
+          .conversation(ConversationConfigInput.builder().build())
+          .languagePresets(
+            java.util.Map.of(
+              "key",
+              LanguagePresetInput.builder()
+                .overrides(ConversationConfigClientOverrideInput.builder().build())
+                .build()
+            )
+          )
+          .vad(VadConfig.builder().build())
+          .agent(AgentConfig.builder().build())
+          .build()
+      )
+      .metadata(
+        AgentMetadataResponseModel.builder().createdAtUnixSecs(1).updatedAtUnixSecs(1).build()
+      )
+      .platformSettings(
+        AgentPlatformSettingsResponseModel.builder()
+          .evaluation(EvaluationSettingsOutput.builder().build())
+          .widget(WidgetConfig.builder().build())
+          .dataCollection(
+            java.util.Map.of(
+              "key",
+              AnalysisProperty.builder().type(AnalysisPropertyType.BOOLEAN).build()
+            )
+          )
+          .dataCollectionScopes(java.util.Map.of("key", AnalysisScope.CONVERSATION))
+          .analysisItems(AgentAnalysisItemsOutput.builder().build())
+          .overrides(ConversationInitiationClientDataConfigOutput.builder().build())
+          .workspaceOverrides(AgentWorkspaceOverridesOutput.builder().build())
+          .testing(AgentTestingSettings.builder().build())
+          .archived(true)
+          .guardrails(GuardrailsV1Output.builder().build())
+          .summaryLanguage("test-value")
+          .autoTranslateTranscriptToAppLanguage(true)
+          .auth(AuthSettings.builder().build())
+          .callLimits(AgentCallLimits.builder().build())
+          .queueingConfig(AgentQueueingConfig.builder().build())
+          .privacy(PrivacyConfigOutput.builder().build())
+          .trustContext(AgentTrustContext.UNKNOWN)
+          .analysisLlm(Llm.GPT_4_O_MINI)
+          .topicDiscovery(TopicDiscoverySettings.builder().build())
+          .sentimentAnalysis(SentimentAnalysisSettings.builder().build())
+          .alerting(AlertingSettingsResponse.builder().build())
+          .safety(SafetyResponseModel.builder().build())
+          .build()
+      )
+      .phoneNumbers(
+        java.util.List.of(
+          MergePreviewResponseModelPhoneNumbersItem.twilio(
+            GetPhoneNumberTwilioResponseModel.builder()
+              .phoneNumber("test-value")
+              .label("test-value")
+              .phoneNumberId("test-value")
+              .build()
+          )
+        )
+      )
+      .whatsappAccounts(
+        java.util.List.of(
+          GetWhatsAppAccountResponse.builder()
+            .businessAccountId("test-value")
+            .phoneNumberId("test-value")
+            .businessAccountName("test-value")
+            .phoneNumberName("test-value")
+            .phoneNumber("test-value")
+            .accountType(WhatsAppAccountType.CLOUD_API)
+            .assignedAgentId("test-value")
+            .enableMessaging(true)
+            .enableAudioMessageResponse(true)
+            .enableTypingIndicator(true)
+            .assignedAgentName("test-value")
+            .isTokenExpired(true)
+            .build()
+        )
+      )
+      .workflow(
+        AgentWorkflowResponseModel.builder()
+          .preventSubagentLoops(true)
+          .edges(
+            java.util.Map.of(
+              "key",
+              WorkflowEdgeModelOutput.builder().source("test-value").target("test-value").build()
+            )
+          )
+          .nodes(
+            java.util.Map.of(
+              "key",
+              AgentWorkflowResponseModelNodesValue.start(
+                WorkflowStartNodeModelOutput.builder()
+                  .position(PositionOutput.builder().x(1d).y(1d).build())
+                  .build()
+              )
+            )
+          )
+          .build()
+      )
+      .accessInfo(
+        ResourceAccessInfo.builder()
+          .isCreator(true)
+          .creatorName("test-value")
+          .creatorEmail("test-value")
+          .role(ResourceAccessInfoRole.ADMIN)
+          .anonymousAccessLevelOverride(ResourceAccessInfoAnonymousAccessLevelOverride.ADMIN)
+          .accessSource(ResourceAccessInfoAccessSource.CREATOR)
+          .build()
+      )
+      .tags(java.util.List.of("test-value"))
+      .versionId("test-value")
+      .branchId("test-value")
+      .mainBranchId("test-value")
+      .procedures(
+        java.util.Map.of(
+          "key",
+          ProcedureRefResponseModel.builder()
+            .procedureId("test-value")
+            .versionId("test-value")
+            .name("test-value")
+            .type(ProcedureType.FREE_FORM)
+            .trigger("test-value")
+            .referencedToolIds(java.util.List.of("test-value"))
+            .referencedKbIds(java.util.List.of("test-value"))
+            .referencedProcedureIds(java.util.List.of("test-value"))
+            .referencedDynamicVariables(java.util.List.of("test-value"))
+            .writtenDynamicVariables(java.util.List.of("test-value"))
+            .folderParentId("test-value")
+            .build()
+        )
+      )
+      .defaultHoldAudioUrl("test-value")
+      .overriddenFields(java.util.List.of("test-value"))
+      .conflicts(
+        java.util.List.of(
+          FieldConflict.builder()
+            .path("test-value")
+            .section(ConflictSection.CONVERSATION_CONFIG)
+            .baseValue((Object) null)
+            .sourceValue((Object) null)
+            .targetValue((Object) null)
+            .id("test-value")
+            .acceptsCustomValue(true)
+            .build()
+        )
+      )
+      .sourceIdenticalToTarget(true)
+      .sourceTipVersionId("test-value")
+      .targetTipVersionId("test-value")
+      .mergeError((String) null)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     MergePreviewResponseModel roundTripped = ObjectMappers.JSON_MAPPER.readValue(

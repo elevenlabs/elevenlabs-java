@@ -113,6 +113,24 @@ public class SummariesClient {
   /**
    * Gets multiple knowledge base document summaries by their IDs.
    *
+   * @return response of {@code Map<String, GetSummariesResponse>}
+   */
+  public Map<String, GetSummariesResponse> get() {
+    return this.get(GetSummariesRequest.builder().build());
+  }
+
+  /**
+   * Gets multiple knowledge base document summaries by their IDs.
+   *
+   * @return response of {@code Map<String, GetSummariesResponse>}
+   */
+  public Map<String, GetSummariesResponse> get(RequestOptions requestOptions) {
+    return this.get(GetSummariesRequest.builder().build(), requestOptions);
+  }
+
+  /**
+   * Gets multiple knowledge base document summaries by their IDs.
+   *
    * @param requestParameters {@link GetSummariesRequest} Request Parameters Object
    * @return response of {@code Map<String, GetSummariesResponse>}
    */
@@ -144,7 +162,7 @@ public class SummariesClient {
     )
       .setHeader("Accept", "application/json")
       .applyRequestConfig(resolvedConfig)
-      .setQueryParameter("document_ids", requestParameters.getDocumentIds())
+      .setOptionalQueryParameter("document_ids", requestParameters.getDocumentIds().orElse(null))
       .build();
   }
 
@@ -163,6 +181,26 @@ public class SummariesClient {
    * Reuses the enclosing service's request builders and configuration.
    */
   public class WithRawResponse {
+
+    /**
+     * Gets multiple knowledge base document summaries by their IDs.
+     *
+     * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
+     */
+    public ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>> get() {
+      return this.get(GetSummariesRequest.builder().build());
+    }
+
+    /**
+     * Gets multiple knowledge base document summaries by their IDs.
+     *
+     * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
+     */
+    public ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>> get(
+      RequestOptions requestOptions
+    ) {
+      return this.get(GetSummariesRequest.builder().build(), requestOptions);
+    }
 
     /**
      * Gets multiple knowledge base document summaries by their IDs.

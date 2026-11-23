@@ -41,8 +41,8 @@ public class GetSummariesRequestValidator1 extends AbstractModelValidator<GetSum
         new ListValidator<String>("documentIds")
           .minLength(1)
           .maxLength(100)
-          .required()
-          .validate(requestParameters.getDocumentIds())
+          .optional()
+          .validate(requestParameters.getDocumentIds().orElse(null))
       )
       .aggregate();
   }

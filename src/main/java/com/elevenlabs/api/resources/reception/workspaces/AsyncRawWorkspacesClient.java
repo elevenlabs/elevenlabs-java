@@ -13,7 +13,7 @@ import com.elevenlabs.api.core.RequestOptions;
 import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.resources.reception.workspaces.requests.CompleteOnboardingWorkspacesRequest;
 import com.elevenlabs.api.resources.reception.workspaces.requests.ListWorkspacesRequest;
-import com.elevenlabs.api.resources.reception.workspaces.requests.ProvisionResellerWorkspaceRequest;
+import com.elevenlabs.api.resources.reception.workspaces.requests.ReceptionProvisionResellerWorkspaceRequest;
 import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.ProvisionResellerWorkspaceResponse;
 import com.elevenlabs.api.types.ResellerWorkspaceOnboardingResponse;
@@ -89,26 +89,26 @@ public class AsyncRawWorkspacesClient {
   /**
    * Create a workspace for one of your customers, optionally with a tier, a phone number and team invites.
    *
-   * @param provisionResellerWorkspaceRequest {@link ProvisionResellerWorkspaceRequest} Request Body
+   * @param receptionProvisionResellerWorkspaceRequest {@link ReceptionProvisionResellerWorkspaceRequest} Request Body
    * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>>}
    */
   public CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>> create(
-    ProvisionResellerWorkspaceRequest provisionResellerWorkspaceRequest
+    ReceptionProvisionResellerWorkspaceRequest receptionProvisionResellerWorkspaceRequest
   ) {
-    return this.create(provisionResellerWorkspaceRequest, null);
+    return this.create(receptionProvisionResellerWorkspaceRequest, null);
   }
 
   /**
    * Create a workspace for one of your customers, optionally with a tier, a phone number and team invites.
    *
-   * @param provisionResellerWorkspaceRequest {@link ProvisionResellerWorkspaceRequest} Request Body
+   * @param receptionProvisionResellerWorkspaceRequest {@link ReceptionProvisionResellerWorkspaceRequest} Request Body
    * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>>}
    */
   public CompletableFuture<ElevenlabsApiHttpResponse<ProvisionResellerWorkspaceResponse>> create(
-    ProvisionResellerWorkspaceRequest provisionResellerWorkspaceRequest,
+    ReceptionProvisionResellerWorkspaceRequest receptionProvisionResellerWorkspaceRequest,
     RequestOptions requestOptions
   ) {
-    return delegate.create(provisionResellerWorkspaceRequest, requestOptions);
+    return delegate.create(receptionProvisionResellerWorkspaceRequest, requestOptions);
   }
 
   /**

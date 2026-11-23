@@ -60,13 +60,13 @@ public final class StringSchema {
   }
 
   @JsonIgnore
-  public Optional<List<String>> getEnum_() {
+  public Optional<List<String>> getEnum() {
     return enum_ == null ? Optional.empty() : enum_;
   }
 
   @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
   @JsonProperty("enum")
-  private Optional<List<String>> _getEnum_() {
+  private Optional<List<String>> _getEnum() {
     return enum_;
   }
 
@@ -121,7 +121,7 @@ public final class StringSchema {
     public Builder from(StringSchema other) {
       title(other.getTitle());
       description(other.getDescription());
-      enum_(other.getEnum_());
+      enum_(other.getEnum());
       return this;
     }
 

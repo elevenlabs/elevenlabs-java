@@ -23,6 +23,8 @@ class FieldConflictTest {
       .baseValue((Object) null)
       .sourceValue((Object) null)
       .targetValue((Object) null)
+      .id("test-value")
+      .acceptsCustomValue(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     FieldConflict roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, FieldConflict.class);
@@ -36,6 +38,8 @@ class FieldConflictTest {
       .section(ConflictSection.CONVERSATION_CONFIG)
       .sourceValue((Object) null)
       .targetValue((Object) null)
+      .id("test-value")
+      .acceptsCustomValue(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     FieldConflict roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, FieldConflict.class);
@@ -49,6 +53,8 @@ class FieldConflictTest {
       .section(ConflictSection.CONVERSATION_CONFIG)
       .baseValue((Object) null)
       .targetValue((Object) null)
+      .id("test-value")
+      .acceptsCustomValue(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     FieldConflict roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, FieldConflict.class);
@@ -62,6 +68,38 @@ class FieldConflictTest {
       .section(ConflictSection.CONVERSATION_CONFIG)
       .baseValue((Object) null)
       .sourceValue((Object) null)
+      .id("test-value")
+      .acceptsCustomValue(true)
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    FieldConflict roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, FieldConflict.class);
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_id() throws Exception {
+    FieldConflict value = FieldConflict.builder()
+      .path("test-value")
+      .section(ConflictSection.CONVERSATION_CONFIG)
+      .baseValue((Object) null)
+      .sourceValue((Object) null)
+      .targetValue((Object) null)
+      .acceptsCustomValue(true)
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    FieldConflict roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, FieldConflict.class);
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_acceptsCustomValue() throws Exception {
+    FieldConflict value = FieldConflict.builder()
+      .path("test-value")
+      .section(ConflictSection.CONVERSATION_CONFIG)
+      .baseValue((Object) null)
+      .sourceValue((Object) null)
+      .targetValue((Object) null)
+      .id("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     FieldConflict roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, FieldConflict.class);

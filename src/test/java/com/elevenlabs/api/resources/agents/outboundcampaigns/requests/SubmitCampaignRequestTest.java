@@ -11,6 +11,7 @@ import com.elevenlabs.api.types.CallingPeriod;
 import com.elevenlabs.api.types.CampaignVariant;
 import com.elevenlabs.api.types.ConversationInitiationClientDataRequestInput;
 import com.elevenlabs.api.types.DataCollectionConfig;
+import com.elevenlabs.api.types.DateOverride;
 import com.elevenlabs.api.types.FollowupContextPolicy;
 import com.elevenlabs.api.types.PhoneChannelConfigInput;
 import com.elevenlabs.api.types.PolicyConfigInput;
@@ -59,6 +60,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -106,6 +112,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -154,6 +165,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -201,6 +217,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -249,6 +270,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -296,6 +322,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -344,6 +375,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -391,6 +427,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -439,6 +480,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -486,6 +532,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -534,6 +585,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -581,6 +637,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -629,6 +690,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -716,6 +782,11 @@ class SubmitCampaignRequestTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()

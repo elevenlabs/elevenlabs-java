@@ -12,12 +12,12 @@ import com.elevenlabs.api.core.ObjectMappers;
 import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.resources.agents.branches.requests.BodyCreateANewBranchV1ConvaiAgentsAgentIdBranchesPost;
 import com.elevenlabs.api.resources.agents.branches.requests.BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranchesSourceBranchIdMergePost;
+import com.elevenlabs.api.resources.agents.branches.requests.BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost;
 import com.elevenlabs.api.resources.agents.branches.requests.BodyUpdateAgentBranchV1ConvaiAgentsAgentIdBranchesBranchIdPatch;
 import com.elevenlabs.api.resources.agents.branches.requests.GetBranchesRequest;
 import com.elevenlabs.api.resources.agents.branches.requests.ListBranchesRequest;
 import com.elevenlabs.api.resources.agents.branches.requests.PreviewMergeBranchesRequest;
 import com.elevenlabs.api.resources.agents.branches.requests.PreviewRebaseBranchesRequest;
-import com.elevenlabs.api.resources.agents.branches.requests.RebaseBranchesRequest;
 import com.elevenlabs.api.types.AgentBranchBasicInfo;
 import com.elevenlabs.api.types.AgentBranchResponse;
 import com.elevenlabs.api.types.AgentBranchSummary;
@@ -27,9 +27,10 @@ import com.elevenlabs.api.types.AgentVersionMetadata;
 import com.elevenlabs.api.types.AgentVersionParents;
 import com.elevenlabs.api.types.AgentWorkflowRequestModel;
 import com.elevenlabs.api.types.AgentWorkflowResponseModel;
-import com.elevenlabs.api.types.BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost;
 import com.elevenlabs.api.types.BranchProtectionStatus;
 import com.elevenlabs.api.types.BranchSyncStatus;
+import com.elevenlabs.api.types.ConflictResolution;
+import com.elevenlabs.api.types.ConflictResolutionChoice;
 import com.elevenlabs.api.types.ConflictSection;
 import com.elevenlabs.api.types.ConversationalConfig;
 import com.elevenlabs.api.types.CreateAgentBranchResponseModel;
@@ -629,6 +630,9 @@ class BranchesClientWireTest {
                 )
               )
               .sourceIdenticalToTarget(true)
+              .sourceTipVersionId("test-value")
+              .targetTipVersionId("test-value")
+              .mergeError("test-value")
               .build()
           )
         )
@@ -706,6 +710,9 @@ class BranchesClientWireTest {
             )
           )
           .sourceIdenticalToTarget(true)
+          .sourceTipVersionId("test-value")
+          .targetTipVersionId("test-value")
+          .mergeError("test-value")
           .build()
       ),
       ObjectMappers.JSON_MAPPER.writeValueAsString(result)
@@ -776,6 +783,16 @@ class BranchesClientWireTest {
         .targetBranchId("test-value")
         .archiveSourceBranch(true)
         .force(true)
+        .conflictResolutions(
+          java.util.List.of(
+            ConflictResolution.builder()
+              .conflictId("test-value")
+              .choice(ConflictResolutionChoice.SOURCE)
+              .build()
+          )
+        )
+        .sourceTipId("test-value")
+        .targetTipId("test-value")
         .build()
     );
     assertEquals(
@@ -819,6 +836,16 @@ class BranchesClientWireTest {
           .targetBranchId("test-value")
           .archiveSourceBranch(true)
           .force(true)
+          .conflictResolutions(
+            java.util.List.of(
+              ConflictResolution.builder()
+                .conflictId("test-value")
+                .choice(ConflictResolutionChoice.SOURCE)
+                .build()
+            )
+          )
+          .sourceTipId("test-value")
+          .targetTipId("test-value")
           .build()
       )
     );
@@ -895,6 +922,9 @@ class BranchesClientWireTest {
                 )
               )
               .sourceIdenticalToTarget(true)
+              .sourceTipVersionId("test-value")
+              .targetTipVersionId("test-value")
+              .mergeError("test-value")
               .build()
           )
         )
@@ -971,6 +1001,9 @@ class BranchesClientWireTest {
             )
           )
           .sourceIdenticalToTarget(true)
+          .sourceTipVersionId("test-value")
+          .targetTipVersionId("test-value")
+          .mergeError("test-value")
           .build()
       ),
       ObjectMappers.JSON_MAPPER.writeValueAsString(result)
@@ -1035,11 +1068,18 @@ class BranchesClientWireTest {
     Object result = client.rebase(
       "test-value",
       "test-value",
-      RebaseBranchesRequest.builder()
+      BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder()
         .sourceBranchId("test-value")
-        .body(
-          BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder().build()
+        .conflictResolutions(
+          java.util.List.of(
+            ConflictResolution.builder()
+              .conflictId("test-value")
+              .choice(ConflictResolutionChoice.SOURCE)
+              .build()
+          )
         )
+        .branchTipId("test-value")
+        .sourceTipId("test-value")
         .build()
     );
     assertEquals(
@@ -1054,12 +1094,6 @@ class BranchesClientWireTest {
       recordedRequest.getPath().contains("/v1/convai/agents/test-value/branches/test-value/rebase")
     );
     assertEquals(true, recordedRequest.getPath().contains("source_branch_id=test-value"));
-    assertJsonEquals(
-      ObjectMappers.JSON_MAPPER.writeValueAsString(
-        BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder().build()
-      ),
-      recordedRequest.getBody().readUtf8()
-    );
   }
 
   @Test
@@ -1085,12 +1119,18 @@ class BranchesClientWireTest {
       client.rebase(
         "test-value",
         "test-value",
-        RebaseBranchesRequest.builder()
+        BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder()
           .sourceBranchId("test-value")
-          .body(
-            BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost.builder()
-              .build()
+          .conflictResolutions(
+            java.util.List.of(
+              ConflictResolution.builder()
+                .conflictId("test-value")
+                .choice(ConflictResolutionChoice.SOURCE)
+                .build()
+            )
           )
+          .branchTipId("test-value")
+          .sourceTipId("test-value")
           .build()
       )
     );

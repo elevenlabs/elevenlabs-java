@@ -9,20 +9,21 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonDeserialize(builder = GetSummariesRequest.Builder.class)
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public final class GetSummariesRequest {
 
-  private final List<String> agentIds;
+  private final Optional<List<String>> agentIds;
   private final Map<String, Object> additionalProperties;
 
   private GetSummariesRequest(Builder builder) {
@@ -34,7 +35,7 @@ public final class GetSummariesRequest {
    * @return List of agent IDs to fetch summaries for
    */
   @JsonIgnore
-  public List<String> getAgentIds() {
+  public Optional<List<String>> getAgentIds() {
     return agentIds;
   }
 
@@ -68,7 +69,7 @@ public final class GetSummariesRequest {
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class Builder {
 
-    private List<String> agentIds = new ArrayList<>();
+    private Optional<List<String>> agentIds = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -81,23 +82,13 @@ public final class GetSummariesRequest {
     }
 
     @JsonSetter(value = "agent_ids", nulls = Nulls.SKIP)
+    public Builder agentIds(Optional<List<String>> agentIds) {
+      this.agentIds = agentIds;
+      return this;
+    }
+
     public Builder agentIds(List<String> agentIds) {
-      this.agentIds.clear();
-      if (agentIds != null) {
-        this.agentIds.addAll(agentIds);
-      }
-      return this;
-    }
-
-    public Builder addAgentIds(String agentIds) {
-      this.agentIds.add(agentIds);
-      return this;
-    }
-
-    public Builder addAllAgentIds(List<String> agentIds) {
-      if (agentIds != null) {
-        this.agentIds.addAll(agentIds);
-      }
+      this.agentIds = Optional.ofNullable(agentIds);
       return this;
     }
 

@@ -21,6 +21,10 @@ public final class AsrProvider {
     Value.SCRIBE_V_3_LIVE,
     "scribe_v3_live"
   );
+  public static final AsrProvider SCRIBE_V_3_LIVE_MEDICAL = new AsrProvider(
+    Value.SCRIBE_V_3_LIVE_MEDICAL,
+    "scribe_v3_live_medical"
+  );
 
   private final Value value;
 
@@ -64,6 +68,8 @@ public final class AsrProvider {
         return visitor.visitScribeV2Turbo();
       case SCRIBE_V_3_LIVE:
         return visitor.visitScribeV3Live();
+      case SCRIBE_V_3_LIVE_MEDICAL:
+        return visitor.visitScribeV3LiveMedical();
       case UNKNOWN:
       default:
         return visitor.visitUnknown(string);
@@ -84,6 +90,8 @@ public final class AsrProvider {
         return SCRIBE_V_2_TURBO;
       case "scribe_v3_live":
         return SCRIBE_V_3_LIVE;
+      case "scribe_v3_live_medical":
+        return SCRIBE_V_3_LIVE_MEDICAL;
       default:
         return new AsrProvider(Value.UNKNOWN, value);
     }
@@ -94,6 +102,7 @@ public final class AsrProvider {
     SCRIBE_REALTIME,
     SCRIBE_V_2_TURBO,
     SCRIBE_V_3_LIVE,
+    SCRIBE_V_3_LIVE_MEDICAL,
     UNKNOWN,
   }
 
@@ -102,6 +111,7 @@ public final class AsrProvider {
     T visitScribeRealtime();
     T visitScribeV2Turbo();
     T visitScribeV3Live();
+    T visitScribeV3LiveMedical();
     T visitUnknown(String unknownType);
   }
 }

@@ -41,6 +41,26 @@ public class AsyncRawSummariesClient {
   /**
    * Returns summaries for the specified agents.
    *
+   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
+   */
+  public CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>> get() {
+    return this.get(GetSummariesRequest.builder().build());
+  }
+
+  /**
+   * Returns summaries for the specified agents.
+   *
+   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
+   */
+  public CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>> get(
+    RequestOptions requestOptions
+  ) {
+    return this.get(GetSummariesRequest.builder().build(), requestOptions);
+  }
+
+  /**
+   * Returns summaries for the specified agents.
+   *
    * @param requestParameters {@link GetSummariesRequest} Request Parameters Object
    * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
    */

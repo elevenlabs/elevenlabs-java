@@ -6,9 +6,12 @@ package com.elevenlabs.api;
 import com.elevenlabs.api.core.ClientOptions;
 import com.elevenlabs.api.core.Environment;
 import com.elevenlabs.api.core.LogConfig;
+import java.time.Duration;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
+import java.util.Set;
 import okhttp3.OkHttpClient;
 
 /** Fern-compatible builder for {@link AsyncElevenlabsApiClient}. */
@@ -16,6 +19,9 @@ public class AsyncElevenlabsApiClientBuilder {
 
   private Optional<Integer> timeout = Optional.empty();
   private Optional<Integer> maxRetries = Optional.empty();
+  private Optional<Integer> maxConcurrentRequests = Optional.empty();
+  private Optional<Set<Integer>> retryOnStatusCodes = Optional.empty();
+  private Optional<List<Duration>> retryDelays = Optional.empty();
   private Optional<Long> initialRetryDelayMillis = Optional.empty();
   private Optional<Long> maxRetryDelayMillis = Optional.empty();
   private Optional<Double> retryJitterFactor = Optional.empty();
@@ -49,6 +55,27 @@ public class AsyncElevenlabsApiClientBuilder {
 
   public AsyncElevenlabsApiClientBuilder maxRetries(int maxRetries) {
     this.maxRetries = Optional.of(maxRetries);
+    return this;
+  }
+
+  public AsyncElevenlabsApiClientBuilder maxConcurrentRequests(int maxConcurrentRequests) {
+    this.maxConcurrentRequests = Optional.of(maxConcurrentRequests);
+    return this;
+  }
+
+  public AsyncElevenlabsApiClientBuilder retryOnStatusCodes(Set<Integer> retryOnStatusCodes) {
+    if (retryOnStatusCodes == null) {
+      throw new IllegalArgumentException("retryOnStatusCodes must not be null");
+    }
+    this.retryOnStatusCodes = Optional.of(retryOnStatusCodes);
+    return this;
+  }
+
+  public AsyncElevenlabsApiClientBuilder retryDelays(List<Duration> retryDelays) {
+    if (retryDelays == null) {
+      throw new IllegalArgumentException("retryDelays must not be null");
+    }
+    this.retryDelays = Optional.of(retryDelays);
     return this;
   }
 
@@ -88,6 +115,9 @@ public class AsyncElevenlabsApiClientBuilder {
     setCustomHeaders(builder);
     timeout.ifPresent(builder::timeout);
     maxRetries.ifPresent(builder::maxRetries);
+    maxConcurrentRequests.ifPresent(builder::maxConcurrentRequests);
+    retryOnStatusCodes.ifPresent(builder::retryOnStatusCodes);
+    retryDelays.ifPresent(builder::retryDelays);
     initialRetryDelayMillis.ifPresent(builder::initialRetryDelayMillis);
     maxRetryDelayMillis.ifPresent(builder::maxRetryDelayMillis);
     retryJitterFactor.ifPresent(builder::retryJitterFactor);

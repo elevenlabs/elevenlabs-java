@@ -54,6 +54,7 @@ import com.elevenlabs.api.resources.agents.triagetickets.TriageTicketsClient;
 import com.elevenlabs.api.resources.agents.twilio.TwilioClient;
 import com.elevenlabs.api.resources.agents.users.UsersClient;
 import com.elevenlabs.api.resources.agents.versions.VersionsClient;
+import com.elevenlabs.api.resources.agents.websocket.AgentsWebSocketClient;
 import com.elevenlabs.api.resources.agents.whatsapp.WhatsappClient;
 import com.elevenlabs.api.resources.agents.whatsappaccounts.WhatsappAccountsClient;
 import com.elevenlabs.api.resources.agents.widget.WidgetClient;
@@ -390,6 +391,11 @@ public class AgentsClient {
   /** Returns the nested RealtimeClient. */
   public RealtimeClient realtime() {
     return this.realtimeClient;
+  }
+
+  /** Creates a new WebSocket client for the v1_convai_conversation channel. */
+  public AgentsWebSocketClient agentsWebSocket() {
+    return new AgentsWebSocketClient(clientOptions);
   }
 
   /**

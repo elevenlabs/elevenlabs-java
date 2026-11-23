@@ -16,9 +16,7 @@ import com.elevenlabs.api.resources.agents.tests.invocations.requests.ListInvoca
 import com.elevenlabs.api.resources.agents.tests.invocations.requests.ResubmitTestsRequestModel;
 import com.elevenlabs.api.resources.agents.tests.invocations.requests.UpdateTestSuiteInvocationRequestModel;
 import com.elevenlabs.api.types.AdhocAgentConfigOverrideForTestRequestModel;
-import com.elevenlabs.api.types.AgentPlatformSettingsRequestModel;
 import com.elevenlabs.api.types.BucketingStatus;
-import com.elevenlabs.api.types.ConversationalConfig;
 import com.elevenlabs.api.types.GetTestInvocationsPageResponseModel;
 import com.elevenlabs.api.types.GetTestSuiteInvocationResponseModel;
 import com.elevenlabs.api.types.HttpValidationError;
@@ -477,12 +475,7 @@ class InvocationsClientWireTest {
       ResubmitTestsRequestModel.builder()
         .agentId("test-value")
         .testRunIds(java.util.List.of("test-value"))
-        .agentConfigOverride(
-          AdhocAgentConfigOverrideForTestRequestModel.builder()
-            .conversationConfig(ConversationalConfig.builder().build())
-            .platformSettings(AgentPlatformSettingsRequestModel.builder().build())
-            .build()
-        )
+        .agentConfigOverride(AdhocAgentConfigOverrideForTestRequestModel.builder().build())
         .branchId("test-value")
         .build()
     );
@@ -502,12 +495,7 @@ class InvocationsClientWireTest {
         ResubmitTestsRequestModel.builder()
           .agentId("test-value")
           .testRunIds(java.util.List.of("test-value"))
-          .agentConfigOverride(
-            AdhocAgentConfigOverrideForTestRequestModel.builder()
-              .conversationConfig(ConversationalConfig.builder().build())
-              .platformSettings(AgentPlatformSettingsRequestModel.builder().build())
-              .build()
-          )
+          .agentConfigOverride(AdhocAgentConfigOverrideForTestRequestModel.builder().build())
           .branchId("test-value")
           .build()
       ),
@@ -540,12 +528,7 @@ class InvocationsClientWireTest {
         ResubmitTestsRequestModel.builder()
           .agentId("test-value")
           .testRunIds(java.util.List.of("test-value"))
-          .agentConfigOverride(
-            AdhocAgentConfigOverrideForTestRequestModel.builder()
-              .conversationConfig(ConversationalConfig.builder().build())
-              .platformSettings(AgentPlatformSettingsRequestModel.builder().build())
-              .build()
-          )
+          .agentConfigOverride(AdhocAgentConfigOverrideForTestRequestModel.builder().build())
           .branchId("test-value")
           .build()
       )

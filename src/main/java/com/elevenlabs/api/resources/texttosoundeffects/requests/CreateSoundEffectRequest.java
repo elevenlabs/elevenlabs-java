@@ -6,7 +6,6 @@ package com.elevenlabs.api.resources.texttosoundeffects.requests;
 import com.elevenlabs.api.core.ModelConverter;
 import com.elevenlabs.api.core.Nullable;
 import com.elevenlabs.api.core.NullableNonemptyFilter;
-import com.elevenlabs.api.resources.texttosoundeffects.types.ConvertTextToSoundEffectsRequestOutputFormat;
 import com.elevenlabs.api.types.SfxModelId;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
@@ -27,7 +26,7 @@ import org.jetbrains.annotations.NotNull;
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public final class CreateSoundEffectRequest {
 
-  private final Optional<ConvertTextToSoundEffectsRequestOutputFormat> outputFormat;
+  private final Optional<String> outputFormat;
   private final Optional<Boolean> enableLogging;
   private final String text;
   private final Optional<Boolean> loop;
@@ -51,7 +50,7 @@ public final class CreateSoundEffectRequest {
    * @return Output format of the generated audio. Formatted as codec_sample_rate_bitrate. So an mp3 with 22.05kHz sample rate at 32kbs is represented as mp3_22050_32. MP3 with 192kbps bitrate requires you to be subscribed to Creator tier or above. PCM and WAV formats with 44.1kHz sample rate requires you to be subscribed to Pro tier or above. Note that the μ-law format (sometimes written mu-law, often approximated as u-law) is commonly used for Twilio audio inputs.
    */
   @JsonIgnore
-  public Optional<ConvertTextToSoundEffectsRequestOutputFormat> getOutputFormat() {
+  public Optional<String> getOutputFormat() {
     return outputFormat == null ? Optional.empty() : outputFormat;
   }
 
@@ -171,11 +170,11 @@ public final class CreateSoundEffectRequest {
 
     _FinalStage additionalProperties(Map<String, Object> additionalProperties);
 
-    _FinalStage outputFormat(Optional<ConvertTextToSoundEffectsRequestOutputFormat> outputFormat);
+    _FinalStage outputFormat(Optional<String> outputFormat);
 
-    _FinalStage outputFormat(ConvertTextToSoundEffectsRequestOutputFormat outputFormat);
+    _FinalStage outputFormat(String outputFormat);
 
-    _FinalStage outputFormat(Nullable<ConvertTextToSoundEffectsRequestOutputFormat> outputFormat);
+    _FinalStage outputFormat(Nullable<String> outputFormat);
 
     _FinalStage enableLogging(Optional<Boolean> enableLogging);
 
@@ -207,7 +206,7 @@ public final class CreateSoundEffectRequest {
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class Builder implements TextStage, _FinalStage {
 
-    private Optional<ConvertTextToSoundEffectsRequestOutputFormat> outputFormat = Optional.empty();
+    private Optional<String> outputFormat = Optional.empty();
     private Optional<Boolean> enableLogging = Optional.empty();
     private String text;
     private Optional<Boolean> loop = Optional.empty();
@@ -240,23 +239,19 @@ public final class CreateSoundEffectRequest {
 
     @java.lang.Override
     @JsonSetter(value = "output_format", nulls = Nulls.SKIP)
-    public _FinalStage outputFormat(
-      Optional<ConvertTextToSoundEffectsRequestOutputFormat> outputFormat
-    ) {
+    public _FinalStage outputFormat(Optional<String> outputFormat) {
       this.outputFormat = outputFormat;
       return this;
     }
 
     @java.lang.Override
-    public _FinalStage outputFormat(ConvertTextToSoundEffectsRequestOutputFormat outputFormat) {
+    public _FinalStage outputFormat(String outputFormat) {
       this.outputFormat = Optional.ofNullable(outputFormat);
       return this;
     }
 
     @java.lang.Override
-    public _FinalStage outputFormat(
-      Nullable<ConvertTextToSoundEffectsRequestOutputFormat> outputFormat
-    ) {
+    public _FinalStage outputFormat(Nullable<String> outputFormat) {
       if (outputFormat.isNull()) {
         this.outputFormat = null;
       } else if (outputFormat.isEmpty()) {

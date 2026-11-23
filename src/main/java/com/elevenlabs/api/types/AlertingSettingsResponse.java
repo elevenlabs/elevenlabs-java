@@ -32,12 +32,14 @@ public final class AlertingSettingsResponse {
 
   private final Optional<Map<String, AlertingMonitorConfig>> monitorConfigs;
   private final Optional<Integer> autoResolveAfterInactiveMinutes;
+  private final Optional<List<String>> environments;
   private final Optional<List<AlertingSettingsResponseNotifiersItem>> notifiers;
   private final Map<String, Object> additionalProperties;
 
   private AlertingSettingsResponse(Builder builder) {
     this.monitorConfigs = builder.monitorConfigs;
     this.autoResolveAfterInactiveMinutes = builder.autoResolveAfterInactiveMinutes;
+    this.environments = builder.environments;
     this.notifiers = builder.notifiers;
     this.additionalProperties = builder.additionalProperties;
   }
@@ -60,6 +62,17 @@ public final class AlertingSettingsResponse {
     return autoResolveAfterInactiveMinutes;
   }
 
+  @JsonIgnore
+  public Optional<List<String>> getEnvironments() {
+    return environments == null ? Optional.empty() : environments;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("environments")
+  private Optional<List<String>> _getEnvironments() {
+    return environments;
+  }
+
   @JsonProperty("notifiers")
   public Optional<List<AlertingSettingsResponseNotifiersItem>> getNotifiers() {
     return notifiers;
@@ -78,13 +91,19 @@ public final class AlertingSettingsResponse {
     return (
       Objects.equals(monitorConfigs, that.monitorConfigs) &&
       Objects.equals(autoResolveAfterInactiveMinutes, that.autoResolveAfterInactiveMinutes) &&
+      Objects.equals(environments, that.environments) &&
       Objects.equals(notifiers, that.notifiers)
     );
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.monitorConfigs, this.autoResolveAfterInactiveMinutes, this.notifiers);
+    return Objects.hash(
+      this.monitorConfigs,
+      this.autoResolveAfterInactiveMinutes,
+      this.environments,
+      this.notifiers
+    );
   }
 
   @java.lang.Override
@@ -101,6 +120,7 @@ public final class AlertingSettingsResponse {
 
     private Optional<Map<String, AlertingMonitorConfig>> monitorConfigs = Optional.empty();
     private Optional<Integer> autoResolveAfterInactiveMinutes = Optional.empty();
+    private Optional<List<String>> environments = Optional.empty();
     private Optional<List<AlertingSettingsResponseNotifiersItem>> notifiers = Optional.empty();
 
     @JsonAnySetter
@@ -111,6 +131,7 @@ public final class AlertingSettingsResponse {
     public Builder from(AlertingSettingsResponse other) {
       monitorConfigs(other.getMonitorConfigs());
       autoResolveAfterInactiveMinutes(other.getAutoResolveAfterInactiveMinutes());
+      environments(other.getEnvironments());
       notifiers(other.getNotifiers());
       return this;
     }
@@ -148,6 +169,28 @@ public final class AlertingSettingsResponse {
         this.autoResolveAfterInactiveMinutes = Optional.empty();
       } else {
         this.autoResolveAfterInactiveMinutes = Optional.of(autoResolveAfterInactiveMinutes.get());
+      }
+      return this;
+    }
+
+    @JsonSetter(value = "environments", nulls = Nulls.SKIP)
+    public Builder environments(Optional<List<String>> environments) {
+      this.environments = environments;
+      return this;
+    }
+
+    public Builder environments(List<String> environments) {
+      this.environments = Optional.ofNullable(environments);
+      return this;
+    }
+
+    public Builder environments(Nullable<List<String>> environments) {
+      if (environments.isNull()) {
+        this.environments = null;
+      } else if (environments.isEmpty()) {
+        this.environments = Optional.empty();
+      } else {
+        this.environments = Optional.of(environments.get());
       }
       return this;
     }

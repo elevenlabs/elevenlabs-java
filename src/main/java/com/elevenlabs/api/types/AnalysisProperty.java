@@ -77,13 +77,13 @@ public final class AnalysisProperty {
    * @return List of allowed string values for string type parameters
    */
   @JsonIgnore
-  public Optional<List<String>> getEnum_() {
+  public Optional<List<String>> getEnum() {
     return enum_ == null ? Optional.empty() : enum_;
   }
 
   @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
   @JsonProperty("enum")
-  private Optional<List<String>> _getEnum_() {
+  private Optional<List<String>> _getEnum() {
     return enum_;
   }
 
@@ -297,7 +297,7 @@ public final class AnalysisProperty {
     public Builder from(AnalysisProperty other) {
       type(other.getType());
       description(other.getDescription());
-      enum_(other.getEnum_());
+      enum_(other.getEnum());
       isSystemProvided(other.getIsSystemProvided());
       dynamicVariable(other.getDynamicVariable());
       allowedValues(other.getAllowedValues());

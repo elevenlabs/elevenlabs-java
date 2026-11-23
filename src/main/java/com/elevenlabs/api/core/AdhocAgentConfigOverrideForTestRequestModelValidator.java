@@ -41,13 +41,15 @@ public class AdhocAgentConfigOverrideForTestRequestModelValidator
     return new ViolationAggregator()
       .add(
         new ConversationalConfigValidator("conversationConfig")
-          .required()
-          .validate(adhocAgentConfigOverrideForTestRequestModel.getConversationConfig())
+          .optional()
+          .validate(
+            adhocAgentConfigOverrideForTestRequestModel.getConversationConfig().orElse(null)
+          )
       )
       .add(
         new AgentPlatformSettingsRequestModelValidator("platformSettings")
-          .required()
-          .validate(adhocAgentConfigOverrideForTestRequestModel.getPlatformSettings())
+          .optional()
+          .validate(adhocAgentConfigOverrideForTestRequestModel.getPlatformSettings().orElse(null))
       )
       .aggregate();
   }
