@@ -213,6 +213,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -423,6 +424,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -588,6 +590,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -793,6 +796,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -1015,6 +1019,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -1220,6 +1225,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -1426,6 +1432,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -1638,6 +1645,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -1853,6 +1861,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -2069,6 +2078,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -2291,6 +2301,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -2505,6 +2516,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -2727,6 +2739,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -2950,6 +2963,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -3172,6 +3186,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -3395,6 +3410,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -3610,6 +3626,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -3826,6 +3843,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -4034,6 +4052,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -4246,6 +4265,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -4468,6 +4488,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -4690,6 +4711,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -4912,6 +4934,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -5134,6 +5157,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(
@@ -5778,6 +5802,7 @@ class AgentPlatformSettingsResponseModelTest {
         AlertingSettingsResponse.builder()
           .monitorConfigs(java.util.Map.of("key", AlertingMonitorConfig.builder().build()))
           .autoResolveAfterInactiveMinutes(1)
+          .environments(java.util.List.of("test-value"))
           .notifiers(
             java.util.List.of(
               AlertingSettingsResponseNotifiersItem.webhook(

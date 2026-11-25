@@ -7,6 +7,7 @@ import com.elevenlabs.api.core.ModelConverter;
 import com.elevenlabs.api.core.Nullable;
 import com.elevenlabs.api.resources.history.types.ListHistoryRequestSortDirection;
 import com.elevenlabs.api.resources.history.types.ListHistoryRequestSource;
+import com.elevenlabs.api.resources.history.types.ListHistoryRequestSourcesItem;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -17,6 +18,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -34,6 +36,7 @@ public final class ListHistoryRequest {
   private final Optional<ListHistoryRequestSortDirection> sortDirection;
   private final Optional<String> search;
   private final Optional<ListHistoryRequestSource> source;
+  private final Optional<List<ListHistoryRequestSourcesItem>> sources;
   private final Map<String, Object> additionalProperties;
 
   private ListHistoryRequest(Builder builder) {
@@ -46,6 +49,7 @@ public final class ListHistoryRequest {
     this.sortDirection = builder.sortDirection;
     this.search = builder.search;
     this.source = builder.source;
+    this.sources = builder.sources;
     this.additionalProperties = builder.additionalProperties;
   }
 
@@ -121,6 +125,14 @@ public final class ListHistoryRequest {
     return source == null ? Optional.empty() : source;
   }
 
+  /**
+   * @return Sources of the generated history items, matching any of them. Cannot be combined with source.
+   */
+  @JsonIgnore
+  public Optional<List<ListHistoryRequestSourcesItem>> getSources() {
+    return sources == null ? Optional.empty() : sources;
+  }
+
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() {
     return this.additionalProperties;
@@ -140,7 +152,8 @@ public final class ListHistoryRequest {
       Objects.equals(dateAfterUnix, that.dateAfterUnix) &&
       Objects.equals(sortDirection, that.sortDirection) &&
       Objects.equals(search, that.search) &&
-      Objects.equals(source, that.source)
+      Objects.equals(source, that.source) &&
+      Objects.equals(sources, that.sources)
     );
   }
 
@@ -155,7 +168,8 @@ public final class ListHistoryRequest {
       this.dateAfterUnix,
       this.sortDirection,
       this.search,
-      this.source
+      this.source,
+      this.sources
     );
   }
 
@@ -180,6 +194,7 @@ public final class ListHistoryRequest {
     private Optional<ListHistoryRequestSortDirection> sortDirection = Optional.empty();
     private Optional<String> search = Optional.empty();
     private Optional<ListHistoryRequestSource> source = Optional.empty();
+    private Optional<List<ListHistoryRequestSourcesItem>> sources = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -196,6 +211,7 @@ public final class ListHistoryRequest {
       sortDirection(other.getSortDirection());
       search(other.getSearch());
       source(other.getSource());
+      sources(other.getSources());
       return this;
     }
 
@@ -393,6 +409,28 @@ public final class ListHistoryRequest {
         this.source = Optional.empty();
       } else {
         this.source = Optional.of(source.get());
+      }
+      return this;
+    }
+
+    @JsonSetter(value = "sources", nulls = Nulls.SKIP)
+    public Builder sources(Optional<List<ListHistoryRequestSourcesItem>> sources) {
+      this.sources = sources;
+      return this;
+    }
+
+    public Builder sources(List<ListHistoryRequestSourcesItem> sources) {
+      this.sources = Optional.ofNullable(sources);
+      return this;
+    }
+
+    public Builder sources(Nullable<List<ListHistoryRequestSourcesItem>> sources) {
+      if (sources.isNull()) {
+        this.sources = null;
+      } else if (sources.isEmpty()) {
+        this.sources = Optional.empty();
+      } else {
+        this.sources = Optional.of(sources.get());
       }
       return this;
     }

@@ -33,7 +33,7 @@ class TranslationConnectOptionsTest {
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .eagerness(TranslationRealtimeEagerness.LOW)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -55,7 +55,7 @@ class TranslationConnectOptionsTest {
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .eagerness(TranslationRealtimeEagerness.LOW)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -77,7 +77,7 @@ class TranslationConnectOptionsTest {
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .eagerness(TranslationRealtimeEagerness.LOW)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -99,7 +99,7 @@ class TranslationConnectOptionsTest {
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .eagerness(TranslationRealtimeEagerness.LOW)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -121,7 +121,7 @@ class TranslationConnectOptionsTest {
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .eagerness(TranslationRealtimeEagerness.LOW)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -143,7 +143,7 @@ class TranslationConnectOptionsTest {
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .eagerness(TranslationRealtimeEagerness.LOW)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -165,7 +165,7 @@ class TranslationConnectOptionsTest {
       .ttsModelId(TranslationRealtimeTtsModelId.ELEVEN_FLASH_V_2_5)
       .eagerness(TranslationRealtimeEagerness.LOW)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -187,7 +187,7 @@ class TranslationConnectOptionsTest {
       .ttsModelId(TranslationRealtimeTtsModelId.ELEVEN_FLASH_V_2_5)
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .clientSessionId("test-value")
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -209,7 +209,7 @@ class TranslationConnectOptionsTest {
       .ttsModelId(TranslationRealtimeTtsModelId.ELEVEN_FLASH_V_2_5)
       .applyTextNormalization(TranslationRealtimeApplyTextNormalization.AUTO)
       .eagerness(TranslationRealtimeEagerness.LOW)
-      .enableZrm(true)
+      .enableLogging(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     TranslationConnectOptions roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -220,7 +220,7 @@ class TranslationConnectOptionsTest {
   }
 
   @Test
-  void roundTrips_omit_enableZrm() throws Exception {
+  void roundTrips_omit_enableLogging() throws Exception {
     TranslationConnectOptions value = TranslationConnectOptions.builder()
       .targetLanguage("test-value")
       .voiceId("test-value")

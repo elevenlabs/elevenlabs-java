@@ -25,6 +25,7 @@ public final class PolicyConfigOutput {
   private final Optional<String> timezone;
   private final Optional<RetryPolicy> retry;
   private final Optional<List<CallingPeriod>> callingPeriods;
+  private final Optional<List<DateOverride>> dateOverrides;
   private final Optional<DataCollectionConfig> dataCollection;
   private final Optional<FollowupContextPolicy> followupContext;
   private final Map<String, Object> additionalProperties;
@@ -33,6 +34,7 @@ public final class PolicyConfigOutput {
     this.timezone = builder.timezone;
     this.retry = builder.retry;
     this.callingPeriods = builder.callingPeriods;
+    this.dateOverrides = builder.dateOverrides;
     this.dataCollection = builder.dataCollection;
     this.followupContext = builder.followupContext;
     this.additionalProperties = builder.additionalProperties;
@@ -57,6 +59,14 @@ public final class PolicyConfigOutput {
   @JsonProperty("calling_periods")
   public Optional<List<CallingPeriod>> getCallingPeriods() {
     return callingPeriods;
+  }
+
+  /**
+   * @return Local dates in <code>timezone</code> whose calling windows replace <code>calling_periods</code>. Date ranges may not overlap.
+   */
+  @JsonProperty("date_overrides")
+  public Optional<List<DateOverride>> getDateOverrides() {
+    return dateOverrides;
   }
 
   /**
@@ -90,6 +100,7 @@ public final class PolicyConfigOutput {
       Objects.equals(timezone, that.timezone) &&
       Objects.equals(retry, that.retry) &&
       Objects.equals(callingPeriods, that.callingPeriods) &&
+      Objects.equals(dateOverrides, that.dateOverrides) &&
       Objects.equals(dataCollection, that.dataCollection) &&
       Objects.equals(followupContext, that.followupContext)
     );
@@ -101,6 +112,7 @@ public final class PolicyConfigOutput {
       this.timezone,
       this.retry,
       this.callingPeriods,
+      this.dateOverrides,
       this.dataCollection,
       this.followupContext
     );
@@ -121,6 +133,7 @@ public final class PolicyConfigOutput {
     private Optional<String> timezone = Optional.empty();
     private Optional<RetryPolicy> retry = Optional.empty();
     private Optional<List<CallingPeriod>> callingPeriods = Optional.empty();
+    private Optional<List<DateOverride>> dateOverrides = Optional.empty();
     private Optional<DataCollectionConfig> dataCollection = Optional.empty();
     private Optional<FollowupContextPolicy> followupContext = Optional.empty();
 
@@ -133,6 +146,7 @@ public final class PolicyConfigOutput {
       timezone(other.getTimezone());
       retry(other.getRetry());
       callingPeriods(other.getCallingPeriods());
+      dateOverrides(other.getDateOverrides());
       dataCollection(other.getDataCollection());
       followupContext(other.getFollowupContext());
       return this;
@@ -168,6 +182,17 @@ public final class PolicyConfigOutput {
 
     public Builder callingPeriods(List<CallingPeriod> callingPeriods) {
       this.callingPeriods = Optional.ofNullable(callingPeriods);
+      return this;
+    }
+
+    @JsonSetter(value = "date_overrides", nulls = Nulls.SKIP)
+    public Builder dateOverrides(Optional<List<DateOverride>> dateOverrides) {
+      this.dateOverrides = dateOverrides;
+      return this;
+    }
+
+    public Builder dateOverrides(List<DateOverride> dateOverrides) {
+      this.dateOverrides = Optional.ofNullable(dateOverrides);
       return this;
     }
 

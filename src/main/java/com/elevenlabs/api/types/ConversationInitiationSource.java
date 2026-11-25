@@ -81,6 +81,10 @@ public final class ConversationInitiationSource {
     Value.FLUTTER_SDK,
     "flutter_sdk"
   );
+  public static final ConversationInitiationSource UNITY_SDK = new ConversationInitiationSource(
+    Value.UNITY_SDK,
+    "unity_sdk"
+  );
   public static final ConversationInitiationSource ZENDESK_INTEGRATION =
     new ConversationInitiationSource(Value.ZENDESK_INTEGRATION, "zendesk_integration");
   public static final ConversationInitiationSource SLACK_INTEGRATION =
@@ -91,6 +95,8 @@ public final class ConversationInitiationSource {
     new ConversationInitiationSource(Value.INTERCOM_INTEGRATION, "intercom_integration");
   public static final ConversationInitiationSource FRESHDESK_INTEGRATION =
     new ConversationInitiationSource(Value.FRESHDESK_INTEGRATION, "freshdesk_integration");
+  public static final ConversationInitiationSource PLAIN_INTEGRATION =
+    new ConversationInitiationSource(Value.PLAIN_INTEGRATION, "plain_integration");
   public static final ConversationInitiationSource SALESFORCE_INTEGRATION =
     new ConversationInitiationSource(Value.SALESFORCE_INTEGRATION, "salesforce_integration");
   public static final ConversationInitiationSource TEMPLATE_PREVIEW =
@@ -175,6 +181,8 @@ public final class ConversationInitiationSource {
         return visitor.visitTwilioSms();
       case FLUTTER_SDK:
         return visitor.visitFlutterSdk();
+      case UNITY_SDK:
+        return visitor.visitUnitySdk();
       case ZENDESK_INTEGRATION:
         return visitor.visitZendeskIntegration();
       case SLACK_INTEGRATION:
@@ -185,6 +193,8 @@ public final class ConversationInitiationSource {
         return visitor.visitIntercomIntegration();
       case FRESHDESK_INTEGRATION:
         return visitor.visitFreshdeskIntegration();
+      case PLAIN_INTEGRATION:
+        return visitor.visitPlainIntegration();
       case SALESFORCE_INTEGRATION:
         return visitor.visitSalesforceIntegration();
       case TEMPLATE_PREVIEW:
@@ -243,6 +253,8 @@ public final class ConversationInitiationSource {
         return TWILIO_SMS;
       case "flutter_sdk":
         return FLUTTER_SDK;
+      case "unity_sdk":
+        return UNITY_SDK;
       case "zendesk_integration":
         return ZENDESK_INTEGRATION;
       case "slack_integration":
@@ -253,6 +265,8 @@ public final class ConversationInitiationSource {
         return INTERCOM_INTEGRATION;
       case "freshdesk_integration":
         return FRESHDESK_INTEGRATION;
+      case "plain_integration":
+        return PLAIN_INTEGRATION;
       case "salesforce_integration":
         return SALESFORCE_INTEGRATION;
       case "template_preview":
@@ -287,11 +301,13 @@ public final class ConversationInitiationSource {
     WHATSAPP,
     TWILIO_SMS,
     FLUTTER_SDK,
+    UNITY_SDK,
     ZENDESK_INTEGRATION,
     SLACK_INTEGRATION,
     TELEGRAM_INTEGRATION,
     INTERCOM_INTEGRATION,
     FRESHDESK_INTEGRATION,
+    PLAIN_INTEGRATION,
     SALESFORCE_INTEGRATION,
     TEMPLATE_PREVIEW,
     GENESYS_BOT_CONNECTOR,
@@ -319,11 +335,13 @@ public final class ConversationInitiationSource {
     T visitWhatsapp();
     T visitTwilioSms();
     T visitFlutterSdk();
+    T visitUnitySdk();
     T visitZendeskIntegration();
     T visitSlackIntegration();
     T visitTelegramIntegration();
     T visitIntercomIntegration();
     T visitFreshdeskIntegration();
+    T visitPlainIntegration();
     T visitSalesforceIntegration();
     T visitTemplatePreview();
     T visitGenesysBotConnector();

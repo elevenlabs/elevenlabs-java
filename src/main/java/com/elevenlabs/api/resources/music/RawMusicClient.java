@@ -22,7 +22,6 @@ import com.elevenlabs.api.resources.music.requests.BodyStreamComposedMusicWithAD
 import com.elevenlabs.api.resources.music.requests.BodyUploadMusicV1MusicUploadPost;
 import com.elevenlabs.api.resources.music.requests.SeparateStemsMusicRequest;
 import com.elevenlabs.api.resources.music.requests.VideoToMusicMusicRequest;
-import com.elevenlabs.api.resources.music.types.ComposeDetailedMusicResponse;
 import com.elevenlabs.api.resources.music.types.UploadMusicRequestExtractCompositionPlan;
 import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.MusicModelId;
@@ -131,9 +130,10 @@ public class RawMusicClient {
   /**
    * Compose a song from a prompt or a composition plan.
    *
-   * @return response of {@code ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>}
+   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse> composeDetailed() {
+  public ElevenlabsApiHttpResponse<InputStream> composeDetailed() {
     return this.composeDetailed(
         BodyComposeMusicWithADetailedResponseV1MusicDetailedPost.builder().build()
       );
@@ -142,11 +142,10 @@ public class RawMusicClient {
   /**
    * Compose a song from a prompt or a composition plan.
    *
-   * @return response of {@code ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>}
+   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse> composeDetailed(
-    RequestOptions requestOptions
-  ) {
+  public ElevenlabsApiHttpResponse<InputStream> composeDetailed(RequestOptions requestOptions) {
     return this.composeDetailed(
         BodyComposeMusicWithADetailedResponseV1MusicDetailedPost.builder().build(),
         requestOptions
@@ -157,9 +156,10 @@ public class RawMusicClient {
    * Compose a song from a prompt or a composition plan.
    *
    * @param requestParameters {@link BodyComposeMusicWithADetailedResponseV1MusicDetailedPost} Request Parameters Object
-   * @return response of {@code ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>}
+   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse> composeDetailed(
+  public ElevenlabsApiHttpResponse<InputStream> composeDetailed(
     BodyComposeMusicWithADetailedResponseV1MusicDetailedPost requestParameters
   ) {
     return this.composeDetailed(requestParameters, null);
@@ -169,9 +169,10 @@ public class RawMusicClient {
    * Compose a song from a prompt or a composition plan.
    *
    * @param requestParameters {@link BodyComposeMusicWithADetailedResponseV1MusicDetailedPost} Request Parameters Object
-   * @return response of {@code ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse>}
+   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
+   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
    */
-  public ElevenlabsApiHttpResponse<ComposeDetailedMusicResponse> composeDetailed(
+  public ElevenlabsApiHttpResponse<InputStream> composeDetailed(
     BodyComposeMusicWithADetailedResponseV1MusicDetailedPost requestParameters,
     RequestOptions requestOptions
   ) {

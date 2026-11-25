@@ -23,6 +23,11 @@ class CampaignConfigOutputTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -34,6 +39,11 @@ class CampaignConfigOutputTest {
             .timezone("test-value")
             .retry(RetryPolicy.builder().build())
             .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+            .dateOverrides(
+              java.util.List.of(
+                DateOverride.builder().startDate("test-value").endDate("test-value").build()
+              )
+            )
             .dataCollection(DataCollectionConfig.builder().build())
             .followupContext(FollowupContextPolicy.builder().build())
             .build()
@@ -44,6 +54,11 @@ class CampaignConfigOutputTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -67,6 +82,11 @@ class CampaignConfigOutputTest {
             .timezone("test-value")
             .retry(RetryPolicy.builder().build())
             .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+            .dateOverrides(
+              java.util.List.of(
+                DateOverride.builder().startDate("test-value").endDate("test-value").build()
+              )
+            )
             .dataCollection(DataCollectionConfig.builder().build())
             .followupContext(FollowupContextPolicy.builder().build())
             .build()
@@ -77,6 +97,11 @@ class CampaignConfigOutputTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -98,6 +123,11 @@ class CampaignConfigOutputTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -107,6 +137,11 @@ class CampaignConfigOutputTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -128,6 +163,11 @@ class CampaignConfigOutputTest {
           .timezone("test-value")
           .retry(RetryPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverride.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .dataCollection(DataCollectionConfig.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .build()
@@ -139,6 +179,11 @@ class CampaignConfigOutputTest {
             .timezone("test-value")
             .retry(RetryPolicy.builder().build())
             .callingPeriods(java.util.List.of(CallingPeriod.builder().build()))
+            .dateOverrides(
+              java.util.List.of(
+                DateOverride.builder().startDate("test-value").endDate("test-value").build()
+              )
+            )
             .dataCollection(DataCollectionConfig.builder().build())
             .followupContext(FollowupContextPolicy.builder().build())
             .build()

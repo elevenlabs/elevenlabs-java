@@ -183,6 +183,12 @@ public class SpeechToTextWebSocketClient implements AutoCloseable {
     if (options.getDiarize() != null && options.getDiarize().isPresent()) {
       urlBuilder.addQueryParameter("diarize", String.valueOf(options.getDiarize().get()));
     }
+    if (options.getInferSpeakerNames() != null && options.getInferSpeakerNames().isPresent()) {
+      urlBuilder.addQueryParameter(
+        "infer_speaker_names",
+        String.valueOf(options.getInferSpeakerNames().get())
+      );
+    }
     if (options.getEntityDetection() != null && options.getEntityDetection().isPresent()) {
       urlBuilder.addQueryParameter(
         "entity_detection",

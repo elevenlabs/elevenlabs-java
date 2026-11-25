@@ -34,6 +34,8 @@ public final class Llm {
   public static final Llm GPT_6_LUNA = new Llm(Value.GPT_6_LUNA, "gpt-6-luna");
   public static final Llm GPT_6_1_SOL = new Llm(Value.GPT_6_1_SOL, "gpt-6.1-sol");
   public static final Llm GPT_6_1_TERRA = new Llm(Value.GPT_6_1_TERRA, "gpt-6.1-terra");
+  public static final Llm GPT_6_2_ASTRA = new Llm(Value.GPT_6_2_ASTRA, "gpt-6.2-astra");
+  public static final Llm GPT_6_2_SOL = new Llm(Value.GPT_6_2_SOL, "gpt-6.2-sol");
   public static final Llm GPT_5_MINI = new Llm(Value.GPT_5_MINI, "gpt-5-mini");
   public static final Llm GPT_5_NANO = new Llm(Value.GPT_5_NANO, "gpt-5-nano");
   public static final Llm GPT_3_5_TURBO = new Llm(Value.GPT_3_5_TURBO, "gpt-3.5-turbo");
@@ -79,6 +81,7 @@ public final class Llm {
   public static final Llm GEMINI_3_8_FLASH = new Llm(Value.GEMINI_3_8_FLASH, "gemini-3.8-flash");
   public static final Llm GEMINI_4_ARGON = new Llm(Value.GEMINI_4_ARGON, "gemini-4-argon");
   public static final Llm GEMINI_4_HYDROGEN = new Llm(Value.GEMINI_4_HYDROGEN, "gemini-4-hydrogen");
+  public static final Llm GEMINI_4_NEON = new Llm(Value.GEMINI_4_NEON, "gemini-4-neon");
   public static final Llm CLAUDE_SONNET_4_5 = new Llm(Value.CLAUDE_SONNET_4_5, "claude-sonnet-4-5");
   public static final Llm CLAUDE_OPUS_4_6 = new Llm(Value.CLAUDE_OPUS_4_6, "claude-opus-4-6");
   public static final Llm CLAUDE_OPUS_4_7 = new Llm(Value.CLAUDE_OPUS_4_7, "claude-opus-4-7");
@@ -345,6 +348,10 @@ public final class Llm {
         return visitor.visitGpt6_1Sol();
       case GPT_6_1_TERRA:
         return visitor.visitGpt6_1Terra();
+      case GPT_6_2_ASTRA:
+        return visitor.visitGpt6_2Astra();
+      case GPT_6_2_SOL:
+        return visitor.visitGpt6_2Sol();
       case GPT_5_MINI:
         return visitor.visitGpt5Mini();
       case GPT_5_NANO:
@@ -387,6 +394,8 @@ public final class Llm {
         return visitor.visitGemini4Argon();
       case GEMINI_4_HYDROGEN:
         return visitor.visitGemini4Hydrogen();
+      case GEMINI_4_NEON:
+        return visitor.visitGemini4Neon();
       case CLAUDE_SONNET_4_5:
         return visitor.visitClaudeSonnet4_5();
       case CLAUDE_OPUS_4_6:
@@ -581,6 +590,10 @@ public final class Llm {
         return GPT_6_1_SOL;
       case "gpt-6.1-terra":
         return GPT_6_1_TERRA;
+      case "gpt-6.2-astra":
+        return GPT_6_2_ASTRA;
+      case "gpt-6.2-sol":
+        return GPT_6_2_SOL;
       case "gpt-5-mini":
         return GPT_5_MINI;
       case "gpt-5-nano":
@@ -623,6 +636,8 @@ public final class Llm {
         return GEMINI_4_ARGON;
       case "gemini-4-hydrogen":
         return GEMINI_4_HYDROGEN;
+      case "gemini-4-neon":
+        return GEMINI_4_NEON;
       case "claude-sonnet-4-5":
         return CLAUDE_SONNET_4_5;
       case "claude-opus-4-6":
@@ -788,6 +803,8 @@ public final class Llm {
     GPT_6_LUNA,
     GPT_6_1_SOL,
     GPT_6_1_TERRA,
+    GPT_6_2_ASTRA,
+    GPT_6_2_SOL,
     GPT_5_MINI,
     GPT_5_NANO,
     GPT_3_5_TURBO,
@@ -809,6 +826,7 @@ public final class Llm {
     GEMINI_3_8_FLASH,
     GEMINI_4_ARGON,
     GEMINI_4_HYDROGEN,
+    GEMINI_4_NEON,
     CLAUDE_SONNET_4_5,
     CLAUDE_OPUS_4_6,
     CLAUDE_OPUS_4_7,
@@ -904,6 +922,8 @@ public final class Llm {
     T visitGpt6Luna();
     T visitGpt6_1Sol();
     T visitGpt6_1Terra();
+    T visitGpt6_2Astra();
+    T visitGpt6_2Sol();
     T visitGpt5Mini();
     T visitGpt5Nano();
     T visitGpt3_5Turbo();
@@ -925,6 +945,7 @@ public final class Llm {
     T visitGemini3_8Flash();
     T visitGemini4Argon();
     T visitGemini4Hydrogen();
+    T visitGemini4Neon();
     T visitClaudeSonnet4_5();
     T visitClaudeOpus4_6();
     T visitClaudeOpus4_7();

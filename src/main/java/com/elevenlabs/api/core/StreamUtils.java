@@ -3,6 +3,7 @@
  */
 package com.elevenlabs.api.core;
 
+import com.elevenlabs.api.core.ResponseBodyInputStream;
 import java.io.BufferedReader;
 import java.io.Closeable;
 import java.io.IOException;
@@ -38,6 +39,7 @@ public class StreamUtils {
    * @return A stream of data lines from the response body
    */
   public static Stream<String> streamResponseData(Response response) {
+    ResponseBodyInputStream.endCallTimeout(response);
     InputStream inputStream = response.body().source().inputStream();
     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
 
@@ -77,6 +79,7 @@ public class StreamUtils {
       // For SSE the declaration is the end-of-stream SENTINEL: a frame equal to it ends the stream.
       return sseResponseFrames(new SseReader(response, terminator));
     }
+    ResponseBodyInputStream.endCallTimeout(response);
     InputStream inputStream = response.body().source().inputStream();
     BufferedReader reader = new BufferedReader(new InputStreamReader(inputStream));
     // For a json stream it is the DELIMITER BETWEEN messages, which is a different job (FSDK-2001).
@@ -252,6 +255,7 @@ public class StreamUtils {
     }
 
     private void open(Response next) {
+      ResponseBodyInputStream.endCallTimeout(next);
       this.response = next;
       this.lines = new BufferedReader(next.body().charStream());
     }

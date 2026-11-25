@@ -40,6 +40,26 @@ public class RawSummariesClient {
   /**
    * Gets multiple knowledge base document summaries by their IDs.
    *
+   * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
+   */
+  public ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>> get() {
+    return this.get(GetSummariesRequest.builder().build());
+  }
+
+  /**
+   * Gets multiple knowledge base document summaries by their IDs.
+   *
+   * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
+   */
+  public ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>> get(
+    RequestOptions requestOptions
+  ) {
+    return this.get(GetSummariesRequest.builder().build(), requestOptions);
+  }
+
+  /**
+   * Gets multiple knowledge base document summaries by their IDs.
+   *
    * @param requestParameters {@link GetSummariesRequest} Request Parameters Object
    * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
    */

@@ -3,7 +3,7 @@
  */
 package com.elevenlabs.api.types;
 
-import com.elevenlabs.api.core.OneOf95;
+import com.elevenlabs.api.core.OneOf96;
 import com.elevenlabs.api.core.OneOfJsonDeserializer;
 import com.elevenlabs.api.core.OneOfJsonSerializer;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
@@ -13,7 +13,7 @@ import java.util.Optional;
 @JsonSerialize(using = OneOfJsonSerializer.class)
 @JsonDeserialize(using = OneOfJsonDeserializer.class)
 public class SmbToolConfigParams
-  extends OneOf95<
+  extends OneOf96<
     SearchClientsParams,
     SendCustomEmailParams,
     ListClientsParams,
@@ -87,6 +87,7 @@ public class SmbToolConfigParams
     UpdateBookingPageSettingsParams,
     UpdateBookingPageAppearanceParams,
     GetBookingSlugStatusParams,
+    ConfirmChangeParams,
     SetBookingSlugParams,
     ListClientInteractionsParams,
     CreateClientInteractionParams,
@@ -138,21 +139,21 @@ public class SmbToolConfigParams
       case "create_client_appointment":
         return 24;
       case "create_client_interaction":
-        return 75;
+        return 76;
       case "create_holiday":
         return 60;
       case "create_location":
-        return 78;
+        return 79;
       case "create_order":
         return 27;
       case "create_product":
         return 20;
       case "create_product_quote_request":
-        return 83;
+        return 84;
       case "create_service":
         return 16;
       case "create_service_quote_request":
-        return 82;
+        return 83;
       case "create_staff":
         return 8;
       case "create_transfer_rule":
@@ -168,13 +169,13 @@ public class SmbToolConfigParams
       case "delete_client":
         return 6;
       case "delete_client_interaction":
-        return 76;
+        return 77;
       case "delete_group_session":
         return 38;
       case "delete_holiday":
         return 62;
       case "delete_location":
-        return 80;
+        return 81;
       case "delete_product":
         return 22;
       case "delete_service":
@@ -206,7 +207,7 @@ public class SmbToolConfigParams
       case "get_workspace_plan":
         return 68;
       case "leave_message":
-        return 81;
+        return 82;
       case "list_agent_procedures":
         return 54;
       case "list_agent_references":
@@ -218,7 +219,7 @@ public class SmbToolConfigParams
       case "list_calendar_events":
         return 39;
       case "list_client_interactions":
-        return 74;
+        return 75;
       case "list_clients":
         return 2;
       case "list_customer_facing_agents":
@@ -228,7 +229,7 @@ public class SmbToolConfigParams
       case "list_holidays":
         return 59;
       case "list_locations":
-        return 77;
+        return 78;
       case "list_products":
         return 19;
       case "list_services":
@@ -238,25 +239,25 @@ public class SmbToolConfigParams
       case "list_transfer_rules":
         return 50;
       case "opt_in_sms_reminder":
-        return 85;
-      case "opt_out_sms_reminder":
         return 86;
+      case "opt_out_sms_reminder":
+        return 87;
       case "owner_get_client_appointments":
-        return 94;
+        return 95;
       case "owner_list_assets":
-        return 90;
-      case "owner_list_locations":
         return 91;
-      case "owner_list_products":
-        return 93;
-      case "owner_list_services":
+      case "owner_list_locations":
         return 92;
+      case "owner_list_products":
+        return 94;
+      case "owner_list_services":
+        return 93;
       case "owner_list_staff":
-        return 89;
+        return 90;
       case "register_for_group_session":
         return 34;
       case "report_knowledge_gap":
-        return 84;
+        return 85;
       case "restore_calendar_event":
         return 42;
       case "schedule_group_session":
@@ -266,11 +267,13 @@ public class SmbToolConfigParams
       case "send_custom_email":
         return 1;
       case "set_booking_slug":
+        return 74;
+      case "smb_confirm_change":
         return 73;
       case "submit_business_info":
         return 64;
       case "trigger_user_verification":
-        return 87;
+        return 88;
       case "update_agent_config":
         return 66;
       case "update_agent_procedure":
@@ -294,7 +297,7 @@ public class SmbToolConfigParams
       case "update_holiday":
         return 61;
       case "update_location":
-        return 79;
+        return 80;
       case "update_order":
         return 30;
       case "update_product":
@@ -306,7 +309,7 @@ public class SmbToolConfigParams
       case "update_transfer_rule":
         return 52;
       case "validate_user_verification_code":
-        return 88;
+        return 89;
       default:
         return -1;
     }
@@ -321,7 +324,7 @@ public class SmbToolConfigParams
 
   private SmbToolConfigParams(int index, Object value) {
     super(index, value);
-    this.unknown = index < 0 || index >= 95;
+    this.unknown = index < 0 || index >= 96;
     this.unknownValue = unknown ? value : null;
   }
 
@@ -413,6 +416,7 @@ public class SmbToolConfigParams
       updateBookingPageAppearance ->
         visitor.visitUpdateBookingPageAppearance(updateBookingPageAppearance),
       getBookingSlugStatus -> visitor.visitGetBookingSlugStatus(getBookingSlugStatus),
+      smbConfirmChange -> visitor.visitSmbConfirmChange(smbConfirmChange),
       setBookingSlug -> visitor.visitSetBookingSlug(setBookingSlug),
       listClientInteractions -> visitor.visitListClientInteractions(listClientInteractions),
       createClientInteraction -> visitor.visitCreateClientInteraction(createClientInteraction),
@@ -1330,276 +1334,288 @@ public class SmbToolConfigParams
     return Optional.ofNullable(getValue72());
   }
 
-  public static SmbToolConfigParams setBookingSlug(SetBookingSlugParams value) {
+  public static SmbToolConfigParams smbConfirmChange(ConfirmChangeParams value) {
     return new SmbToolConfigParams(73, value);
   }
 
-  public boolean isSetBookingSlug() {
+  public boolean isSmbConfirmChange() {
     return getValue73() != null;
   }
 
-  public Optional<SetBookingSlugParams> getSetBookingSlug() {
+  public Optional<ConfirmChangeParams> getSmbConfirmChange() {
     return Optional.ofNullable(getValue73());
   }
 
-  public static SmbToolConfigParams listClientInteractions(ListClientInteractionsParams value) {
+  public static SmbToolConfigParams setBookingSlug(SetBookingSlugParams value) {
     return new SmbToolConfigParams(74, value);
   }
 
-  public boolean isListClientInteractions() {
+  public boolean isSetBookingSlug() {
     return getValue74() != null;
   }
 
-  public Optional<ListClientInteractionsParams> getListClientInteractions() {
+  public Optional<SetBookingSlugParams> getSetBookingSlug() {
     return Optional.ofNullable(getValue74());
   }
 
-  public static SmbToolConfigParams createClientInteraction(CreateClientInteractionParams value) {
+  public static SmbToolConfigParams listClientInteractions(ListClientInteractionsParams value) {
     return new SmbToolConfigParams(75, value);
   }
 
-  public boolean isCreateClientInteraction() {
+  public boolean isListClientInteractions() {
     return getValue75() != null;
   }
 
-  public Optional<CreateClientInteractionParams> getCreateClientInteraction() {
+  public Optional<ListClientInteractionsParams> getListClientInteractions() {
     return Optional.ofNullable(getValue75());
   }
 
-  public static SmbToolConfigParams deleteClientInteraction(DeleteClientInteractionParams value) {
+  public static SmbToolConfigParams createClientInteraction(CreateClientInteractionParams value) {
     return new SmbToolConfigParams(76, value);
   }
 
-  public boolean isDeleteClientInteraction() {
+  public boolean isCreateClientInteraction() {
     return getValue76() != null;
   }
 
-  public Optional<DeleteClientInteractionParams> getDeleteClientInteraction() {
+  public Optional<CreateClientInteractionParams> getCreateClientInteraction() {
     return Optional.ofNullable(getValue76());
   }
 
-  public static SmbToolConfigParams listLocations(ListLocationsParams value) {
+  public static SmbToolConfigParams deleteClientInteraction(DeleteClientInteractionParams value) {
     return new SmbToolConfigParams(77, value);
   }
 
-  public boolean isListLocations() {
+  public boolean isDeleteClientInteraction() {
     return getValue77() != null;
   }
 
-  public Optional<ListLocationsParams> getListLocations() {
+  public Optional<DeleteClientInteractionParams> getDeleteClientInteraction() {
     return Optional.ofNullable(getValue77());
   }
 
-  public static SmbToolConfigParams createLocation(CreateLocationParams value) {
+  public static SmbToolConfigParams listLocations(ListLocationsParams value) {
     return new SmbToolConfigParams(78, value);
   }
 
-  public boolean isCreateLocation() {
+  public boolean isListLocations() {
     return getValue78() != null;
   }
 
-  public Optional<CreateLocationParams> getCreateLocation() {
+  public Optional<ListLocationsParams> getListLocations() {
     return Optional.ofNullable(getValue78());
   }
 
-  public static SmbToolConfigParams updateLocation(UpdateLocationParams value) {
+  public static SmbToolConfigParams createLocation(CreateLocationParams value) {
     return new SmbToolConfigParams(79, value);
   }
 
-  public boolean isUpdateLocation() {
+  public boolean isCreateLocation() {
     return getValue79() != null;
   }
 
-  public Optional<UpdateLocationParams> getUpdateLocation() {
+  public Optional<CreateLocationParams> getCreateLocation() {
     return Optional.ofNullable(getValue79());
   }
 
-  public static SmbToolConfigParams deleteLocation(DeleteLocationParams value) {
+  public static SmbToolConfigParams updateLocation(UpdateLocationParams value) {
     return new SmbToolConfigParams(80, value);
   }
 
-  public boolean isDeleteLocation() {
+  public boolean isUpdateLocation() {
     return getValue80() != null;
   }
 
-  public Optional<DeleteLocationParams> getDeleteLocation() {
+  public Optional<UpdateLocationParams> getUpdateLocation() {
     return Optional.ofNullable(getValue80());
   }
 
-  public static SmbToolConfigParams leaveMessage(LeaveMessageParams value) {
+  public static SmbToolConfigParams deleteLocation(DeleteLocationParams value) {
     return new SmbToolConfigParams(81, value);
   }
 
-  public boolean isLeaveMessage() {
+  public boolean isDeleteLocation() {
     return getValue81() != null;
   }
 
-  public Optional<LeaveMessageParams> getLeaveMessage() {
+  public Optional<DeleteLocationParams> getDeleteLocation() {
     return Optional.ofNullable(getValue81());
+  }
+
+  public static SmbToolConfigParams leaveMessage(LeaveMessageParams value) {
+    return new SmbToolConfigParams(82, value);
+  }
+
+  public boolean isLeaveMessage() {
+    return getValue82() != null;
+  }
+
+  public Optional<LeaveMessageParams> getLeaveMessage() {
+    return Optional.ofNullable(getValue82());
   }
 
   public static SmbToolConfigParams createServiceQuoteRequest(
     CreateServiceQuoteRequestParams value
   ) {
-    return new SmbToolConfigParams(82, value);
+    return new SmbToolConfigParams(83, value);
   }
 
   public boolean isCreateServiceQuoteRequest() {
-    return getValue82() != null;
+    return getValue83() != null;
   }
 
   public Optional<CreateServiceQuoteRequestParams> getCreateServiceQuoteRequest() {
-    return Optional.ofNullable(getValue82());
+    return Optional.ofNullable(getValue83());
   }
 
   public static SmbToolConfigParams createProductQuoteRequest(
     CreateProductQuoteRequestParams value
   ) {
-    return new SmbToolConfigParams(83, value);
-  }
-
-  public boolean isCreateProductQuoteRequest() {
-    return getValue83() != null;
-  }
-
-  public Optional<CreateProductQuoteRequestParams> getCreateProductQuoteRequest() {
-    return Optional.ofNullable(getValue83());
-  }
-
-  public static SmbToolConfigParams reportKnowledgeGap(ReportKnowledgeGapParams value) {
     return new SmbToolConfigParams(84, value);
   }
 
-  public boolean isReportKnowledgeGap() {
+  public boolean isCreateProductQuoteRequest() {
     return getValue84() != null;
   }
 
-  public Optional<ReportKnowledgeGapParams> getReportKnowledgeGap() {
+  public Optional<CreateProductQuoteRequestParams> getCreateProductQuoteRequest() {
     return Optional.ofNullable(getValue84());
   }
 
-  public static SmbToolConfigParams optInSmsReminder(OptInSmsReminderParams value) {
+  public static SmbToolConfigParams reportKnowledgeGap(ReportKnowledgeGapParams value) {
     return new SmbToolConfigParams(85, value);
   }
 
-  public boolean isOptInSmsReminder() {
+  public boolean isReportKnowledgeGap() {
     return getValue85() != null;
   }
 
-  public Optional<OptInSmsReminderParams> getOptInSmsReminder() {
+  public Optional<ReportKnowledgeGapParams> getReportKnowledgeGap() {
     return Optional.ofNullable(getValue85());
   }
 
-  public static SmbToolConfigParams optOutSmsReminder(OptOutSmsReminderParams value) {
+  public static SmbToolConfigParams optInSmsReminder(OptInSmsReminderParams value) {
     return new SmbToolConfigParams(86, value);
   }
 
-  public boolean isOptOutSmsReminder() {
+  public boolean isOptInSmsReminder() {
     return getValue86() != null;
   }
 
-  public Optional<OptOutSmsReminderParams> getOptOutSmsReminder() {
+  public Optional<OptInSmsReminderParams> getOptInSmsReminder() {
     return Optional.ofNullable(getValue86());
   }
 
-  public static SmbToolConfigParams triggerUserVerification(TriggerUserVerificationParams value) {
+  public static SmbToolConfigParams optOutSmsReminder(OptOutSmsReminderParams value) {
     return new SmbToolConfigParams(87, value);
   }
 
-  public boolean isTriggerUserVerification() {
+  public boolean isOptOutSmsReminder() {
     return getValue87() != null;
   }
 
-  public Optional<TriggerUserVerificationParams> getTriggerUserVerification() {
+  public Optional<OptOutSmsReminderParams> getOptOutSmsReminder() {
     return Optional.ofNullable(getValue87());
+  }
+
+  public static SmbToolConfigParams triggerUserVerification(TriggerUserVerificationParams value) {
+    return new SmbToolConfigParams(88, value);
+  }
+
+  public boolean isTriggerUserVerification() {
+    return getValue88() != null;
+  }
+
+  public Optional<TriggerUserVerificationParams> getTriggerUserVerification() {
+    return Optional.ofNullable(getValue88());
   }
 
   public static SmbToolConfigParams validateUserVerificationCode(
     ValidateUserVerificationCodeParams value
   ) {
-    return new SmbToolConfigParams(88, value);
-  }
-
-  public boolean isValidateUserVerificationCode() {
-    return getValue88() != null;
-  }
-
-  public Optional<ValidateUserVerificationCodeParams> getValidateUserVerificationCode() {
-    return Optional.ofNullable(getValue88());
-  }
-
-  public static SmbToolConfigParams ownerListStaff(OwnerListStaffParams value) {
     return new SmbToolConfigParams(89, value);
   }
 
-  public boolean isOwnerListStaff() {
+  public boolean isValidateUserVerificationCode() {
     return getValue89() != null;
   }
 
-  public Optional<OwnerListStaffParams> getOwnerListStaff() {
+  public Optional<ValidateUserVerificationCodeParams> getValidateUserVerificationCode() {
     return Optional.ofNullable(getValue89());
   }
 
-  public static SmbToolConfigParams ownerListAssets(OwnerListAssetsParams value) {
+  public static SmbToolConfigParams ownerListStaff(OwnerListStaffParams value) {
     return new SmbToolConfigParams(90, value);
   }
 
-  public boolean isOwnerListAssets() {
+  public boolean isOwnerListStaff() {
     return getValue90() != null;
   }
 
-  public Optional<OwnerListAssetsParams> getOwnerListAssets() {
+  public Optional<OwnerListStaffParams> getOwnerListStaff() {
     return Optional.ofNullable(getValue90());
   }
 
-  public static SmbToolConfigParams ownerListLocations(OwnerListLocationsParams value) {
+  public static SmbToolConfigParams ownerListAssets(OwnerListAssetsParams value) {
     return new SmbToolConfigParams(91, value);
   }
 
-  public boolean isOwnerListLocations() {
+  public boolean isOwnerListAssets() {
     return getValue91() != null;
   }
 
-  public Optional<OwnerListLocationsParams> getOwnerListLocations() {
+  public Optional<OwnerListAssetsParams> getOwnerListAssets() {
     return Optional.ofNullable(getValue91());
   }
 
-  public static SmbToolConfigParams ownerListServices(OwnerListServicesParams value) {
+  public static SmbToolConfigParams ownerListLocations(OwnerListLocationsParams value) {
     return new SmbToolConfigParams(92, value);
   }
 
-  public boolean isOwnerListServices() {
+  public boolean isOwnerListLocations() {
     return getValue92() != null;
   }
 
-  public Optional<OwnerListServicesParams> getOwnerListServices() {
+  public Optional<OwnerListLocationsParams> getOwnerListLocations() {
     return Optional.ofNullable(getValue92());
   }
 
-  public static SmbToolConfigParams ownerListProducts(OwnerListProductsParams value) {
+  public static SmbToolConfigParams ownerListServices(OwnerListServicesParams value) {
     return new SmbToolConfigParams(93, value);
   }
 
-  public boolean isOwnerListProducts() {
+  public boolean isOwnerListServices() {
     return getValue93() != null;
   }
 
-  public Optional<OwnerListProductsParams> getOwnerListProducts() {
+  public Optional<OwnerListServicesParams> getOwnerListServices() {
     return Optional.ofNullable(getValue93());
+  }
+
+  public static SmbToolConfigParams ownerListProducts(OwnerListProductsParams value) {
+    return new SmbToolConfigParams(94, value);
+  }
+
+  public boolean isOwnerListProducts() {
+    return getValue94() != null;
+  }
+
+  public Optional<OwnerListProductsParams> getOwnerListProducts() {
+    return Optional.ofNullable(getValue94());
   }
 
   public static SmbToolConfigParams ownerGetClientAppointments(
     OwnerGetClientAppointmentsParams value
   ) {
-    return new SmbToolConfigParams(94, value);
+    return new SmbToolConfigParams(95, value);
   }
 
   public boolean isOwnerGetClientAppointments() {
-    return getValue94() != null;
+    return getValue95() != null;
   }
 
   public Optional<OwnerGetClientAppointmentsParams> getOwnerGetClientAppointments() {
-    return Optional.ofNullable(getValue94());
+    return Optional.ofNullable(getValue95());
   }
 
   public boolean _isUnknown() {
@@ -1764,6 +1780,8 @@ public class SmbToolConfigParams
     );
 
     T visitGetBookingSlugStatus(GetBookingSlugStatusParams getBookingSlugStatus);
+
+    T visitSmbConfirmChange(ConfirmChangeParams smbConfirmChange);
 
     T visitSetBookingSlug(SetBookingSlugParams setBookingSlug);
 

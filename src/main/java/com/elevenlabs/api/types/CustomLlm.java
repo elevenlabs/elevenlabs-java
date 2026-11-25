@@ -29,6 +29,7 @@ public final class CustomLlm {
   private final Optional<String> modelId;
   private final Optional<CustomLlmApiKey> apiKey;
   private final Optional<CustomLlmAuthConnection> authConnection;
+  private final Optional<CustomLlmMtlsAuthConnection> mtlsAuthConnection;
   private final Optional<Map<String, CustomLlmRequestHeadersValue>> requestHeaders;
   private final Optional<String> apiVersion;
   private final Optional<CustomLlmapiType> apiType;
@@ -39,6 +40,7 @@ public final class CustomLlm {
     this.modelId = builder.modelId;
     this.apiKey = builder.apiKey;
     this.authConnection = builder.authConnection;
+    this.mtlsAuthConnection = builder.mtlsAuthConnection;
     this.requestHeaders = builder.requestHeaders;
     this.apiVersion = builder.apiVersion;
     this.apiType = builder.apiType;
@@ -96,6 +98,20 @@ public final class CustomLlm {
   }
 
   /**
+   * @return Optional mTLS auth connection. When set, its client certificate is used for the TLS handshake with the LLM endpoint and, when auth_connection is OAuth2 client credentials or OAuth2 JWT, with its token endpoint too. Application auth stays on auth_connection or api_key. auth_connection must then be OAuth2 client credentials, OAuth2 JWT or bearer.
+   */
+  @JsonIgnore
+  public Optional<CustomLlmMtlsAuthConnection> getMtlsAuthConnection() {
+    return mtlsAuthConnection == null ? Optional.empty() : mtlsAuthConnection;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("mtls_auth_connection")
+  private Optional<CustomLlmMtlsAuthConnection> _getMtlsAuthConnection() {
+    return mtlsAuthConnection;
+  }
+
+  /**
    * @return Headers that should be included in the request
    */
   @JsonProperty("request_headers")
@@ -137,6 +153,7 @@ public final class CustomLlm {
       Objects.equals(modelId, that.modelId) &&
       Objects.equals(apiKey, that.apiKey) &&
       Objects.equals(authConnection, that.authConnection) &&
+      Objects.equals(mtlsAuthConnection, that.mtlsAuthConnection) &&
       Objects.equals(requestHeaders, that.requestHeaders) &&
       Objects.equals(apiVersion, that.apiVersion) &&
       Objects.equals(apiType, that.apiType)
@@ -150,6 +167,7 @@ public final class CustomLlm {
       this.modelId,
       this.apiKey,
       this.authConnection,
+      this.mtlsAuthConnection,
       this.requestHeaders,
       this.apiVersion,
       this.apiType
@@ -199,6 +217,12 @@ public final class CustomLlm {
 
     _FinalStage authConnection(Nullable<CustomLlmAuthConnection> authConnection);
 
+    _FinalStage mtlsAuthConnection(Optional<CustomLlmMtlsAuthConnection> mtlsAuthConnection);
+
+    _FinalStage mtlsAuthConnection(CustomLlmMtlsAuthConnection mtlsAuthConnection);
+
+    _FinalStage mtlsAuthConnection(Nullable<CustomLlmMtlsAuthConnection> mtlsAuthConnection);
+
     _FinalStage requestHeaders(Optional<Map<String, CustomLlmRequestHeadersValue>> requestHeaders);
 
     _FinalStage requestHeaders(Map<String, CustomLlmRequestHeadersValue> requestHeaders);
@@ -221,6 +245,7 @@ public final class CustomLlm {
     private Optional<String> modelId = Optional.empty();
     private Optional<CustomLlmApiKey> apiKey = Optional.empty();
     private Optional<CustomLlmAuthConnection> authConnection = Optional.empty();
+    private Optional<CustomLlmMtlsAuthConnection> mtlsAuthConnection = Optional.empty();
     private Optional<Map<String, CustomLlmRequestHeadersValue>> requestHeaders = Optional.empty();
     private Optional<String> apiVersion = Optional.empty();
     private Optional<CustomLlmapiType> apiType = Optional.empty();
@@ -235,6 +260,7 @@ public final class CustomLlm {
       modelId(other.getModelId());
       apiKey(other.getApiKey());
       authConnection(other.getAuthConnection());
+      mtlsAuthConnection(other.getMtlsAuthConnection());
       requestHeaders(other.getRequestHeaders());
       apiVersion(other.getApiVersion());
       apiType(other.getApiType());
@@ -319,6 +345,35 @@ public final class CustomLlm {
         this.authConnection = Optional.empty();
       } else {
         this.authConnection = Optional.of(authConnection.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "mtls_auth_connection", nulls = Nulls.SKIP)
+    public _FinalStage mtlsAuthConnection(
+      Optional<CustomLlmMtlsAuthConnection> mtlsAuthConnection
+    ) {
+      this.mtlsAuthConnection = mtlsAuthConnection;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage mtlsAuthConnection(CustomLlmMtlsAuthConnection mtlsAuthConnection) {
+      this.mtlsAuthConnection = Optional.ofNullable(mtlsAuthConnection);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage mtlsAuthConnection(
+      Nullable<CustomLlmMtlsAuthConnection> mtlsAuthConnection
+    ) {
+      if (mtlsAuthConnection.isNull()) {
+        this.mtlsAuthConnection = null;
+      } else if (mtlsAuthConnection.isEmpty()) {
+        this.mtlsAuthConnection = Optional.empty();
+      } else {
+        this.mtlsAuthConnection = Optional.of(mtlsAuthConnection.get());
       }
       return this;
     }

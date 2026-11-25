@@ -177,6 +177,24 @@ class AgentWorkflowResponseModelNodesValueTest {
   }
 
   @Test
+  void roundTrips_branch_startProcedure() throws Exception {
+    AgentWorkflowResponseModelNodesValue value =
+      AgentWorkflowResponseModelNodesValue.startProcedure(
+        WorkflowStartProcedureNodeModelOutput.builder()
+          .position(PositionOutput.builder().x(1d).y(1d).build())
+          .procedureId("test-value")
+          .edgeOrder(java.util.List.of("test-value"))
+          .build()
+      );
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    AgentWorkflowResponseModelNodesValue roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      AgentWorkflowResponseModelNodesValue.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
   void roundTrips_branch_say() throws Exception {
     AgentWorkflowResponseModelNodesValue value = AgentWorkflowResponseModelNodesValue.say(
       WorkflowSayNodeModelOutput.builder()
@@ -234,24 +252,6 @@ class AgentWorkflowResponseModelNodesValueTest {
         )
         .build()
     );
-    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
-    AgentWorkflowResponseModelNodesValue roundTripped = ObjectMappers.JSON_MAPPER.readValue(
-      json,
-      AgentWorkflowResponseModelNodesValue.class
-    );
-    assertEquals(value, roundTripped);
-  }
-
-  @Test
-  void roundTrips_branch_startProcedure() throws Exception {
-    AgentWorkflowResponseModelNodesValue value =
-      AgentWorkflowResponseModelNodesValue.startProcedure(
-        WorkflowStartProcedureNodeModelOutput.builder()
-          .position(PositionOutput.builder().x(1d).y(1d).build())
-          .procedureId("test-value")
-          .edgeOrder(java.util.List.of("test-value"))
-          .build()
-      );
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     AgentWorkflowResponseModelNodesValue roundTripped = ObjectMappers.JSON_MAPPER.readValue(
       json,

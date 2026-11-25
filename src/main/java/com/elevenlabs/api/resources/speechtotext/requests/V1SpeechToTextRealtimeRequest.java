@@ -45,6 +45,7 @@ public final class V1SpeechToTextRealtimeRequest {
   private final Optional<Boolean> noVerbatim;
   private final Optional<Boolean> multilangMode;
   private final Optional<Boolean> diarize;
+  private final Optional<Boolean> inferSpeakerNames;
   private final Optional<V1SpeechToTextRealtimeRequestEntityDetection> entityDetection;
   private final Optional<V1SpeechToTextRealtimeRequestEntityRedaction> entityRedaction;
   private final Optional<SpeechToTextRealtimeEntityRedactionMode> entityRedactionMode;
@@ -71,6 +72,7 @@ public final class V1SpeechToTextRealtimeRequest {
     this.noVerbatim = builder.noVerbatim;
     this.multilangMode = builder.multilangMode;
     this.diarize = builder.diarize;
+    this.inferSpeakerNames = builder.inferSpeakerNames;
     this.entityDetection = builder.entityDetection;
     this.entityRedaction = builder.entityRedaction;
     this.entityRedactionMode = builder.entityRedactionMode;
@@ -162,6 +164,11 @@ public final class V1SpeechToTextRealtimeRequest {
   }
 
   @JsonIgnore
+  public Optional<Boolean> getInferSpeakerNames() {
+    return inferSpeakerNames;
+  }
+
+  @JsonIgnore
   public Optional<V1SpeechToTextRealtimeRequestEntityDetection> getEntityDetection() {
     return entityDetection;
   }
@@ -223,6 +230,7 @@ public final class V1SpeechToTextRealtimeRequest {
       Objects.equals(noVerbatim, that.noVerbatim) &&
       Objects.equals(multilangMode, that.multilangMode) &&
       Objects.equals(diarize, that.diarize) &&
+      Objects.equals(inferSpeakerNames, that.inferSpeakerNames) &&
       Objects.equals(entityDetection, that.entityDetection) &&
       Objects.equals(entityRedaction, that.entityRedaction) &&
       Objects.equals(entityRedactionMode, that.entityRedactionMode) &&
@@ -252,6 +260,7 @@ public final class V1SpeechToTextRealtimeRequest {
       this.noVerbatim,
       this.multilangMode,
       this.diarize,
+      this.inferSpeakerNames,
       this.entityDetection,
       this.entityRedaction,
       this.entityRedactionMode,
@@ -344,6 +353,10 @@ public final class V1SpeechToTextRealtimeRequest {
 
     _FinalStage diarize(Boolean diarize);
 
+    _FinalStage inferSpeakerNames(Optional<Boolean> inferSpeakerNames);
+
+    _FinalStage inferSpeakerNames(Boolean inferSpeakerNames);
+
     _FinalStage entityDetection(
       Optional<V1SpeechToTextRealtimeRequestEntityDetection> entityDetection
     );
@@ -398,6 +411,7 @@ public final class V1SpeechToTextRealtimeRequest {
     private Optional<Boolean> noVerbatim = Optional.empty();
     private Optional<Boolean> multilangMode = Optional.empty();
     private Optional<Boolean> diarize = Optional.empty();
+    private Optional<Boolean> inferSpeakerNames = Optional.empty();
     private Optional<V1SpeechToTextRealtimeRequestEntityDetection> entityDetection =
       Optional.empty();
     private Optional<V1SpeechToTextRealtimeRequestEntityRedaction> entityRedaction =
@@ -431,6 +445,7 @@ public final class V1SpeechToTextRealtimeRequest {
       noVerbatim(other.getNoVerbatim());
       multilangMode(other.getMultilangMode());
       diarize(other.getDiarize());
+      inferSpeakerNames(other.getInferSpeakerNames());
       entityDetection(other.getEntityDetection());
       entityRedaction(other.getEntityRedaction());
       entityRedactionMode(other.getEntityRedactionMode());
@@ -640,6 +655,19 @@ public final class V1SpeechToTextRealtimeRequest {
     @java.lang.Override
     public _FinalStage diarize(Boolean diarize) {
       this.diarize = Optional.ofNullable(diarize);
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "infer_speaker_names", nulls = Nulls.SKIP)
+    public _FinalStage inferSpeakerNames(Optional<Boolean> inferSpeakerNames) {
+      this.inferSpeakerNames = inferSpeakerNames;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage inferSpeakerNames(Boolean inferSpeakerNames) {
+      this.inferSpeakerNames = Optional.ofNullable(inferSpeakerNames);
       return this;
     }
 

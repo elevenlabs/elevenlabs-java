@@ -100,6 +100,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -226,6 +231,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -359,6 +369,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -485,6 +500,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -617,6 +637,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -746,6 +771,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -872,6 +902,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -1005,6 +1040,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1131,6 +1171,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -1264,6 +1309,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1390,6 +1440,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -1523,6 +1578,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1649,6 +1709,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -1782,6 +1847,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1908,6 +1978,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -2041,6 +2116,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -2167,6 +2247,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -2300,6 +2385,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -2381,6 +2471,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -2466,6 +2561,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -2595,6 +2695,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -2728,6 +2833,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -2854,6 +2964,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -2987,6 +3102,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -3113,6 +3233,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -3246,6 +3371,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -3363,6 +3493,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -3484,6 +3619,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -3730,6 +3870,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -3856,6 +4001,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -3989,6 +4139,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -4104,6 +4259,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -4223,6 +4383,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -4352,6 +4517,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -4485,6 +4655,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -4607,6 +4782,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -4736,6 +4916,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -4862,6 +5047,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
@@ -4995,6 +5185,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
             .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
             .apiVersion("test-value")
             .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -5111,6 +5306,11 @@ class PromptAgentApiModelWorkflowOverrideInputTest {
             )
             .authConnection(
               CustomLlmAuthConnection.of(
+                AuthConnectionLocator.builder().authConnectionId("test-value").build()
+              )
+            )
+            .mtlsAuthConnection(
+              CustomLlmMtlsAuthConnection.of(
                 AuthConnectionLocator.builder().authConnectionId("test-value").build()
               )
             )

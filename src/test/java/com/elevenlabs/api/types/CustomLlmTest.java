@@ -26,6 +26,11 @@ class CustomLlmTest {
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
       .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
       .apiVersion("test-value")
       .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -42,6 +47,11 @@ class CustomLlmTest {
       .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
       .authConnection(
         CustomLlmAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
@@ -65,6 +75,11 @@ class CustomLlmTest {
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
       .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
       .apiVersion("test-value")
       .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -81,6 +96,11 @@ class CustomLlmTest {
       .modelId("test-value")
       .authConnection(
         CustomLlmAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
@@ -104,6 +124,11 @@ class CustomLlmTest {
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
       .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
       .apiVersion("test-value")
       .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -119,6 +144,11 @@ class CustomLlmTest {
       .url("test-value")
       .modelId("test-value")
       .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
       .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
       .apiVersion("test-value")
       .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -135,6 +165,52 @@ class CustomLlmTest {
       .modelId("test-value")
       .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
       .authConnection((CustomLlmAuthConnection) null)
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
+      .apiVersion("test-value")
+      .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    CustomLlm roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, CustomLlm.class);
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_mtlsAuthConnection() throws Exception {
+    CustomLlm value = CustomLlm.builder()
+      .url("test-value")
+      .modelId("test-value")
+      .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
+      .authConnection(
+        CustomLlmAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
+      .apiVersion("test-value")
+      .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    CustomLlm roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, CustomLlm.class);
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_mtlsAuthConnection() throws Exception {
+    CustomLlm value = CustomLlm.builder()
+      .url("test-value")
+      .modelId("test-value")
+      .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
+      .authConnection(
+        CustomLlmAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .mtlsAuthConnection((CustomLlmMtlsAuthConnection) null)
       .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
       .apiVersion("test-value")
       .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -152,6 +228,11 @@ class CustomLlmTest {
       .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
       .authConnection(
         CustomLlmAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
@@ -174,6 +255,11 @@ class CustomLlmTest {
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
       .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
       .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
       .build();
@@ -190,6 +276,11 @@ class CustomLlmTest {
       .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
       .authConnection(
         CustomLlmAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )
@@ -210,6 +301,11 @@ class CustomLlmTest {
       .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
       .authConnection(
         CustomLlmAuthConnection.of(
+          AuthConnectionLocator.builder().authConnectionId("test-value").build()
+        )
+      )
+      .mtlsAuthConnection(
+        CustomLlmMtlsAuthConnection.of(
           AuthConnectionLocator.builder().authConnectionId("test-value").build()
         )
       )

@@ -20,6 +20,7 @@ class ResellerTierResponseTest {
     ResellerTierResponse value = ResellerTierResponse.builder()
       .tierId("test-value")
       .displayName("test-value")
+      .currency(ResellerTierResponseCurrency.USD)
       .tierEconomics(
         ResellerTierEconomics.builder()
           .monthlyPriceUsd(1d)

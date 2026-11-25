@@ -44,7 +44,7 @@ public final class BodyMergeAMergeProposalV1ConvaiAgentsAgentIdMergeProposalsMer
   }
 
   /**
-   * @return Force source branch changes onto the target, overriding timestamp-based conflict resolution.
+   * @return Keep the source branch's value for every conflict.
    */
   @JsonProperty("force")
   public Optional<Boolean> getForce() {

@@ -44,6 +44,9 @@ public final class MergePreviewResponseModel {
   private final Optional<List<String>> overriddenFields;
   private final Optional<List<FieldConflict>> conflicts;
   private final Optional<Boolean> sourceIdenticalToTarget;
+  private final Optional<String> sourceTipVersionId;
+  private final Optional<String> targetTipVersionId;
+  private final Optional<String> mergeError;
   private final Map<String, Object> additionalProperties;
 
   private MergePreviewResponseModel(Builder builder) {
@@ -65,6 +68,9 @@ public final class MergePreviewResponseModel {
     this.overriddenFields = builder.overriddenFields;
     this.conflicts = builder.conflicts;
     this.sourceIdenticalToTarget = builder.sourceIdenticalToTarget;
+    this.sourceTipVersionId = builder.sourceTipVersionId;
+    this.targetTipVersionId = builder.targetTipVersionId;
+    this.mergeError = builder.mergeError;
     this.additionalProperties = builder.additionalProperties;
   }
 
@@ -203,7 +209,7 @@ public final class MergePreviewResponseModel {
   }
 
   /**
-   * @return Structured view of the same conflicts as overridden_fields, each carrying the value on the base (common ancestor), source branch, and target branch so the divergence can be presented and resolved field-by-field.
+   * @return Structured view of the same conflicts as overridden_fields, each carrying the value on the base (common ancestor), source branch, and target branch so the divergence can be presented and resolved field-by-field. A merge or rebase is rejected while any of them has no resolution in <code>conflict_resolutions</code>, unless the merge is forced.
    */
   @JsonProperty("conflicts")
   public Optional<List<FieldConflict>> getConflicts() {
@@ -216,6 +222,48 @@ public final class MergePreviewResponseModel {
   @JsonProperty("source_identical_to_target")
   public Optional<Boolean> getSourceIdenticalToTarget() {
     return sourceIdenticalToTarget;
+  }
+
+  /**
+   * @return Tip version of the source branch (the rebased branch for a rebase) the preview was computed from.
+   */
+  @JsonIgnore
+  public Optional<String> getSourceTipVersionId() {
+    return sourceTipVersionId == null ? Optional.empty() : sourceTipVersionId;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("source_tip_version_id")
+  private Optional<String> _getSourceTipVersionId() {
+    return sourceTipVersionId;
+  }
+
+  /**
+   * @return Tip version of the target branch (main for a rebase) the preview was computed from.
+   */
+  @JsonIgnore
+  public Optional<String> getTargetTipVersionId() {
+    return targetTipVersionId == null ? Optional.empty() : targetTipVersionId;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("target_tip_version_id")
+  private Optional<String> _getTargetTipVersionId() {
+    return targetTipVersionId;
+  }
+
+  /**
+   * @return Why the merge doesn't combine into a valid configuration while conflicts are left to resolve. The preview then shows the branch the merge writes unchanged.
+   */
+  @JsonIgnore
+  public Optional<String> getMergeError() {
+    return mergeError == null ? Optional.empty() : mergeError;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("merge_error")
+  private Optional<String> _getMergeError() {
+    return mergeError;
   }
 
   @JsonAnyGetter
@@ -246,7 +294,10 @@ public final class MergePreviewResponseModel {
       Objects.equals(defaultHoldAudioUrl, that.defaultHoldAudioUrl) &&
       Objects.equals(overriddenFields, that.overriddenFields) &&
       Objects.equals(conflicts, that.conflicts) &&
-      Objects.equals(sourceIdenticalToTarget, that.sourceIdenticalToTarget)
+      Objects.equals(sourceIdenticalToTarget, that.sourceIdenticalToTarget) &&
+      Objects.equals(sourceTipVersionId, that.sourceTipVersionId) &&
+      Objects.equals(targetTipVersionId, that.targetTipVersionId) &&
+      Objects.equals(mergeError, that.mergeError)
     );
   }
 
@@ -270,7 +321,10 @@ public final class MergePreviewResponseModel {
       this.defaultHoldAudioUrl,
       this.overriddenFields,
       this.conflicts,
-      this.sourceIdenticalToTarget
+      this.sourceIdenticalToTarget,
+      this.sourceTipVersionId,
+      this.targetTipVersionId,
+      this.mergeError
     );
   }
 
@@ -377,6 +431,24 @@ public final class MergePreviewResponseModel {
     _FinalStage sourceIdenticalToTarget(Optional<Boolean> sourceIdenticalToTarget);
 
     _FinalStage sourceIdenticalToTarget(Boolean sourceIdenticalToTarget);
+
+    _FinalStage sourceTipVersionId(Optional<String> sourceTipVersionId);
+
+    _FinalStage sourceTipVersionId(String sourceTipVersionId);
+
+    _FinalStage sourceTipVersionId(Nullable<String> sourceTipVersionId);
+
+    _FinalStage targetTipVersionId(Optional<String> targetTipVersionId);
+
+    _FinalStage targetTipVersionId(String targetTipVersionId);
+
+    _FinalStage targetTipVersionId(Nullable<String> targetTipVersionId);
+
+    _FinalStage mergeError(Optional<String> mergeError);
+
+    _FinalStage mergeError(String mergeError);
+
+    _FinalStage mergeError(Nullable<String> mergeError);
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
@@ -402,6 +474,9 @@ public final class MergePreviewResponseModel {
     private Optional<List<String>> overriddenFields = Optional.empty();
     private Optional<List<FieldConflict>> conflicts = Optional.empty();
     private Optional<Boolean> sourceIdenticalToTarget = Optional.empty();
+    private Optional<String> sourceTipVersionId = Optional.empty();
+    private Optional<String> targetTipVersionId = Optional.empty();
+    private Optional<String> mergeError = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -427,6 +502,9 @@ public final class MergePreviewResponseModel {
       overriddenFields(other.getOverriddenFields());
       conflicts(other.getConflicts());
       sourceIdenticalToTarget(other.getSourceIdenticalToTarget());
+      sourceTipVersionId(other.getSourceTipVersionId());
+      targetTipVersionId(other.getTargetTipVersionId());
+      mergeError(other.getMergeError());
       return this;
     }
 
@@ -682,6 +760,81 @@ public final class MergePreviewResponseModel {
     @java.lang.Override
     public _FinalStage sourceIdenticalToTarget(Boolean sourceIdenticalToTarget) {
       this.sourceIdenticalToTarget = Optional.ofNullable(sourceIdenticalToTarget);
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "source_tip_version_id", nulls = Nulls.SKIP)
+    public _FinalStage sourceTipVersionId(Optional<String> sourceTipVersionId) {
+      this.sourceTipVersionId = sourceTipVersionId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage sourceTipVersionId(String sourceTipVersionId) {
+      this.sourceTipVersionId = Optional.ofNullable(sourceTipVersionId);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage sourceTipVersionId(Nullable<String> sourceTipVersionId) {
+      if (sourceTipVersionId.isNull()) {
+        this.sourceTipVersionId = null;
+      } else if (sourceTipVersionId.isEmpty()) {
+        this.sourceTipVersionId = Optional.empty();
+      } else {
+        this.sourceTipVersionId = Optional.of(sourceTipVersionId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "target_tip_version_id", nulls = Nulls.SKIP)
+    public _FinalStage targetTipVersionId(Optional<String> targetTipVersionId) {
+      this.targetTipVersionId = targetTipVersionId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage targetTipVersionId(String targetTipVersionId) {
+      this.targetTipVersionId = Optional.ofNullable(targetTipVersionId);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage targetTipVersionId(Nullable<String> targetTipVersionId) {
+      if (targetTipVersionId.isNull()) {
+        this.targetTipVersionId = null;
+      } else if (targetTipVersionId.isEmpty()) {
+        this.targetTipVersionId = Optional.empty();
+      } else {
+        this.targetTipVersionId = Optional.of(targetTipVersionId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "merge_error", nulls = Nulls.SKIP)
+    public _FinalStage mergeError(Optional<String> mergeError) {
+      this.mergeError = mergeError;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage mergeError(String mergeError) {
+      this.mergeError = Optional.ofNullable(mergeError);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage mergeError(Nullable<String> mergeError) {
+      if (mergeError.isNull()) {
+        this.mergeError = null;
+      } else if (mergeError.isEmpty()) {
+        this.mergeError = Optional.empty();
+      } else {
+        this.mergeError = Optional.of(mergeError.get());
+      }
       return this;
     }
 

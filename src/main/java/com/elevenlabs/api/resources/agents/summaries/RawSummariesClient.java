@@ -40,6 +40,26 @@ public class RawSummariesClient {
   /**
    * Returns summaries for the specified agents.
    *
+   * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
+   */
+  public ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>> get() {
+    return this.get(GetSummariesRequest.builder().build());
+  }
+
+  /**
+   * Returns summaries for the specified agents.
+   *
+   * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
+   */
+  public ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>> get(
+    RequestOptions requestOptions
+  ) {
+    return this.get(GetSummariesRequest.builder().build(), requestOptions);
+  }
+
+  /**
+   * Returns summaries for the specified agents.
+   *
    * @param requestParameters {@link GetSummariesRequest} Request Parameters Object
    * @return response of {@code ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>}
    */

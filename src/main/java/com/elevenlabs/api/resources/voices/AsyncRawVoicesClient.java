@@ -15,9 +15,9 @@ import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.resources.voices.requests.BodyAddSharedVoiceV1VoicesAddPublicUserIdVoiceIdPost;
 import com.elevenlabs.api.resources.voices.requests.DeleteVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.EditVoiceRequest;
+import com.elevenlabs.api.resources.voices.requests.FindSimilarVoicesVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.GetSharedVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.GetVoicesRequest;
-import com.elevenlabs.api.resources.voices.requests.ListSimilarVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.ReplicateVoiceToIsolatedEnvironmentRequestModel;
 import com.elevenlabs.api.resources.voices.requests.SearchVoicesRequest;
 import com.elevenlabs.api.resources.voices.types.UpdateVoicesRequestLabels;
@@ -30,7 +30,6 @@ import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.ReplicateVoiceToIsolatedEnvironmentResponseModel;
 import com.elevenlabs.api.types.Voice;
 import com.fasterxml.jackson.core.type.TypeReference;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.concurrent.CompletableFuture;
 import okhttp3.MediaType;
@@ -324,124 +323,26 @@ public class AsyncRawVoicesClient {
   /**
    * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
    *
+   * @param requestParameters {@link FindSimilarVoicesVoicesRequest} Request Parameters Object
    * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
    */
-  public CompletableFuture<
-    ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>
-  > findSimilarVoices() {
-    return this.findSimilarVoices(ListSimilarVoicesRequest.builder().build());
+  public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
+    FindSimilarVoicesVoicesRequest requestParameters
+  ) {
+    return this.findSimilarVoices(requestParameters, null);
   }
 
   /**
    * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
    *
+   * @param requestParameters {@link FindSimilarVoicesVoicesRequest} Request Parameters Object
    * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
    */
   public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
+    FindSimilarVoicesVoicesRequest requestParameters,
     RequestOptions requestOptions
   ) {
-    return this.findSimilarVoices(ListSimilarVoicesRequest.builder().build(), requestOptions);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
-   */
-  public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest
-  ) {
-    return this.findSimilarVoices(listSimilarVoicesRequest, null);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
-   */
-  public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    RequestOptions requestOptions
-  ) {
-    return delegate.findSimilarVoices(listSimilarVoicesRequest, requestOptions);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
-   */
-  public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, null));
-    return this.findSimilarVoices(builder.build(), null);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
-   */
-  public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename,
-    MediaType mediaType
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, mediaType));
-    return this.findSimilarVoices(builder.build(), null);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
-   */
-  public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename,
-    RequestOptions requestOptions
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, null));
-    return this.findSimilarVoices(builder.build(), requestOptions);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>>}
-   */
-  public CompletableFuture<ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>> findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename,
-    MediaType mediaType,
-    RequestOptions requestOptions
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, mediaType));
-    return this.findSimilarVoices(builder.build(), requestOptions);
+    return delegate.findSimilarVoices(requestParameters, requestOptions);
   }
 
   /**

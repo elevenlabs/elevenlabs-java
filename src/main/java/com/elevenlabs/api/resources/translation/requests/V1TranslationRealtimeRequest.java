@@ -38,7 +38,7 @@ public final class V1TranslationRealtimeRequest {
   private final Optional<TranslationRealtimeApplyTextNormalization> applyTextNormalization;
   private final Optional<TranslationRealtimeEagerness> eagerness;
   private final Optional<String> clientSessionId;
-  private final Optional<Boolean> enableZrm;
+  private final Optional<Boolean> enableLogging;
   private final Map<String, Object> additionalProperties;
 
   private V1TranslationRealtimeRequest(Builder builder) {
@@ -52,7 +52,7 @@ public final class V1TranslationRealtimeRequest {
     this.applyTextNormalization = builder.applyTextNormalization;
     this.eagerness = builder.eagerness;
     this.clientSessionId = builder.clientSessionId;
-    this.enableZrm = builder.enableZrm;
+    this.enableLogging = builder.enableLogging;
     this.additionalProperties = builder.additionalProperties;
   }
 
@@ -107,8 +107,8 @@ public final class V1TranslationRealtimeRequest {
   }
 
   @JsonIgnore
-  public Optional<Boolean> getEnableZrm() {
-    return enableZrm;
+  public Optional<Boolean> getEnableLogging() {
+    return enableLogging;
   }
 
   @JsonAnyGetter
@@ -132,7 +132,7 @@ public final class V1TranslationRealtimeRequest {
       Objects.equals(applyTextNormalization, that.applyTextNormalization) &&
       Objects.equals(eagerness, that.eagerness) &&
       Objects.equals(clientSessionId, that.clientSessionId) &&
-      Objects.equals(enableZrm, that.enableZrm)
+      Objects.equals(enableLogging, that.enableLogging)
     );
   }
 
@@ -149,7 +149,7 @@ public final class V1TranslationRealtimeRequest {
       this.applyTextNormalization,
       this.eagerness,
       this.clientSessionId,
-      this.enableZrm
+      this.enableLogging
     );
   }
 
@@ -215,9 +215,9 @@ public final class V1TranslationRealtimeRequest {
 
     _FinalStage clientSessionId(String clientSessionId);
 
-    _FinalStage enableZrm(Optional<Boolean> enableZrm);
+    _FinalStage enableLogging(Optional<Boolean> enableLogging);
 
-    _FinalStage enableZrm(Boolean enableZrm);
+    _FinalStage enableLogging(Boolean enableLogging);
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
@@ -234,7 +234,7 @@ public final class V1TranslationRealtimeRequest {
       Optional.empty();
     private Optional<TranslationRealtimeEagerness> eagerness = Optional.empty();
     private Optional<String> clientSessionId = Optional.empty();
-    private Optional<Boolean> enableZrm = Optional.empty();
+    private Optional<Boolean> enableLogging = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -252,7 +252,7 @@ public final class V1TranslationRealtimeRequest {
       applyTextNormalization(other.getApplyTextNormalization());
       eagerness(other.getEagerness());
       clientSessionId(other.getClientSessionId());
-      enableZrm(other.getEnableZrm());
+      enableLogging(other.getEnableLogging());
       return this;
     }
 
@@ -382,15 +382,15 @@ public final class V1TranslationRealtimeRequest {
     }
 
     @java.lang.Override
-    @JsonSetter(value = "enable_zrm", nulls = Nulls.SKIP)
-    public _FinalStage enableZrm(Optional<Boolean> enableZrm) {
-      this.enableZrm = enableZrm;
+    @JsonSetter(value = "enable_logging", nulls = Nulls.SKIP)
+    public _FinalStage enableLogging(Optional<Boolean> enableLogging) {
+      this.enableLogging = enableLogging;
       return this;
     }
 
     @java.lang.Override
-    public _FinalStage enableZrm(Boolean enableZrm) {
-      this.enableZrm = Optional.ofNullable(enableZrm);
+    public _FinalStage enableLogging(Boolean enableLogging) {
+      this.enableLogging = Optional.ofNullable(enableLogging);
       return this;
     }
 

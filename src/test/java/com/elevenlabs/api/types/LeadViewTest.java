@@ -39,6 +39,7 @@ class LeadViewTest {
       )
       .recipientId("test-value")
       .phoneNumbers(java.util.List.of("test-value"))
+      .timezoneOverride("test-value")
       .createdAtUnix(1)
       .dynamicVariables(java.util.Map.of())
       .delivery(
@@ -83,6 +84,7 @@ class LeadViewTest {
       )
       .recipientId((String) null)
       .phoneNumbers(java.util.List.of("test-value"))
+      .timezoneOverride("test-value")
       .createdAtUnix(1)
       .dynamicVariables(java.util.Map.of())
       .delivery(
@@ -126,6 +128,96 @@ class LeadViewTest {
           .build()
       )
       .recipientId("test-value")
+      .timezoneOverride("test-value")
+      .createdAtUnix(1)
+      .dynamicVariables(java.util.Map.of())
+      .delivery(
+        LeadDeliveryView.builder()
+          .status(BatchCallRecipientStatus.PENDING)
+          .stage(LeadDeliveryViewStage.QUEUED)
+          .sentAtUnix(1)
+          .deliveredAtUnix(1)
+          .readAtUnix(1)
+          .repliedAtUnix(1)
+          .failedAtUnix(1)
+          .errorMessage("test-value")
+          .build()
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    LeadView roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, LeadView.class);
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_timezoneOverride() throws Exception {
+    LeadView value = LeadView.builder()
+      .leadId("test-value")
+      .phoneNumber("test-value")
+      .phoneNumbersIndex(1)
+      .userId("test-value")
+      .attemptCount(1)
+      .failureCount(1)
+      .callbackCount(1)
+      .redirectCount(1)
+      .doNotCall(true)
+      .terminalDisposition(TerminalDisposition.CAMPAIGN_ENDED)
+      .updatedAtUnix(1)
+      .overrides(
+        FlattenedConfigOverrides.builder()
+          .language("test-value")
+          .firstMessage("test-value")
+          .prompt("test-value")
+          .voiceId("test-value")
+          .build()
+      )
+      .recipientId("test-value")
+      .phoneNumbers(java.util.List.of("test-value"))
+      .createdAtUnix(1)
+      .dynamicVariables(java.util.Map.of())
+      .delivery(
+        LeadDeliveryView.builder()
+          .status(BatchCallRecipientStatus.PENDING)
+          .stage(LeadDeliveryViewStage.QUEUED)
+          .sentAtUnix(1)
+          .deliveredAtUnix(1)
+          .readAtUnix(1)
+          .repliedAtUnix(1)
+          .failedAtUnix(1)
+          .errorMessage("test-value")
+          .build()
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    LeadView roundTripped = ObjectMappers.JSON_MAPPER.readValue(json, LeadView.class);
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_timezoneOverride() throws Exception {
+    LeadView value = LeadView.builder()
+      .leadId("test-value")
+      .phoneNumber("test-value")
+      .phoneNumbersIndex(1)
+      .userId("test-value")
+      .attemptCount(1)
+      .failureCount(1)
+      .callbackCount(1)
+      .redirectCount(1)
+      .doNotCall(true)
+      .terminalDisposition(TerminalDisposition.CAMPAIGN_ENDED)
+      .updatedAtUnix(1)
+      .overrides(
+        FlattenedConfigOverrides.builder()
+          .language("test-value")
+          .firstMessage("test-value")
+          .prompt("test-value")
+          .voiceId("test-value")
+          .build()
+      )
+      .recipientId("test-value")
+      .phoneNumbers(java.util.List.of("test-value"))
+      .timezoneOverride((String) null)
       .createdAtUnix(1)
       .dynamicVariables(java.util.Map.of())
       .delivery(
@@ -170,6 +262,7 @@ class LeadViewTest {
       )
       .recipientId("test-value")
       .phoneNumbers(java.util.List.of("test-value"))
+      .timezoneOverride("test-value")
       .createdAtUnix((Integer) null)
       .dynamicVariables(java.util.Map.of())
       .delivery(
@@ -214,6 +307,7 @@ class LeadViewTest {
       )
       .recipientId("test-value")
       .phoneNumbers(java.util.List.of("test-value"))
+      .timezoneOverride("test-value")
       .createdAtUnix(1)
       .dynamicVariables(java.util.Map.of())
       .build();
@@ -246,6 +340,7 @@ class LeadViewTest {
       )
       .recipientId("test-value")
       .phoneNumbers(java.util.List.of("test-value"))
+      .timezoneOverride("test-value")
       .createdAtUnix(1)
       .dynamicVariables(java.util.Map.of())
       .delivery((LeadDeliveryView) null)

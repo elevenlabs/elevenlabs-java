@@ -20,9 +20,9 @@ public class AgentWorkflowResponseModelNodesValue
     WorkflowOverrideAgentNodeModelOutput,
     WorkflowStandaloneAgentNodeModelOutput,
     WorkflowToolNodeModelOutput,
+    WorkflowStartProcedureNodeModelOutput,
     WorkflowSayNodeModelOutput,
-    WorkflowUpdateStateNodeModelOutput,
-    WorkflowStartProcedureNodeModelOutput
+    WorkflowUpdateStateNodeModelOutput
   > {
 
   private static int getDiscriminatorIndex(com.fasterxml.jackson.databind.JsonNode node) {
@@ -42,13 +42,13 @@ public class AgentWorkflowResponseModelNodesValue
       case "start":
         return 0;
       case "start_procedure":
-        return 8;
+        return 6;
       case "tool":
         return 5;
       case "say":
-        return 6;
-      case "update_state":
         return 7;
+      case "update_state":
+        return 8;
       default:
         return -1;
     }
@@ -83,9 +83,9 @@ public class AgentWorkflowResponseModelNodesValue
       overrideAgent -> visitor.visitOverrideAgent(overrideAgent),
       standaloneAgent -> visitor.visitStandaloneAgent(standaloneAgent),
       tool -> visitor.visitTool(tool),
+      startProcedure -> visitor.visitStartProcedure(startProcedure),
       say -> visitor.visitSay(say),
-      updateState -> visitor.visitUpdateState(updateState),
-      startProcedure -> visitor.visitStartProcedure(startProcedure)
+      updateState -> visitor.visitUpdateState(updateState)
     );
   }
 
@@ -167,43 +167,43 @@ public class AgentWorkflowResponseModelNodesValue
     return Optional.ofNullable(getValue5());
   }
 
-  public static AgentWorkflowResponseModelNodesValue say(WorkflowSayNodeModelOutput value) {
+  public static AgentWorkflowResponseModelNodesValue startProcedure(
+    WorkflowStartProcedureNodeModelOutput value
+  ) {
     return new AgentWorkflowResponseModelNodesValue(6, value);
   }
 
-  public boolean isSay() {
+  public boolean isStartProcedure() {
     return getValue6() != null;
   }
 
-  public Optional<WorkflowSayNodeModelOutput> getSay() {
+  public Optional<WorkflowStartProcedureNodeModelOutput> getStartProcedure() {
     return Optional.ofNullable(getValue6());
+  }
+
+  public static AgentWorkflowResponseModelNodesValue say(WorkflowSayNodeModelOutput value) {
+    return new AgentWorkflowResponseModelNodesValue(7, value);
+  }
+
+  public boolean isSay() {
+    return getValue7() != null;
+  }
+
+  public Optional<WorkflowSayNodeModelOutput> getSay() {
+    return Optional.ofNullable(getValue7());
   }
 
   public static AgentWorkflowResponseModelNodesValue updateState(
     WorkflowUpdateStateNodeModelOutput value
   ) {
-    return new AgentWorkflowResponseModelNodesValue(7, value);
-  }
-
-  public boolean isUpdateState() {
-    return getValue7() != null;
-  }
-
-  public Optional<WorkflowUpdateStateNodeModelOutput> getUpdateState() {
-    return Optional.ofNullable(getValue7());
-  }
-
-  public static AgentWorkflowResponseModelNodesValue startProcedure(
-    WorkflowStartProcedureNodeModelOutput value
-  ) {
     return new AgentWorkflowResponseModelNodesValue(8, value);
   }
 
-  public boolean isStartProcedure() {
+  public boolean isUpdateState() {
     return getValue8() != null;
   }
 
-  public Optional<WorkflowStartProcedureNodeModelOutput> getStartProcedure() {
+  public Optional<WorkflowUpdateStateNodeModelOutput> getUpdateState() {
     return Optional.ofNullable(getValue8());
   }
 
@@ -228,11 +228,11 @@ public class AgentWorkflowResponseModelNodesValue
 
     T visitTool(WorkflowToolNodeModelOutput tool);
 
+    T visitStartProcedure(WorkflowStartProcedureNodeModelOutput startProcedure);
+
     T visitSay(WorkflowSayNodeModelOutput say);
 
     T visitUpdateState(WorkflowUpdateStateNodeModelOutput updateState);
-
-    T visitStartProcedure(WorkflowStartProcedureNodeModelOutput startProcedure);
 
     T _visitUnknown(Object unknownType);
   }

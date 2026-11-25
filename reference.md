@@ -1115,7 +1115,7 @@ client.voices().share(
 </dl>
 </details>
 
-<details><summary><code>client.voices.findSimilarVoices(listSimilarVoicesRequest) -> GetLibraryVoicesResponse</code></summary>
+<details><summary><code>client.voices.findSimilarVoices(requestParameters) -> GetLibraryVoicesResponse</code></summary>
 <dl>
 <dd>
 
@@ -1143,7 +1143,7 @@ Returns a list of shared voices similar to the provided audio sample. If neither
 <dd>
 
 ```java
-client.voices().findSimilarVoices(listSimilarVoicesRequest);
+client.voices().findSimilarVoices(requestParameters);
 ```
 
 </dd>
@@ -1159,7 +1159,7 @@ client.voices().findSimilarVoices(listSimilarVoicesRequest);
 <dl>
 <dd>
 
-**listSimilarVoicesRequest:** `ListSimilarVoicesRequest` — _optional_ Request Body
+**requestParameters:** `FindSimilarVoicesVoicesRequest` — Request Parameters Object
 
 </dd>
 </dl>
@@ -7718,7 +7718,7 @@ client.agents().summaries().get(requestParameters);
 <dl>
 <dd>
 
-**requestParameters:** `GetSummariesRequest` — Request Parameters Object
+**requestParameters:** `GetSummariesRequest` — _optional_ Request Parameters Object
 
 </dd>
 </dl>
@@ -8989,7 +8989,7 @@ client.agents().knowledgeBase().documents().summaries().get(requestParameters);
 <dl>
 <dd>
 
-**requestParameters:** `com.elevenlabs.api.resources.agents.knowledgebase.documents.summaries.requests.GetSummariesRequest` — Request Parameters Object
+**requestParameters:** `com.elevenlabs.api.resources.agents.knowledgebase.documents.summaries.requests.GetSummariesRequest` — _optional_ Request Parameters Object
 
 </dd>
 </dl>
@@ -15661,7 +15661,7 @@ client.agents().branches().update(
 <dl>
 <dd>
 
-Returns the result of merging the source branch into the target branch without performing the merge. Useful for showing an accurate diff before confirming.
+Returns the result of merging the source branch into the target branch without performing the merge. When `conflicts` is not empty, the merge itself is rejected unless `conflict_resolutions` settles every conflict or `force` is set; until then the returned configuration shows one side of each conflict only as a placeholder.
 
 </dd>
 </dl>
@@ -15736,7 +15736,7 @@ client.agents().branches().previewMerge(
 <dl>
 <dd>
 
-Merge a branch into a target branch
+Merge a branch into a target branch. If both branches changed the same field, the merge returns 409 unless `conflict_resolutions` settles every conflict the merge preview reports, or `force` is set.
 
 </dd>
 </dl>
@@ -15811,7 +15811,7 @@ client.agents().branches().merge(
 <dl>
 <dd>
 
-Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it, preserving the given branch's own changes. Useful for showing an accurate diff before confirming.
+Returns the result of pulling changes from a source branch (defaults to main) into the given branch without performing it. When `conflicts` is not empty, the rebase itself is rejected unless `conflict_resolutions` settles every conflict; until then the returned configuration keeps the given branch's side of each conflict.
 
 </dd>
 </dl>
@@ -15886,7 +15886,7 @@ client.agents().branches().previewRebase(
 <dl>
 <dd>
 
-Pull changes from a source branch (defaults to main) into this branch as a new version, preserving this branch's own changes on conflicts.
+Pull changes from a source branch (defaults to main) into this branch as a new version. If both branches changed the same field, the rebase returns 409 unless `conflict_resolutions` settles every conflict the rebase preview reports.
 
 </dd>
 </dl>
@@ -15938,7 +15938,7 @@ client.agents().branches().rebase(
 <dl>
 <dd>
 
-**requestParameters:** `RebaseBranchesRequest` — _optional_ Request Parameters Object
+**requestParameters:** `BodyRebaseABranchOntoMainV1ConvaiAgentsAgentIdBranchesBranchIdRebasePost` — _optional_ Request Parameters Object
 
 </dd>
 </dl>
@@ -20586,7 +20586,7 @@ client.speechToSpeech().convert(
 <dl>
 <dd>
 
-**requestParameters:** `BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost` — _optional_ Request Parameters Object
+**requestParameters:** `BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost` — Request Parameters Object
 
 </dd>
 </dl>
@@ -20652,7 +20652,7 @@ client.speechToSpeech().stream(
 <dl>
 <dd>
 
-**requestParameters:** `BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost` — _optional_ Request Parameters Object
+**requestParameters:** `BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost` — Request Parameters Object
 
 </dd>
 </dl>
@@ -23159,239 +23159,6 @@ client.pronunciationDictionaries().rules().remove(
 </dl>
 </details>
 
-## SpeechToText
-
-<details><summary><code>client.speechToText.convert(requestParameters) -> ConvertSpeechToTextResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Transcribe an audio or video file. If webhook is set to true, the request will be processed asynchronously and results sent to configured webhooks. When use_multi_channel is true and the provided audio has multiple channels, a 'transcripts' object with separate transcripts for each channel is returned; set multichannel_output_style='combined' to instead receive a single transcript with all channels merged and sorted by time. Otherwise, returns a single transcript. The optional webhook_metadata parameter allows you to attach custom data that will be included in webhook responses for request correlation and tracking.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.speechToText().convert(requestParameters);
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**requestParameters:** `ConvertSpeechToTextRequest` — Request Parameters Object
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-## SpeechToText Transcripts
-
-<details><summary><code>client.speechToText.transcripts.get(transcriptionId, requestParameters) -> GetTranscriptsResponse</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Retrieve a previously generated transcript by its ID.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.speechToText().transcripts().get(
-    transcriptionId,
-    requestParameters
-);
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transcriptionId:** `String` — The unique ID of the transcript to retrieve
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestParameters:** `com.elevenlabs.api.resources.speechtotext.transcripts.requests.GetTranscriptsRequest` — _optional_ Request Parameters Object
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-<details><summary><code>client.speechToText.transcripts.delete(transcriptionId, requestParameters) -> Object</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Delete a previously generated transcript by its ID.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.speechToText().transcripts().delete(
-    transcriptionId,
-    requestParameters
-);
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### ⚙️ Parameters
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-**transcriptionId:** `String` — The unique ID of the transcript to delete
-
-</dd>
-</dl>
-
-<dl>
-<dd>
-
-**requestParameters:** `DeleteTranscriptsRequest` — _optional_ Request Parameters Object
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
-## Models
-
-<details><summary><code>client.models.list() -> List&lt;Model&gt;</code></summary>
-<dl>
-<dd>
-
-#### 📝 Description
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-Gets a list of available models.
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-#### 🔌 Usage
-
-<dl>
-<dd>
-
-<dl>
-<dd>
-
-```java
-client.models().list();
-```
-
-</dd>
-</dl>
-</dd>
-</dl>
-
-</dd>
-</dl>
-</details>
-
 ## AudioNative
 
 <details><summary><code>client.audioNative.create(bodyCreatesAudioNativeEnabledProjectV1AudioNativePost) -> AudioNativeCreateProjectResponseModel</code></summary>
@@ -23626,6 +23393,239 @@ client.audioNative().updateContentFromUrl(bodyUpdateAudioNativeContentFromUrlV1A
 <dd>
 
 **bodyUpdateAudioNativeContentFromUrlV1AudioNativeContentPost:** `BodyUpdateAudioNativeContentFromUrlV1AudioNativeContentPost` — Request Body
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## SpeechToText
+
+<details><summary><code>client.speechToText.convert(requestParameters) -> ConvertSpeechToTextResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Transcribe an audio or video file. If webhook is set to true, the request will be processed asynchronously and results sent to configured webhooks. When use_multi_channel is true and the provided audio has multiple channels, a 'transcripts' object with separate transcripts for each channel is returned; set multichannel_output_style='combined' to instead receive a single transcript with all channels merged and sorted by time. Otherwise, returns a single transcript. The optional webhook_metadata parameter allows you to attach custom data that will be included in webhook responses for request correlation and tracking.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.speechToText().convert(requestParameters);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**requestParameters:** `ConvertSpeechToTextRequest` — Request Parameters Object
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## SpeechToText Transcripts
+
+<details><summary><code>client.speechToText.transcripts.get(transcriptionId, requestParameters) -> GetTranscriptsResponse</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Retrieve a previously generated transcript by its ID.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.speechToText().transcripts().get(
+    transcriptionId,
+    requestParameters
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transcriptionId:** `String` — The unique ID of the transcript to retrieve
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestParameters:** `com.elevenlabs.api.resources.speechtotext.transcripts.requests.GetTranscriptsRequest` — _optional_ Request Parameters Object
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+<details><summary><code>client.speechToText.transcripts.delete(transcriptionId, requestParameters) -> Object</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Delete a previously generated transcript by its ID.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.speechToText().transcripts().delete(
+    transcriptionId,
+    requestParameters
+);
+```
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### ⚙️ Parameters
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+**transcriptionId:** `String` — The unique ID of the transcript to delete
+
+</dd>
+</dl>
+
+<dl>
+<dd>
+
+**requestParameters:** `DeleteTranscriptsRequest` — _optional_ Request Parameters Object
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+</dd>
+</dl>
+</details>
+
+## Models
+
+<details><summary><code>client.models.list() -> List&lt;Model&gt;</code></summary>
+<dl>
+<dd>
+
+#### 📝 Description
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+Gets a list of available models.
+
+</dd>
+</dl>
+</dd>
+</dl>
+
+#### 🔌 Usage
+
+<dl>
+<dd>
+
+<dl>
+<dd>
+
+```java
+client.models().list();
+```
 
 </dd>
 </dl>
@@ -27730,7 +27730,7 @@ client.reception().workspaces().list(requestParameters);
 </dl>
 </details>
 
-<details><summary><code>client.reception.workspaces.create(provisionResellerWorkspaceRequest) -> ProvisionResellerWorkspaceResponse</code></summary>
+<details><summary><code>client.reception.workspaces.create(receptionProvisionResellerWorkspaceRequest) -> ProvisionResellerWorkspaceResponse</code></summary>
 <dl>
 <dd>
 
@@ -27758,7 +27758,7 @@ Create a workspace for one of your customers, optionally with a tier, a phone nu
 <dd>
 
 ```java
-client.reception().workspaces().create(provisionResellerWorkspaceRequest);
+client.reception().workspaces().create(receptionProvisionResellerWorkspaceRequest);
 ```
 
 </dd>
@@ -27774,7 +27774,7 @@ client.reception().workspaces().create(provisionResellerWorkspaceRequest);
 <dl>
 <dd>
 
-**provisionResellerWorkspaceRequest:** `ProvisionResellerWorkspaceRequest` — Request Body
+**receptionProvisionResellerWorkspaceRequest:** `ReceptionProvisionResellerWorkspaceRequest` — Request Body
 
 </dd>
 </dl>
@@ -30496,7 +30496,7 @@ client.webhooks().test(
 <dl>
 <dd>
 
-Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Only workspace admins on a web session can redeliver, and only deliveries whose payload is stored. Redeliveries and test events share a limit of 10 per webhook per minute.
+Sends a stored delivery again, once, with the same delivery ID, a new signature and an ElevenLabs-Webhook-Redelivery header. A retry that is already scheduled is still sent. Redelivering needs permission to manage webhooks and a web session, and the delivery's payload must be stored. Redeliveries and test events share a limit of 10 per webhook per minute.
 
 </dd>
 </dl>
@@ -30671,7 +30671,7 @@ client.music().compose(requestParameters);
 </dl>
 </details>
 
-<details><summary><code>client.music.composeDetailed(requestParameters) -> ComposeDetailedMusicResponse</code></summary>
+<details><summary><code>client.music.composeDetailed(requestParameters) -> InputStream</code></summary>
 <dl>
 <dd>
 

@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonDeserialize(builder = BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost.Builder.class)
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
@@ -27,9 +28,7 @@ public final class BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost {
   private final Optional<Boolean> enableLogging;
   private final Optional<Integer> optimizeStreamingLatency;
   private final Optional<ConvertSpeechToSpeechRequestOutputFormat> outputFormat;
-  private final Optional<
-    com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost
-  > speechToSpeechRequest;
+  private final com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost speechToSpeechRequest;
   private final Map<String, Object> additionalProperties;
 
   private BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost(Builder builder) {
@@ -73,9 +72,7 @@ public final class BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost {
   }
 
   @JsonProperty("SpeechToSpeechRequest")
-  public Optional<
-    com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost
-  > getSpeechToSpeechRequest() {
+  public com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost getSpeechToSpeechRequest() {
     return speechToSpeechRequest;
   }
 
@@ -113,19 +110,51 @@ public final class BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost {
     return ModelConverter.modelToJson(this);
   }
 
-  public static Builder builder() {
+  public static SpeechToSpeechRequestStage builder() {
     return new Builder();
   }
 
+  public interface SpeechToSpeechRequestStage {
+    _FinalStage speechToSpeechRequest(
+      @NotNull com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost speechToSpeechRequest
+    );
+
+    Builder from(BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost other);
+  }
+
+  public interface _FinalStage {
+    BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost build();
+
+    _FinalStage additionalProperty(String key, Object value);
+
+    _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+    _FinalStage enableLogging(Optional<Boolean> enableLogging);
+
+    _FinalStage enableLogging(Boolean enableLogging);
+
+    _FinalStage enableLogging(Nullable<Boolean> enableLogging);
+
+    _FinalStage optimizeStreamingLatency(Optional<Integer> optimizeStreamingLatency);
+
+    _FinalStage optimizeStreamingLatency(Integer optimizeStreamingLatency);
+
+    _FinalStage optimizeStreamingLatency(Nullable<Integer> optimizeStreamingLatency);
+
+    _FinalStage outputFormat(Optional<ConvertSpeechToSpeechRequestOutputFormat> outputFormat);
+
+    _FinalStage outputFormat(ConvertSpeechToSpeechRequestOutputFormat outputFormat);
+
+    _FinalStage outputFormat(Nullable<ConvertSpeechToSpeechRequestOutputFormat> outputFormat);
+  }
+
   @JsonIgnoreProperties(ignoreUnknown = true)
-  public static final class Builder {
+  public static final class Builder implements SpeechToSpeechRequestStage, _FinalStage {
 
     private Optional<Boolean> enableLogging = Optional.empty();
     private Optional<Integer> optimizeStreamingLatency = Optional.empty();
     private Optional<ConvertSpeechToSpeechRequestOutputFormat> outputFormat = Optional.empty();
-    private Optional<
-      com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost
-    > speechToSpeechRequest = Optional.empty();
+    private com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost speechToSpeechRequest;
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -140,18 +169,33 @@ public final class BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost {
       return this;
     }
 
+    @java.lang.Override
+    @JsonSetter("SpeechToSpeechRequest")
+    public _FinalStage speechToSpeechRequest(
+      @NotNull com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost speechToSpeechRequest
+    ) {
+      this.speechToSpeechRequest = Objects.requireNonNull(
+        speechToSpeechRequest,
+        "speechToSpeechRequest must not be null"
+      );
+      return this;
+    }
+
+    @java.lang.Override
     @JsonSetter(value = "enable_logging", nulls = Nulls.SKIP)
-    public Builder enableLogging(Optional<Boolean> enableLogging) {
+    public _FinalStage enableLogging(Optional<Boolean> enableLogging) {
       this.enableLogging = enableLogging;
       return this;
     }
 
-    public Builder enableLogging(Boolean enableLogging) {
+    @java.lang.Override
+    public _FinalStage enableLogging(Boolean enableLogging) {
       this.enableLogging = Optional.ofNullable(enableLogging);
       return this;
     }
 
-    public Builder enableLogging(Nullable<Boolean> enableLogging) {
+    @java.lang.Override
+    public _FinalStage enableLogging(Nullable<Boolean> enableLogging) {
       if (enableLogging.isNull()) {
         this.enableLogging = null;
       } else if (enableLogging.isEmpty()) {
@@ -162,18 +206,21 @@ public final class BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost {
       return this;
     }
 
+    @java.lang.Override
     @JsonSetter(value = "optimize_streaming_latency", nulls = Nulls.SKIP)
-    public Builder optimizeStreamingLatency(Optional<Integer> optimizeStreamingLatency) {
+    public _FinalStage optimizeStreamingLatency(Optional<Integer> optimizeStreamingLatency) {
       this.optimizeStreamingLatency = optimizeStreamingLatency;
       return this;
     }
 
-    public Builder optimizeStreamingLatency(Integer optimizeStreamingLatency) {
+    @java.lang.Override
+    public _FinalStage optimizeStreamingLatency(Integer optimizeStreamingLatency) {
       this.optimizeStreamingLatency = Optional.ofNullable(optimizeStreamingLatency);
       return this;
     }
 
-    public Builder optimizeStreamingLatency(Nullable<Integer> optimizeStreamingLatency) {
+    @java.lang.Override
+    public _FinalStage optimizeStreamingLatency(Nullable<Integer> optimizeStreamingLatency) {
       if (optimizeStreamingLatency.isNull()) {
         this.optimizeStreamingLatency = null;
       } else if (optimizeStreamingLatency.isEmpty()) {
@@ -184,18 +231,25 @@ public final class BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost {
       return this;
     }
 
+    @java.lang.Override
     @JsonSetter(value = "output_format", nulls = Nulls.SKIP)
-    public Builder outputFormat(Optional<ConvertSpeechToSpeechRequestOutputFormat> outputFormat) {
+    public _FinalStage outputFormat(
+      Optional<ConvertSpeechToSpeechRequestOutputFormat> outputFormat
+    ) {
       this.outputFormat = outputFormat;
       return this;
     }
 
-    public Builder outputFormat(ConvertSpeechToSpeechRequestOutputFormat outputFormat) {
+    @java.lang.Override
+    public _FinalStage outputFormat(ConvertSpeechToSpeechRequestOutputFormat outputFormat) {
       this.outputFormat = Optional.ofNullable(outputFormat);
       return this;
     }
 
-    public Builder outputFormat(Nullable<ConvertSpeechToSpeechRequestOutputFormat> outputFormat) {
+    @java.lang.Override
+    public _FinalStage outputFormat(
+      Nullable<ConvertSpeechToSpeechRequestOutputFormat> outputFormat
+    ) {
       if (outputFormat.isNull()) {
         this.outputFormat = null;
       } else if (outputFormat.isEmpty()) {
@@ -206,32 +260,18 @@ public final class BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost {
       return this;
     }
 
-    @JsonSetter(value = "SpeechToSpeechRequest", nulls = Nulls.SKIP)
-    public Builder speechToSpeechRequest(
-      Optional<
-        com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost
-      > speechToSpeechRequest
-    ) {
-      this.speechToSpeechRequest = speechToSpeechRequest;
-      return this;
-    }
-
-    public Builder speechToSpeechRequest(
-      com.elevenlabs.api.types.BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost speechToSpeechRequest
-    ) {
-      this.speechToSpeechRequest = Optional.ofNullable(speechToSpeechRequest);
-      return this;
-    }
-
+    @java.lang.Override
     public BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost build() {
       return new BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost(this);
     }
 
+    @java.lang.Override
     public Builder additionalProperty(String key, Object value) {
       this.additionalProperties.put(key, value);
       return this;
     }
 
+    @java.lang.Override
     public Builder additionalProperties(Map<String, Object> additionalProperties) {
       this.additionalProperties.putAll(additionalProperties);
       return this;

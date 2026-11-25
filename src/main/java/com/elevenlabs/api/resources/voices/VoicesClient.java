@@ -22,9 +22,9 @@ import com.elevenlabs.api.resources.voices.pvc.PvcClient;
 import com.elevenlabs.api.resources.voices.requests.BodyAddSharedVoiceV1VoicesAddPublicUserIdVoiceIdPost;
 import com.elevenlabs.api.resources.voices.requests.DeleteVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.EditVoiceRequest;
+import com.elevenlabs.api.resources.voices.requests.FindSimilarVoicesVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.GetSharedVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.GetVoicesRequest;
-import com.elevenlabs.api.resources.voices.requests.ListSimilarVoicesRequest;
 import com.elevenlabs.api.resources.voices.requests.ReplicateVoiceToIsolatedEnvironmentRequestModel;
 import com.elevenlabs.api.resources.voices.requests.SearchVoicesRequest;
 import com.elevenlabs.api.resources.voices.samples.SamplesClient;
@@ -39,7 +39,6 @@ import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.ReplicateVoiceToIsolatedEnvironmentResponseModel;
 import com.elevenlabs.api.types.Voice;
 import com.fasterxml.jackson.core.type.TypeReference;
-import java.io.InputStream;
 import java.util.Map;
 import java.util.Optional;
 import java.util.concurrent.CompletableFuture;
@@ -720,156 +719,90 @@ public class VoicesClient {
   /**
    * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
    *
-   * @return response of {@code GetLibraryVoicesResponse}
-   */
-  public GetLibraryVoicesResponse findSimilarVoices() {
-    return this.findSimilarVoices(ListSimilarVoicesRequest.builder().build());
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @return response of {@code GetLibraryVoicesResponse}
-   */
-  public GetLibraryVoicesResponse findSimilarVoices(RequestOptions requestOptions) {
-    return this.findSimilarVoices(ListSimilarVoicesRequest.builder().build(), requestOptions);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
+   * @param requestParameters {@link FindSimilarVoicesVoicesRequest} Request Parameters Object
    * @return response of {@code GetLibraryVoicesResponse}
    */
   public GetLibraryVoicesResponse findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest
+    FindSimilarVoicesVoicesRequest requestParameters
   ) {
-    return this.findSimilarVoices(listSimilarVoicesRequest, null);
+    return this.findSimilarVoices(requestParameters, null);
   }
 
   /**
    * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
    *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
+   * @param requestParameters {@link FindSimilarVoicesVoicesRequest} Request Parameters Object
    * @return response of {@code GetLibraryVoicesResponse}
    */
   public GetLibraryVoicesResponse findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
+    FindSimilarVoicesVoicesRequest requestParameters,
     RequestOptions requestOptions
   ) {
-    return withRawResponse().findSimilarVoices(listSimilarVoicesRequest, requestOptions).getData();
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code GetLibraryVoicesResponse}
-   */
-  public GetLibraryVoicesResponse findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, null));
-    return this.findSimilarVoices(builder.build(), null);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code GetLibraryVoicesResponse}
-   */
-  public GetLibraryVoicesResponse findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename,
-    MediaType mediaType
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, mediaType));
-    return this.findSimilarVoices(builder.build(), null);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code GetLibraryVoicesResponse}
-   */
-  public GetLibraryVoicesResponse findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename,
-    RequestOptions requestOptions
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, null));
-    return this.findSimilarVoices(builder.build(), requestOptions);
-  }
-
-  /**
-   * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-   *
-   * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-   * @return response of {@code GetLibraryVoicesResponse}
-   */
-  public GetLibraryVoicesResponse findSimilarVoices(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
-    InputStream stream,
-    String filename,
-    MediaType mediaType,
-    RequestOptions requestOptions
-  ) {
-    ListSimilarVoicesRequest.Builder builder =
-      (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-    builder.from(listSimilarVoicesRequest);
-    builder.audioFile(new FileStream(stream, filename, mediaType));
-    return this.findSimilarVoices(builder.build(), requestOptions);
+    return withRawResponse().findSimilarVoices(requestParameters, requestOptions).getData();
   }
 
   private Request buildFindSimilarVoicesRequest(
-    ListSimilarVoicesRequest listSimilarVoicesRequest,
+    FindSimilarVoicesVoicesRequest requestParameters,
     RequestConfig resolvedConfig
   ) {
     MultipartBody.Builder multipartBodyBuilder = new MultipartBody.Builder()
       .setType(MultipartBody.FORM);
-    if (listSimilarVoicesRequest.getAudioFile().orElse(null) != null) {
+    if (requestParameters.getListSimilarVoicesRequest().getAudioFile().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "audio_file",
-        listSimilarVoicesRequest.getAudioFile().orElse(null).getFileName(),
-        listSimilarVoicesRequest.getAudioFile().orElse(null).toRequestBody()
+        requestParameters.getListSimilarVoicesRequest().getAudioFile().orElse(null).getFileName(),
+        requestParameters.getListSimilarVoicesRequest().getAudioFile().orElse(null).toRequestBody()
       );
     }
-    if (listSimilarVoicesRequest.getSimilarityThreshold().orElse(null) != null) {
+    if (
+      requestParameters.getListSimilarVoicesRequest().getSimilarityThreshold().orElse(null) != null
+    ) {
       multipartBodyBuilder.addFormDataPart(
         "similarity_threshold",
-        listSimilarVoicesRequest.getSimilarityThreshold().orElse(null).toString()
+        requestParameters
+          .getListSimilarVoicesRequest()
+          .getSimilarityThreshold()
+          .orElse(null)
+          .toString()
       );
     }
-    if (listSimilarVoicesRequest.getTopK().orElse(null) != null) {
+    if (requestParameters.getListSimilarVoicesRequest().getTopK().orElse(null) != null) {
       multipartBodyBuilder.addFormDataPart(
         "top_k",
-        listSimilarVoicesRequest.getTopK().orElse(null).toString()
+        requestParameters.getListSimilarVoicesRequest().getTopK().orElse(null).toString()
       );
     }
-    return new RequestBuilder(
+    RequestBuilder builder = new RequestBuilder(
       HttpMethod.POST,
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "v1/similar-voices"
     )
       .setHeader("Accept", "application/json")
       .applyRequestConfig(resolvedConfig)
-      .setBody(multipartBodyBuilder.build())
-      .build();
+      .setOptionalQueryParameter("gender", requestParameters.getGender().orElse(null))
+      .setOptionalQueryParameter("age", requestParameters.getAge().orElse(null))
+      .setOptionalQueryParameter("use_cases", requestParameters.getUseCases().orElse(null))
+      .setOptionalQueryParameter(
+        "min_notice_period_days",
+        requestParameters.getMinNoticePeriodDays().orElse(null)
+      )
+      .setOptionalQueryParameter(
+        "include_custom_rates",
+        requestParameters.getIncludeCustomRates().orElse(null)
+      )
+      .setOptionalQueryParameter(
+        "include_live_moderated",
+        requestParameters.getIncludeLiveModerated().orElse(null)
+      )
+      .setOptionalQueryParameter("owner_id", requestParameters.getOwnerId().orElse(null))
+      .setBody(multipartBodyBuilder.build());
+    if (requestParameters.getCategory().orElse(null) != null) {
+      builder.setOptionalQueryParameter(
+        "category",
+        requestParameters.getCategory().orElse(null).toString()
+      );
+    }
+    return builder.build();
   }
 
   /**
@@ -1330,43 +1263,23 @@ public class VoicesClient {
     /**
      * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
      *
-     * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
-     */
-    public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices() {
-      return this.findSimilarVoices(ListSimilarVoicesRequest.builder().build());
-    }
-
-    /**
-     * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-     *
+     * @param requestParameters {@link FindSimilarVoicesVoicesRequest} Request Parameters Object
      * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
      */
     public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices(
-      RequestOptions requestOptions
+      FindSimilarVoicesVoicesRequest requestParameters
     ) {
-      return this.findSimilarVoices(ListSimilarVoicesRequest.builder().build(), requestOptions);
+      return this.findSimilarVoices(requestParameters, null);
     }
 
     /**
      * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
      *
-     * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
+     * @param requestParameters {@link FindSimilarVoicesVoicesRequest} Request Parameters Object
      * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
      */
     public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices(
-      ListSimilarVoicesRequest listSimilarVoicesRequest
-    ) {
-      return this.findSimilarVoices(listSimilarVoicesRequest, null);
-    }
-
-    /**
-     * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-     *
-     * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-     * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
-     */
-    public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices(
-      ListSimilarVoicesRequest listSimilarVoicesRequest,
+      FindSimilarVoicesVoicesRequest requestParameters,
       RequestOptions requestOptions
     ) {
       RequestConfig resolvedConfig = getResolvedConfig(
@@ -1376,7 +1289,7 @@ public class VoicesClient {
       addErrorMapping(422, HttpValidationError.class, (message, code, body, rawResponse) ->
         new UnprocessableEntityError((HttpValidationError) body, rawResponse)
       );
-      Request request = buildFindSimilarVoicesRequest(listSimilarVoicesRequest, resolvedConfig);
+      Request request = buildFindSimilarVoicesRequest(requestParameters, resolvedConfig);
       Response response = execute(request, resolvedConfig);
       byte[] bodyBytes = ModelConverter.readBytes(response);
       return new ElevenlabsApiHttpResponse<>(
@@ -1384,82 +1297,6 @@ public class VoicesClient {
         bodyBytes,
         ModelConverter.convert(bodyBytes, new TypeReference<GetLibraryVoicesResponse>() {})
       );
-    }
-
-    /**
-     * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-     *
-     * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-     * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
-     */
-    public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices(
-      ListSimilarVoicesRequest listSimilarVoicesRequest,
-      InputStream stream,
-      String filename
-    ) {
-      ListSimilarVoicesRequest.Builder builder =
-        (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-      builder.from(listSimilarVoicesRequest);
-      builder.audioFile(new FileStream(stream, filename, null));
-      return this.findSimilarVoices(builder.build(), null);
-    }
-
-    /**
-     * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-     *
-     * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-     * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
-     */
-    public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices(
-      ListSimilarVoicesRequest listSimilarVoicesRequest,
-      InputStream stream,
-      String filename,
-      MediaType mediaType
-    ) {
-      ListSimilarVoicesRequest.Builder builder =
-        (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-      builder.from(listSimilarVoicesRequest);
-      builder.audioFile(new FileStream(stream, filename, mediaType));
-      return this.findSimilarVoices(builder.build(), null);
-    }
-
-    /**
-     * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-     *
-     * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-     * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
-     */
-    public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices(
-      ListSimilarVoicesRequest listSimilarVoicesRequest,
-      InputStream stream,
-      String filename,
-      RequestOptions requestOptions
-    ) {
-      ListSimilarVoicesRequest.Builder builder =
-        (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-      builder.from(listSimilarVoicesRequest);
-      builder.audioFile(new FileStream(stream, filename, null));
-      return this.findSimilarVoices(builder.build(), requestOptions);
-    }
-
-    /**
-     * Returns a list of shared voices similar to the provided audio sample. If neither similarity_threshold nor top_k is provided, we will apply default values.
-     *
-     * @param listSimilarVoicesRequest {@link ListSimilarVoicesRequest} Request Body
-     * @return response of {@code ElevenlabsApiHttpResponse<GetLibraryVoicesResponse>}
-     */
-    public ElevenlabsApiHttpResponse<GetLibraryVoicesResponse> findSimilarVoices(
-      ListSimilarVoicesRequest listSimilarVoicesRequest,
-      InputStream stream,
-      String filename,
-      MediaType mediaType,
-      RequestOptions requestOptions
-    ) {
-      ListSimilarVoicesRequest.Builder builder =
-        (ListSimilarVoicesRequest.Builder) ListSimilarVoicesRequest.builder();
-      builder.from(listSimilarVoicesRequest);
-      builder.audioFile(new FileStream(stream, filename, mediaType));
-      return this.findSimilarVoices(builder.build(), requestOptions);
     }
 
     /**

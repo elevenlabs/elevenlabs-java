@@ -46,6 +46,13 @@ public class AlertingSettingsValidator extends AbstractModelValidator<AlertingSe
           .validate(alertingSettings.getAutoResolveAfterInactiveMinutes().orElse(null))
       )
       .add(
+        new ListValidator<String>("environments")
+          .minLength(1)
+          .maxLength(20)
+          .optional()
+          .validate(alertingSettings.getEnvironments().orElse(null))
+      )
+      .add(
         new ListValidator<AlertingSettingsNotifiersItem>("notifiers")
           .maxLength(10)
           .itemValidator(new AlertingSettingsNotifiersItemValidator().required())

@@ -12,6 +12,7 @@ import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.types.HttpValidationError;
 import com.elevenlabs.api.types.ResellerTierEconomics;
 import com.elevenlabs.api.types.ResellerTierResponse;
+import com.elevenlabs.api.types.ResellerTierResponseCurrency;
 import com.elevenlabs.api.types.ValidationError;
 import java.util.List;
 import okhttp3.OkHttpClient;
@@ -57,6 +58,7 @@ class TiersClientWireTest {
               ResellerTierResponse.builder()
                 .tierId("test-value")
                 .displayName("test-value")
+                .currency(ResellerTierResponseCurrency.USD)
                 .tierEconomics(
                   ResellerTierEconomics.builder()
                     .monthlyPriceUsd(1d)
@@ -83,6 +85,7 @@ class TiersClientWireTest {
           ResellerTierResponse.builder()
             .tierId("test-value")
             .displayName("test-value")
+            .currency(ResellerTierResponseCurrency.USD)
             .tierEconomics(
               ResellerTierEconomics.builder()
                 .monthlyPriceUsd(1d)

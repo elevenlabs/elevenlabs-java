@@ -201,24 +201,19 @@ public class AsyncTextToDialogueClient {
     BodyTextToDialogueMultiVoiceV1TextToDialoguePost requestParameters,
     RequestConfig resolvedConfig
   ) {
-    RequestBuilder builder = new RequestBuilder(
+    return new RequestBuilder(
       HttpMethod.POST,
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "v1/text-to-dialogue"
     )
       .applyRequestConfig(resolvedConfig)
+      .setOptionalQueryParameter("output_format", requestParameters.getOutputFormat().orElse(null))
       .setOptionalQueryParameter(
         "enable_logging",
         requestParameters.getEnableLogging().orElse(null)
       )
-      .setJsonContent(requestParameters);
-    if (requestParameters.getOutputFormat().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "output_format",
-        requestParameters.getOutputFormat().orElse(null).toString()
-      );
-    }
-    return builder.build();
+      .setJsonContent(requestParameters)
+      .build();
   }
 
   /**
@@ -359,25 +354,20 @@ public class AsyncTextToDialogueClient {
     BodyTextToDialogueFullWithTimestamps requestParameters,
     RequestConfig resolvedConfig
   ) {
-    RequestBuilder builder = new RequestBuilder(
+    return new RequestBuilder(
       HttpMethod.POST,
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "v1/text-to-dialogue/with-timestamps"
     )
       .setHeader("Accept", "application/json")
       .applyRequestConfig(resolvedConfig)
+      .setOptionalQueryParameter("output_format", requestParameters.getOutputFormat().orElse(null))
       .setOptionalQueryParameter(
         "enable_logging",
         requestParameters.getEnableLogging().orElse(null)
       )
-      .setJsonContent(requestParameters);
-    if (requestParameters.getOutputFormat().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "output_format",
-        requestParameters.getOutputFormat().orElse(null).toString()
-      );
-    }
-    return builder.build();
+      .setJsonContent(requestParameters)
+      .build();
   }
 
   /**

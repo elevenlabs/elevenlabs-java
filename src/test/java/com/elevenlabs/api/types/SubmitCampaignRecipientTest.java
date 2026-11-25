@@ -22,6 +22,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumbers(java.util.List.of("test-value"))
       .whatsappUserId("test-value")
       .id("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -51,6 +52,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumbers(java.util.List.of("test-value"))
       .whatsappUserId("test-value")
       .id("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -81,6 +83,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumbers(java.util.List.of("test-value"))
       .whatsappUserId("test-value")
       .id("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -110,6 +113,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumber("test-value")
       .whatsappUserId("test-value")
       .id("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -140,6 +144,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumbers((java.util.List<String>) null)
       .whatsappUserId("test-value")
       .id("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -169,6 +174,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumber("test-value")
       .phoneNumbers(java.util.List.of("test-value"))
       .id("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -199,6 +205,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumbers(java.util.List.of("test-value"))
       .whatsappUserId((String) null)
       .id("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -228,6 +235,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumber("test-value")
       .phoneNumbers(java.util.List.of("test-value"))
       .whatsappUserId("test-value")
+      .timezoneOverride("test-value")
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -258,6 +266,68 @@ class SubmitCampaignRecipientTest {
       .phoneNumbers(java.util.List.of("test-value"))
       .whatsappUserId("test-value")
       .id((String) null)
+      .timezoneOverride("test-value")
+      .conversationInitiationClientData(
+        ConversationInitiationClientDataRequestInput.builder()
+          .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
+          .customLlmExtraBody(java.util.Map.of())
+          .userId("test-value")
+          .sourceInfo(ConversationInitiationSourceInfo.builder().build())
+          .branchId("test-value")
+          .environment("test-value")
+          .startingWorkflowNodeId("test-value")
+          .procedureIds(java.util.List.of("test-value"))
+          .startProcedureIds(java.util.List.of("test-value"))
+          .dynamicVariables(java.util.Map.of())
+          .build()
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    SubmitCampaignRecipient roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      SubmitCampaignRecipient.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_timezoneOverride() throws Exception {
+    SubmitCampaignRecipient value = SubmitCampaignRecipient.builder()
+      .phoneNumber("test-value")
+      .phoneNumbers(java.util.List.of("test-value"))
+      .whatsappUserId("test-value")
+      .id("test-value")
+      .conversationInitiationClientData(
+        ConversationInitiationClientDataRequestInput.builder()
+          .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
+          .customLlmExtraBody(java.util.Map.of())
+          .userId("test-value")
+          .sourceInfo(ConversationInitiationSourceInfo.builder().build())
+          .branchId("test-value")
+          .environment("test-value")
+          .startingWorkflowNodeId("test-value")
+          .procedureIds(java.util.List.of("test-value"))
+          .startProcedureIds(java.util.List.of("test-value"))
+          .dynamicVariables(java.util.Map.of())
+          .build()
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    SubmitCampaignRecipient roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      SubmitCampaignRecipient.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_timezoneOverride() throws Exception {
+    SubmitCampaignRecipient value = SubmitCampaignRecipient.builder()
+      .phoneNumber("test-value")
+      .phoneNumbers(java.util.List.of("test-value"))
+      .whatsappUserId("test-value")
+      .id("test-value")
+      .timezoneOverride((String) null)
       .conversationInitiationClientData(
         ConversationInitiationClientDataRequestInput.builder()
           .conversationConfigOverride(ConversationConfigClientOverrideInput.builder().build())
@@ -288,6 +358,7 @@ class SubmitCampaignRecipientTest {
       .phoneNumbers(java.util.List.of("test-value"))
       .whatsappUserId("test-value")
       .id("test-value")
+      .timezoneOverride("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     SubmitCampaignRecipient roundTripped = ObjectMappers.JSON_MAPPER.readValue(

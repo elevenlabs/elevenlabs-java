@@ -41,8 +41,8 @@ import okhttp3.Response;
  * }</pre>
  *
  * <p>The API answers {@code POST /v1/music/detailed} with a {@code multipart/mixed} body (a JSON part,
- * then the audio). The generated {@code client.music().composeDetailed} decodes that body as JSON,
- * which fails: it logs the parse error at {@code SEVERE} and returns {@code null}. This sends the same request, built exactly as the generated method builds it, through
+ * then the audio). The generated {@code client.music().composeDetailed} returns that body as an
+ * unsplit {@code InputStream}. This sends the same request, built exactly as the generated method builds it, through
  * the same HTTP stack (base URL, credentials, retries, timeout and error handling) and splits the
  * parts.
  *

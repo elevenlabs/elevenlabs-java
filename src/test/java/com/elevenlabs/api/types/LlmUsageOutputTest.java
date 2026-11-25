@@ -26,6 +26,7 @@ class LlmUsageOutputTest {
             .inputCacheRead(LlmTokensCategoryUsage.builder().build())
             .inputCacheWrite(LlmTokensCategoryUsage.builder().build())
             .outputTotal(LlmTokensCategoryUsage.builder().build())
+            .outputTotalReasoningPortion(LlmTokensCategoryUsage.builder().build())
             .build()
         )
       )

@@ -46,7 +46,7 @@ public final class PreviewMergeBranchesRequest {
   }
 
   /**
-   * @return When true, source branch changes always win conflicts regardless of timestamps
+   * @return When true, the preview keeps the source branch's value for every conflict, as a merge with <code>force</code> does. Without it, a merge with conflicts needs <code>conflict_resolutions</code>.
    */
   @JsonIgnore
   public Optional<Boolean> getForce() {

@@ -45,35 +45,6 @@ public class RawSpeechToSpeechClient {
    * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
    *
    * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public ElevenlabsApiHttpResponse<InputStream> convert(String voiceId) {
-    return this.convert(voiceId, BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost.builder().build());
-  }
-
-  /**
-   * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public ElevenlabsApiHttpResponse<InputStream> convert(
-    String voiceId,
-    RequestOptions requestOptions
-  ) {
-    return this.convert(
-        voiceId,
-        BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost.builder().build(),
-        requestOptions
-      );
-  }
-
-  /**
-   * Transform audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
    * @param requestParameters {@link BodySpeechToSpeechV1SpeechToSpeechVoiceIdPost} Request Parameters Object
    * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
    * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
@@ -99,38 +70,6 @@ public class RawSpeechToSpeechClient {
     RequestOptions requestOptions
   ) {
     return delegate.convert(voiceId, requestParameters, requestOptions);
-  }
-
-  /**
-   * Stream audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public ElevenlabsApiHttpResponse<InputStream> stream(String voiceId) {
-    return this.stream(
-        voiceId,
-        BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost.builder().build()
-      );
-  }
-
-  /**
-   * Stream audio from one voice to another. Maintain full control over emotion, timing and delivery.
-   *
-   * @param voiceId String ID of the voice to be used. Use the [Get voices](/docs/api-reference/voices/search) endpoint list all the available voices.
-   * @return response of {@code ElevenlabsApiHttpResponse<InputStream>}
-   * The returned InputStream owns the HTTP response and must be closed, preferably with try-with-resources.
-   */
-  public ElevenlabsApiHttpResponse<InputStream> stream(
-    String voiceId,
-    RequestOptions requestOptions
-  ) {
-    return this.stream(
-        voiceId,
-        BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost.builder().build(),
-        requestOptions
-      );
   }
 
   /**

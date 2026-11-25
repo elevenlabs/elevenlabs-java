@@ -965,6 +965,19 @@ class SmbToolConfigParamsTest {
   }
 
   @Test
+  void roundTrips_branch_smbConfirmChange() throws Exception {
+    SmbToolConfigParams value = SmbToolConfigParams.smbConfirmChange(
+      ConfirmChangeParams.builder().build()
+    );
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    SmbToolConfigParams roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      SmbToolConfigParams.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
   void roundTrips_branch_setBookingSlug() throws Exception {
     SmbToolConfigParams value = SmbToolConfigParams.setBookingSlug(
       SetBookingSlugParams.builder().build()

@@ -9,20 +9,21 @@ import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
 import com.fasterxml.jackson.annotation.JsonIgnoreProperties;
 import com.fasterxml.jackson.annotation.JsonInclude;
+import com.fasterxml.jackson.annotation.JsonProperty;
 import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
-import java.util.ArrayList;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 import java.util.Objects;
+import java.util.Optional;
 
 @JsonDeserialize(builder = GetSummariesRequest.Builder.class)
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public final class GetSummariesRequest {
 
-  private final List<String> documentIds;
+  private final Optional<List<String>> documentIds;
   private final Map<String, Object> additionalProperties;
 
   private GetSummariesRequest(Builder builder) {
@@ -34,7 +35,7 @@ public final class GetSummariesRequest {
    * @return The ids of knowledge base documents.
    */
   @JsonIgnore
-  public List<String> getDocumentIds() {
+  public Optional<List<String>> getDocumentIds() {
     return documentIds;
   }
 
@@ -68,7 +69,7 @@ public final class GetSummariesRequest {
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class Builder {
 
-    private List<String> documentIds = new ArrayList<>();
+    private Optional<List<String>> documentIds = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -81,23 +82,13 @@ public final class GetSummariesRequest {
     }
 
     @JsonSetter(value = "document_ids", nulls = Nulls.SKIP)
+    public Builder documentIds(Optional<List<String>> documentIds) {
+      this.documentIds = documentIds;
+      return this;
+    }
+
     public Builder documentIds(List<String> documentIds) {
-      this.documentIds.clear();
-      if (documentIds != null) {
-        this.documentIds.addAll(documentIds);
-      }
-      return this;
-    }
-
-    public Builder addDocumentIds(String documentIds) {
-      this.documentIds.add(documentIds);
-      return this;
-    }
-
-    public Builder addAllDocumentIds(List<String> documentIds) {
-      if (documentIds != null) {
-        this.documentIds.addAll(documentIds);
-      }
+      this.documentIds = Optional.ofNullable(documentIds);
       return this;
     }
 

@@ -7,6 +7,7 @@ import com.elevenlabs.api.core.ListValidator;
 import com.elevenlabs.api.core.Violation;
 import com.elevenlabs.api.core.ViolationAggregator;
 import com.elevenlabs.api.types.CallingPeriod;
+import com.elevenlabs.api.types.DateOverride;
 import com.elevenlabs.api.types.PolicyConfigOutput;
 
 /**
@@ -49,6 +50,13 @@ public class PolicyConfigOutputValidator extends AbstractModelValidator<PolicyCo
           .itemValidator(new CallingPeriodValidator().required())
           .optional()
           .validate(policyConfigOutput.getCallingPeriods().orElse(null))
+      )
+      .add(
+        new ListValidator<DateOverride>("dateOverrides")
+          .maxLength(100)
+          .itemValidator(new DateOverrideValidator().required())
+          .optional()
+          .validate(policyConfigOutput.getDateOverrides().orElse(null))
       )
       .add(
         new DataCollectionConfigValidator("dataCollection")

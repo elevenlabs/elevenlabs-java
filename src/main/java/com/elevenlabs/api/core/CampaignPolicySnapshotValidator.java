@@ -8,6 +8,7 @@ import com.elevenlabs.api.core.Violation;
 import com.elevenlabs.api.core.ViolationAggregator;
 import com.elevenlabs.api.types.CallingPeriodPolicy;
 import com.elevenlabs.api.types.CampaignPolicySnapshot;
+import com.elevenlabs.api.types.DateOverridePolicy;
 
 /**
  * Validator implementation for CampaignPolicySnapshot model.
@@ -45,6 +46,12 @@ public class CampaignPolicySnapshotValidator
           .itemValidator(new CallingPeriodPolicyValidator().required())
           .required()
           .validate(campaignPolicySnapshot.getCallingPeriods())
+      )
+      .add(
+        new ListValidator<DateOverridePolicy>("dateOverrides")
+          .itemValidator(new DateOverridePolicyValidator().required())
+          .optional()
+          .validate(campaignPolicySnapshot.getDateOverrides().orElse(null))
       )
       .aggregate();
   }

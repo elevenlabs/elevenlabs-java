@@ -16,14 +16,13 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
-import org.jetbrains.annotations.NotNull;
 
 @JsonDeserialize(builder = AdhocAgentConfigOverrideForTestRequestModel.Builder.class)
 @JsonInclude(JsonInclude.Include.NON_ABSENT)
 public final class AdhocAgentConfigOverrideForTestRequestModel {
 
-  private final ConversationalConfig conversationConfig;
-  private final AgentPlatformSettingsRequestModel platformSettings;
+  private final Optional<ConversationalConfig> conversationConfig;
+  private final Optional<AgentPlatformSettingsRequestModel> platformSettings;
   private final Optional<AgentWorkflowRequestModel> workflow;
   private final Map<String, Object> additionalProperties;
 
@@ -35,15 +34,18 @@ public final class AdhocAgentConfigOverrideForTestRequestModel {
   }
 
   @JsonProperty("conversation_config")
-  public ConversationalConfig getConversationConfig() {
+  public Optional<ConversationalConfig> getConversationConfig() {
     return conversationConfig;
   }
 
   @JsonProperty("platform_settings")
-  public AgentPlatformSettingsRequestModel getPlatformSettings() {
+  public Optional<AgentPlatformSettingsRequestModel> getPlatformSettings() {
     return platformSettings;
   }
 
+  /**
+   * @return A workflow to run instead of the agent's. It replaces the agent's workflow whole.
+   */
   @JsonProperty("workflow")
   public Optional<AgentWorkflowRequestModel> getWorkflow() {
     return workflow;
@@ -77,38 +79,15 @@ public final class AdhocAgentConfigOverrideForTestRequestModel {
     return ModelConverter.modelToJson(this);
   }
 
-  public static ConversationConfigStage builder() {
+  public static Builder builder() {
     return new Builder();
   }
 
-  public interface ConversationConfigStage {
-    PlatformSettingsStage conversationConfig(@NotNull ConversationalConfig conversationConfig);
-
-    Builder from(AdhocAgentConfigOverrideForTestRequestModel other);
-  }
-
-  public interface PlatformSettingsStage {
-    _FinalStage platformSettings(@NotNull AgentPlatformSettingsRequestModel platformSettings);
-  }
-
-  public interface _FinalStage {
-    AdhocAgentConfigOverrideForTestRequestModel build();
-
-    _FinalStage additionalProperty(String key, Object value);
-
-    _FinalStage additionalProperties(Map<String, Object> additionalProperties);
-
-    _FinalStage workflow(Optional<AgentWorkflowRequestModel> workflow);
-
-    _FinalStage workflow(AgentWorkflowRequestModel workflow);
-  }
-
   @JsonIgnoreProperties(ignoreUnknown = true)
-  public static final class Builder
-    implements ConversationConfigStage, PlatformSettingsStage, _FinalStage {
+  public static final class Builder {
 
-    private ConversationalConfig conversationConfig;
-    private AgentPlatformSettingsRequestModel platformSettings;
+    private Optional<ConversationalConfig> conversationConfig = Optional.empty();
+    private Optional<AgentPlatformSettingsRequestModel> platformSettings = Optional.empty();
     private Optional<AgentWorkflowRequestModel> workflow = Optional.empty();
 
     @JsonAnySetter
@@ -123,55 +102,48 @@ public final class AdhocAgentConfigOverrideForTestRequestModel {
       return this;
     }
 
-    @java.lang.Override
-    @JsonSetter("conversation_config")
-    public PlatformSettingsStage conversationConfig(
-      @NotNull ConversationalConfig conversationConfig
-    ) {
-      this.conversationConfig = Objects.requireNonNull(
-        conversationConfig,
-        "conversationConfig must not be null"
-      );
+    @JsonSetter(value = "conversation_config", nulls = Nulls.SKIP)
+    public Builder conversationConfig(Optional<ConversationalConfig> conversationConfig) {
+      this.conversationConfig = conversationConfig;
       return this;
     }
 
-    @java.lang.Override
-    @JsonSetter("platform_settings")
-    public _FinalStage platformSettings(
-      @NotNull AgentPlatformSettingsRequestModel platformSettings
-    ) {
-      this.platformSettings = Objects.requireNonNull(
-        platformSettings,
-        "platformSettings must not be null"
-      );
+    public Builder conversationConfig(ConversationalConfig conversationConfig) {
+      this.conversationConfig = Optional.ofNullable(conversationConfig);
       return this;
     }
 
-    @java.lang.Override
+    @JsonSetter(value = "platform_settings", nulls = Nulls.SKIP)
+    public Builder platformSettings(Optional<AgentPlatformSettingsRequestModel> platformSettings) {
+      this.platformSettings = platformSettings;
+      return this;
+    }
+
+    public Builder platformSettings(AgentPlatformSettingsRequestModel platformSettings) {
+      this.platformSettings = Optional.ofNullable(platformSettings);
+      return this;
+    }
+
     @JsonSetter(value = "workflow", nulls = Nulls.SKIP)
-    public _FinalStage workflow(Optional<AgentWorkflowRequestModel> workflow) {
+    public Builder workflow(Optional<AgentWorkflowRequestModel> workflow) {
       this.workflow = workflow;
       return this;
     }
 
-    @java.lang.Override
-    public _FinalStage workflow(AgentWorkflowRequestModel workflow) {
+    public Builder workflow(AgentWorkflowRequestModel workflow) {
       this.workflow = Optional.ofNullable(workflow);
       return this;
     }
 
-    @java.lang.Override
     public AdhocAgentConfigOverrideForTestRequestModel build() {
       return new AdhocAgentConfigOverrideForTestRequestModel(this);
     }
 
-    @java.lang.Override
     public Builder additionalProperty(String key, Object value) {
       this.additionalProperties.put(key, value);
       return this;
     }
 
-    @java.lang.Override
     public Builder additionalProperties(Map<String, Object> additionalProperties) {
       this.additionalProperties.putAll(additionalProperties);
       return this;

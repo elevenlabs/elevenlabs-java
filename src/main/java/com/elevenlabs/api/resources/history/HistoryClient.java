@@ -242,7 +242,8 @@ public class HistoryClient {
         "date_after_unix",
         requestParameters.getDateAfterUnix().orElse(null)
       )
-      .setOptionalQueryParameter("search", requestParameters.getSearch().orElse(null));
+      .setOptionalQueryParameter("search", requestParameters.getSearch().orElse(null))
+      .setOptionalQueryParameter("sources", requestParameters.getSources().orElse(null));
     if (requestParameters.getSortDirection().orElse(null) != null) {
       builder.setOptionalQueryParameter(
         "sort_direction",

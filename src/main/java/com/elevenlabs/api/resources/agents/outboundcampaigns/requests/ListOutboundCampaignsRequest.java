@@ -88,7 +88,7 @@ public final class ListOutboundCampaignsRequest {
   }
 
   /**
-   * @return Only campaigns whose name contains this text.
+   * @return Only campaigns whose name contains this text, or whose ID is exactly this text.
    */
   @JsonIgnore
   public Optional<String> getSearch() {

@@ -34,6 +34,7 @@ public final class SoftTimeoutConfig {
   private final Optional<Boolean> useLlmGeneratedMessage;
   private final Optional<Boolean> randomizeFillers;
   private final Optional<Integer> maxSoftTimeoutsPerGeneration;
+  private final Optional<Boolean> pauseAfterFiller;
   private final Optional<String> llmGeneratedMessagePromptOverride;
   private final Optional<Boolean> disableUntilFirstUserMessage;
   private final Map<String, Object> additionalProperties;
@@ -45,6 +46,7 @@ public final class SoftTimeoutConfig {
     this.useLlmGeneratedMessage = builder.useLlmGeneratedMessage;
     this.randomizeFillers = builder.randomizeFillers;
     this.maxSoftTimeoutsPerGeneration = builder.maxSoftTimeoutsPerGeneration;
+    this.pauseAfterFiller = builder.pauseAfterFiller;
     this.llmGeneratedMessagePromptOverride = builder.llmGeneratedMessagePromptOverride;
     this.disableUntilFirstUserMessage = builder.disableUntilFirstUserMessage;
     this.additionalProperties = builder.additionalProperties;
@@ -99,6 +101,14 @@ public final class SoftTimeoutConfig {
   }
 
   /**
+   * @return If enabled, leave a short pause after a filler message before the agent's response, so the two do not run together.
+   */
+  @JsonProperty("pause_after_filler")
+  public Optional<Boolean> getPauseAfterFiller() {
+    return pauseAfterFiller;
+  }
+
+  /**
    * @return Custom prompt for generating the soft timeout filler message when use_llm_generated_message is enabled. Recent conversation context is provided as a separate user message. If not set, the default prompt will be used. Supports dynamic variables (e.g., {{system__time}}, {{custom_variable}}).
    */
   @JsonIgnore
@@ -139,6 +149,7 @@ public final class SoftTimeoutConfig {
       Objects.equals(useLlmGeneratedMessage, that.useLlmGeneratedMessage) &&
       Objects.equals(randomizeFillers, that.randomizeFillers) &&
       Objects.equals(maxSoftTimeoutsPerGeneration, that.maxSoftTimeoutsPerGeneration) &&
+      Objects.equals(pauseAfterFiller, that.pauseAfterFiller) &&
       Objects.equals(llmGeneratedMessagePromptOverride, that.llmGeneratedMessagePromptOverride) &&
       Objects.equals(disableUntilFirstUserMessage, that.disableUntilFirstUserMessage)
     );
@@ -153,6 +164,7 @@ public final class SoftTimeoutConfig {
       this.useLlmGeneratedMessage,
       this.randomizeFillers,
       this.maxSoftTimeoutsPerGeneration,
+      this.pauseAfterFiller,
       this.llmGeneratedMessagePromptOverride,
       this.disableUntilFirstUserMessage
     );
@@ -176,6 +188,7 @@ public final class SoftTimeoutConfig {
     private Optional<Boolean> useLlmGeneratedMessage = Optional.empty();
     private Optional<Boolean> randomizeFillers = Optional.empty();
     private Optional<Integer> maxSoftTimeoutsPerGeneration = Optional.empty();
+    private Optional<Boolean> pauseAfterFiller = Optional.empty();
     private Optional<String> llmGeneratedMessagePromptOverride = Optional.empty();
     private Optional<Boolean> disableUntilFirstUserMessage = Optional.empty();
 
@@ -191,6 +204,7 @@ public final class SoftTimeoutConfig {
       useLlmGeneratedMessage(other.getUseLlmGeneratedMessage());
       randomizeFillers(other.getRandomizeFillers());
       maxSoftTimeoutsPerGeneration(other.getMaxSoftTimeoutsPerGeneration());
+      pauseAfterFiller(other.getPauseAfterFiller());
       llmGeneratedMessagePromptOverride(other.getLlmGeneratedMessagePromptOverride());
       disableUntilFirstUserMessage(other.getDisableUntilFirstUserMessage());
       return this;
@@ -261,6 +275,17 @@ public final class SoftTimeoutConfig {
 
     public Builder maxSoftTimeoutsPerGeneration(Integer maxSoftTimeoutsPerGeneration) {
       this.maxSoftTimeoutsPerGeneration = Optional.ofNullable(maxSoftTimeoutsPerGeneration);
+      return this;
+    }
+
+    @JsonSetter(value = "pause_after_filler", nulls = Nulls.SKIP)
+    public Builder pauseAfterFiller(Optional<Boolean> pauseAfterFiller) {
+      this.pauseAfterFiller = pauseAfterFiller;
+      return this;
+    }
+
+    public Builder pauseAfterFiller(Boolean pauseAfterFiller) {
+      this.pauseAfterFiller = Optional.ofNullable(pauseAfterFiller);
       return this;
     }
 

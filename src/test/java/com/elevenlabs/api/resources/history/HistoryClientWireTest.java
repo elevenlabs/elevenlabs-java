@@ -14,6 +14,7 @@ import com.elevenlabs.api.resources.history.requests.GetHistoryRequest;
 import com.elevenlabs.api.resources.history.requests.ListHistoryRequest;
 import com.elevenlabs.api.resources.history.types.ListHistoryRequestSortDirection;
 import com.elevenlabs.api.resources.history.types.ListHistoryRequestSource;
+import com.elevenlabs.api.resources.history.types.ListHistoryRequestSourcesItem;
 import com.elevenlabs.api.types.DeleteHistoryItemResponse;
 import com.elevenlabs.api.types.DialogueInputResponseModel;
 import com.elevenlabs.api.types.GetSpeechHistoryResponse;
@@ -96,6 +97,7 @@ class HistoryClientWireTest {
         .sortDirection(ListHistoryRequestSortDirection.ASC)
         .search("test-value")
         .source(ListHistoryRequestSource.TTS)
+        .sources(java.util.List.of(ListHistoryRequestSourcesItem.TTS))
         .build()
     );
     assertEquals(
@@ -166,6 +168,7 @@ class HistoryClientWireTest {
           .sortDirection(ListHistoryRequestSortDirection.ASC)
           .search("test-value")
           .source(ListHistoryRequestSource.TTS)
+          .sources(java.util.List.of(ListHistoryRequestSourcesItem.TTS))
           .build()
       )
     );

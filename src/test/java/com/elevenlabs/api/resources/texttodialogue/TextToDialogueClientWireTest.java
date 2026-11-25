@@ -11,7 +11,6 @@ import com.elevenlabs.api.core.ObjectMappers;
 import com.elevenlabs.api.errors.UnprocessableEntityError;
 import com.elevenlabs.api.resources.texttodialogue.requests.BodyTextToDialogueFullWithTimestamps;
 import com.elevenlabs.api.resources.texttodialogue.types.BodyTextToDialogueFullWithTimestampsApplyTextNormalization;
-import com.elevenlabs.api.resources.texttodialogue.types.ConvertWithTimestampsTextToDialogueRequestOutputFormat;
 import com.elevenlabs.api.types.AudioWithTimestampsAndVoiceSegmentsResponseModel;
 import com.elevenlabs.api.types.CharacterAlignmentResponseModel;
 import com.elevenlabs.api.types.DialogueInput;
@@ -84,7 +83,7 @@ class TextToDialogueClientWireTest {
 
     AudioWithTimestampsAndVoiceSegmentsResponseModel result = client.convertWithTimestamps(
       BodyTextToDialogueFullWithTimestamps.builder()
-        .outputFormat(ConvertWithTimestampsTextToDialogueRequestOutputFormat.ALAW_8000)
+        .outputFormat("test-value")
         .enableLogging(true)
         .inputs(
           java.util.List.of(
@@ -136,6 +135,7 @@ class TextToDialogueClientWireTest {
 
     RecordedRequest recordedRequest = server.takeRequest();
     assertEquals("POST", recordedRequest.getMethod());
+    assertEquals(true, recordedRequest.getPath().contains("output_format=test-value"));
     assertEquals(true, recordedRequest.getPath().contains("enable_logging=true"));
   }
 
@@ -161,7 +161,7 @@ class TextToDialogueClientWireTest {
     UnprocessableEntityError thrown = assertThrows(UnprocessableEntityError.class, () ->
       client.convertWithTimestamps(
         BodyTextToDialogueFullWithTimestamps.builder()
-          .outputFormat(ConvertWithTimestampsTextToDialogueRequestOutputFormat.ALAW_8000)
+          .outputFormat("test-value")
           .enableLogging(true)
           .inputs(
             java.util.List.of(

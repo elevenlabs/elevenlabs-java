@@ -47,42 +47,44 @@ public final class ReceiveTranscription {
     } else if (this.type == 4) {
       return visitor.visit((SpeakersMerged) this.value);
     } else if (this.type == 5) {
-      return visitor.visit((CommittedTranscriptWithTimestamps) this.value);
+      return visitor.visit((SpeakerNames) this.value);
     } else if (this.type == 6) {
-      return visitor.visit((CommittedTranscriptEntities) this.value);
+      return visitor.visit((CommittedTranscriptWithTimestamps) this.value);
     } else if (this.type == 7) {
-      return visitor.visit((RedactedTranscript) this.value);
+      return visitor.visit((CommittedTranscriptEntities) this.value);
     } else if (this.type == 8) {
-      return visitor.visit((EditedTranscript) this.value);
+      return visitor.visit((RedactedTranscript) this.value);
     } else if (this.type == 9) {
-      return visitor.visit((ScribeWarning) this.value);
+      return visitor.visit((EditedTranscript) this.value);
     } else if (this.type == 10) {
-      return visitor.visit((ScribeError) this.value);
+      return visitor.visit((ScribeWarning) this.value);
     } else if (this.type == 11) {
-      return visitor.visit((ScribeAuthError) this.value);
+      return visitor.visit((ScribeError) this.value);
     } else if (this.type == 12) {
-      return visitor.visit((ScribeQuotaExceededError) this.value);
+      return visitor.visit((ScribeAuthError) this.value);
     } else if (this.type == 13) {
-      return visitor.visit((ScribeThrottledError) this.value);
+      return visitor.visit((ScribeQuotaExceededError) this.value);
     } else if (this.type == 14) {
-      return visitor.visit((ScribeUnacceptedTermsError) this.value);
+      return visitor.visit((ScribeThrottledError) this.value);
     } else if (this.type == 15) {
-      return visitor.visit((ScribeRateLimitedError) this.value);
+      return visitor.visit((ScribeUnacceptedTermsError) this.value);
     } else if (this.type == 16) {
-      return visitor.visit((ScribeQueueOverflowError) this.value);
+      return visitor.visit((ScribeRateLimitedError) this.value);
     } else if (this.type == 17) {
-      return visitor.visit((ScribeResourceExhaustedError) this.value);
+      return visitor.visit((ScribeQueueOverflowError) this.value);
     } else if (this.type == 18) {
-      return visitor.visit((ScribeSessionTimeLimitExceededError) this.value);
+      return visitor.visit((ScribeResourceExhaustedError) this.value);
     } else if (this.type == 19) {
-      return visitor.visit((ScribeInputError) this.value);
+      return visitor.visit((ScribeSessionTimeLimitExceededError) this.value);
     } else if (this.type == 20) {
-      return visitor.visit((ScribeInvalidRequestError) this.value);
+      return visitor.visit((ScribeInputError) this.value);
     } else if (this.type == 21) {
-      return visitor.visit((ScribeChunkSizeExceededError) this.value);
+      return visitor.visit((ScribeInvalidRequestError) this.value);
     } else if (this.type == 22) {
-      return visitor.visit((ScribeInsufficientAudioActivityError) this.value);
+      return visitor.visit((ScribeChunkSizeExceededError) this.value);
     } else if (this.type == 23) {
+      return visitor.visit((ScribeInsufficientAudioActivityError) this.value);
+    } else if (this.type == 24) {
       return visitor.visit((ScribeTranscriberError) this.value);
     }
     throw new IllegalStateException("Failed to visit value. This should never happen.");
@@ -131,80 +133,84 @@ public final class ReceiveTranscription {
     return new ReceiveTranscription(value, 4);
   }
 
-  public static ReceiveTranscription of(CommittedTranscriptWithTimestamps value) {
+  public static ReceiveTranscription of(SpeakerNames value) {
     return new ReceiveTranscription(value, 5);
   }
 
-  public static ReceiveTranscription of(CommittedTranscriptEntities value) {
+  public static ReceiveTranscription of(CommittedTranscriptWithTimestamps value) {
     return new ReceiveTranscription(value, 6);
   }
 
-  public static ReceiveTranscription of(RedactedTranscript value) {
+  public static ReceiveTranscription of(CommittedTranscriptEntities value) {
     return new ReceiveTranscription(value, 7);
   }
 
-  public static ReceiveTranscription of(EditedTranscript value) {
+  public static ReceiveTranscription of(RedactedTranscript value) {
     return new ReceiveTranscription(value, 8);
   }
 
-  public static ReceiveTranscription of(ScribeWarning value) {
+  public static ReceiveTranscription of(EditedTranscript value) {
     return new ReceiveTranscription(value, 9);
   }
 
-  public static ReceiveTranscription of(ScribeError value) {
+  public static ReceiveTranscription of(ScribeWarning value) {
     return new ReceiveTranscription(value, 10);
   }
 
-  public static ReceiveTranscription of(ScribeAuthError value) {
+  public static ReceiveTranscription of(ScribeError value) {
     return new ReceiveTranscription(value, 11);
   }
 
-  public static ReceiveTranscription of(ScribeQuotaExceededError value) {
+  public static ReceiveTranscription of(ScribeAuthError value) {
     return new ReceiveTranscription(value, 12);
   }
 
-  public static ReceiveTranscription of(ScribeThrottledError value) {
+  public static ReceiveTranscription of(ScribeQuotaExceededError value) {
     return new ReceiveTranscription(value, 13);
   }
 
-  public static ReceiveTranscription of(ScribeUnacceptedTermsError value) {
+  public static ReceiveTranscription of(ScribeThrottledError value) {
     return new ReceiveTranscription(value, 14);
   }
 
-  public static ReceiveTranscription of(ScribeRateLimitedError value) {
+  public static ReceiveTranscription of(ScribeUnacceptedTermsError value) {
     return new ReceiveTranscription(value, 15);
   }
 
-  public static ReceiveTranscription of(ScribeQueueOverflowError value) {
+  public static ReceiveTranscription of(ScribeRateLimitedError value) {
     return new ReceiveTranscription(value, 16);
   }
 
-  public static ReceiveTranscription of(ScribeResourceExhaustedError value) {
+  public static ReceiveTranscription of(ScribeQueueOverflowError value) {
     return new ReceiveTranscription(value, 17);
   }
 
-  public static ReceiveTranscription of(ScribeSessionTimeLimitExceededError value) {
+  public static ReceiveTranscription of(ScribeResourceExhaustedError value) {
     return new ReceiveTranscription(value, 18);
   }
 
-  public static ReceiveTranscription of(ScribeInputError value) {
+  public static ReceiveTranscription of(ScribeSessionTimeLimitExceededError value) {
     return new ReceiveTranscription(value, 19);
   }
 
-  public static ReceiveTranscription of(ScribeInvalidRequestError value) {
+  public static ReceiveTranscription of(ScribeInputError value) {
     return new ReceiveTranscription(value, 20);
   }
 
-  public static ReceiveTranscription of(ScribeChunkSizeExceededError value) {
+  public static ReceiveTranscription of(ScribeInvalidRequestError value) {
     return new ReceiveTranscription(value, 21);
   }
 
-  public static ReceiveTranscription of(ScribeInsufficientAudioActivityError value) {
+  public static ReceiveTranscription of(ScribeChunkSizeExceededError value) {
     return new ReceiveTranscription(value, 22);
   }
 
-  public static ReceiveTranscription of(ScribeTranscriberError value) {
+  public static ReceiveTranscription of(ScribeInsufficientAudioActivityError value) {
     return new ReceiveTranscription(value, 23);
+  }
+
+  public static ReceiveTranscription of(ScribeTranscriberError value) {
+    return new ReceiveTranscription(value, 24);
   }
 
   public boolean isSessionStarted() {
@@ -253,8 +259,16 @@ public final class ReceiveTranscription {
     return isSpeakersMerged() ? Optional.ofNullable((SpeakersMerged) this.value) : Optional.empty();
   }
 
-  public boolean isCommittedTranscriptWithTimestamps() {
+  public boolean isSpeakerNames() {
     return this.type == 5;
+  }
+
+  public Optional<SpeakerNames> getSpeakerNames() {
+    return isSpeakerNames() ? Optional.ofNullable((SpeakerNames) this.value) : Optional.empty();
+  }
+
+  public boolean isCommittedTranscriptWithTimestamps() {
+    return this.type == 6;
   }
 
   public Optional<CommittedTranscriptWithTimestamps> getCommittedTranscriptWithTimestamps() {
@@ -264,7 +278,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isCommittedTranscriptEntities() {
-    return this.type == 6;
+    return this.type == 7;
   }
 
   public Optional<CommittedTranscriptEntities> getCommittedTranscriptEntities() {
@@ -274,7 +288,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isRedactedTranscript() {
-    return this.type == 7;
+    return this.type == 8;
   }
 
   public Optional<RedactedTranscript> getRedactedTranscript() {
@@ -284,7 +298,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isEditedTranscript() {
-    return this.type == 8;
+    return this.type == 9;
   }
 
   public Optional<EditedTranscript> getEditedTranscript() {
@@ -294,7 +308,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeWarning() {
-    return this.type == 9;
+    return this.type == 10;
   }
 
   public Optional<ScribeWarning> getScribeWarning() {
@@ -302,7 +316,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeError() {
-    return this.type == 10;
+    return this.type == 11;
   }
 
   public Optional<ScribeError> getScribeError() {
@@ -310,7 +324,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeAuthError() {
-    return this.type == 11;
+    return this.type == 12;
   }
 
   public Optional<ScribeAuthError> getScribeAuthError() {
@@ -320,7 +334,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeQuotaExceededError() {
-    return this.type == 12;
+    return this.type == 13;
   }
 
   public Optional<ScribeQuotaExceededError> getScribeQuotaExceededError() {
@@ -330,7 +344,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeThrottledError() {
-    return this.type == 13;
+    return this.type == 14;
   }
 
   public Optional<ScribeThrottledError> getScribeThrottledError() {
@@ -340,7 +354,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeUnacceptedTermsError() {
-    return this.type == 14;
+    return this.type == 15;
   }
 
   public Optional<ScribeUnacceptedTermsError> getScribeUnacceptedTermsError() {
@@ -350,7 +364,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeRateLimitedError() {
-    return this.type == 15;
+    return this.type == 16;
   }
 
   public Optional<ScribeRateLimitedError> getScribeRateLimitedError() {
@@ -360,7 +374,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeQueueOverflowError() {
-    return this.type == 16;
+    return this.type == 17;
   }
 
   public Optional<ScribeQueueOverflowError> getScribeQueueOverflowError() {
@@ -370,7 +384,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeResourceExhaustedError() {
-    return this.type == 17;
+    return this.type == 18;
   }
 
   public Optional<ScribeResourceExhaustedError> getScribeResourceExhaustedError() {
@@ -380,7 +394,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeSessionTimeLimitExceededError() {
-    return this.type == 18;
+    return this.type == 19;
   }
 
   public Optional<ScribeSessionTimeLimitExceededError> getScribeSessionTimeLimitExceededError() {
@@ -390,7 +404,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeInputError() {
-    return this.type == 19;
+    return this.type == 20;
   }
 
   public Optional<ScribeInputError> getScribeInputError() {
@@ -400,7 +414,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeInvalidRequestError() {
-    return this.type == 20;
+    return this.type == 21;
   }
 
   public Optional<ScribeInvalidRequestError> getScribeInvalidRequestError() {
@@ -410,7 +424,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeChunkSizeExceededError() {
-    return this.type == 21;
+    return this.type == 22;
   }
 
   public Optional<ScribeChunkSizeExceededError> getScribeChunkSizeExceededError() {
@@ -420,7 +434,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeInsufficientAudioActivityError() {
-    return this.type == 22;
+    return this.type == 23;
   }
 
   public Optional<ScribeInsufficientAudioActivityError> getScribeInsufficientAudioActivityError() {
@@ -430,7 +444,7 @@ public final class ReceiveTranscription {
   }
 
   public boolean isScribeTranscriberError() {
-    return this.type == 23;
+    return this.type == 24;
   }
 
   public Optional<ScribeTranscriberError> getScribeTranscriberError() {
@@ -449,6 +463,8 @@ public final class ReceiveTranscription {
     T visit(DiarizedTranscript value);
 
     T visit(SpeakersMerged value);
+
+    T visit(SpeakerNames value);
 
     T visit(CommittedTranscriptWithTimestamps value);
 
@@ -712,6 +728,18 @@ public final class ReceiveTranscription {
     }
     if (
       value instanceof Map<?, ?> &&
+      ((Map<?, ?>) value).containsKey("speaker_names") &&
+      (!((Map<?, ?>) value).containsKey("message_type") ||
+        "speaker_names".equals(((Map<?, ?>) value).get("message_type")))
+    ) {
+      try {
+        return of(ModelConverter.convertValue(value, SpeakerNames.class));
+      } catch (RuntimeException e) {
+        lastFailure = e;
+      }
+    }
+    if (
+      value instanceof Map<?, ?> &&
       ((Map<?, ?>) value).containsKey("text") &&
       (!((Map<?, ?>) value).containsKey("message_type") ||
         "committed_transcript_with_timestamps".equals(((Map<?, ?>) value).get("message_type")))
@@ -824,6 +852,17 @@ public final class ReceiveTranscription {
     ) {
       try {
         return of(ModelConverter.convertValue(value, SpeakersMerged.class));
+      } catch (RuntimeException e) {
+        lastFailure = e;
+      }
+    }
+    if (
+      value instanceof Map<?, ?> &&
+      (!((Map<?, ?>) value).containsKey("message_type") ||
+        "speaker_names".equals(((Map<?, ?>) value).get("message_type")))
+    ) {
+      try {
+        return of(ModelConverter.convertValue(value, SpeakerNames.class));
       } catch (RuntimeException e) {
         lastFailure = e;
       }
