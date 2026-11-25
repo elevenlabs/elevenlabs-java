@@ -44,9 +44,9 @@ public class AgentWorkflowRequestModelNodesValueValidator
       w -> new WorkflowOverrideAgentNodeModelInputValidator().optional().validate(w),
       w -> new WorkflowStandaloneAgentNodeModelInputValidator().optional().validate(w),
       w -> new Violation[0],
+      w -> new WorkflowStartProcedureNodeModelInputValidator().optional().validate(w),
       w -> new WorkflowSayNodeModelInputValidator().optional().validate(w),
-      w -> new WorkflowUpdateStateNodeModelInputValidator().optional().validate(w),
-      w -> new WorkflowStartProcedureNodeModelInputValidator().optional().validate(w)
+      w -> new WorkflowUpdateStateNodeModelInputValidator().optional().validate(w)
     );
   }
 }

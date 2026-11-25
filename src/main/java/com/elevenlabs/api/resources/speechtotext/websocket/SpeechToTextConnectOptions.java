@@ -43,6 +43,7 @@ public final class SpeechToTextConnectOptions {
   private final Optional<Boolean> noVerbatim;
   private final Optional<Boolean> multilangMode;
   private final Optional<Boolean> diarize;
+  private final Optional<Boolean> inferSpeakerNames;
   private final Optional<V1SpeechToTextRealtimeRequestEntityDetection> entityDetection;
   private final Optional<V1SpeechToTextRealtimeRequestEntityRedaction> entityRedaction;
   private final Optional<SpeechToTextRealtimeEntityRedactionMode> entityRedactionMode;
@@ -69,6 +70,7 @@ public final class SpeechToTextConnectOptions {
     this.noVerbatim = builder.noVerbatim;
     this.multilangMode = builder.multilangMode;
     this.diarize = builder.diarize;
+    this.inferSpeakerNames = builder.inferSpeakerNames;
     this.entityDetection = builder.entityDetection;
     this.entityRedaction = builder.entityRedaction;
     this.entityRedactionMode = builder.entityRedactionMode;
@@ -159,6 +161,11 @@ public final class SpeechToTextConnectOptions {
     return diarize;
   }
 
+  @JsonProperty("infer_speaker_names")
+  public Optional<Boolean> getInferSpeakerNames() {
+    return inferSpeakerNames;
+  }
+
   @JsonProperty("entity_detection")
   public Optional<V1SpeechToTextRealtimeRequestEntityDetection> getEntityDetection() {
     return entityDetection;
@@ -221,6 +228,7 @@ public final class SpeechToTextConnectOptions {
       Objects.equals(noVerbatim, that.noVerbatim) &&
       Objects.equals(multilangMode, that.multilangMode) &&
       Objects.equals(diarize, that.diarize) &&
+      Objects.equals(inferSpeakerNames, that.inferSpeakerNames) &&
       Objects.equals(entityDetection, that.entityDetection) &&
       Objects.equals(entityRedaction, that.entityRedaction) &&
       Objects.equals(entityRedactionMode, that.entityRedactionMode) &&
@@ -250,6 +258,7 @@ public final class SpeechToTextConnectOptions {
       this.noVerbatim,
       this.multilangMode,
       this.diarize,
+      this.inferSpeakerNames,
       this.entityDetection,
       this.entityRedaction,
       this.entityRedactionMode,
@@ -288,6 +297,7 @@ public final class SpeechToTextConnectOptions {
     private Optional<Boolean> noVerbatim = Optional.empty();
     private Optional<Boolean> multilangMode = Optional.empty();
     private Optional<Boolean> diarize = Optional.empty();
+    private Optional<Boolean> inferSpeakerNames = Optional.empty();
     private Optional<V1SpeechToTextRealtimeRequestEntityDetection> entityDetection =
       Optional.empty();
     private Optional<V1SpeechToTextRealtimeRequestEntityRedaction> entityRedaction =
@@ -321,6 +331,7 @@ public final class SpeechToTextConnectOptions {
       noVerbatim(other.getNoVerbatim());
       multilangMode(other.getMultilangMode());
       diarize(other.getDiarize());
+      inferSpeakerNames(other.getInferSpeakerNames());
       entityDetection(other.getEntityDetection());
       entityRedaction(other.getEntityRedaction());
       entityRedactionMode(other.getEntityRedactionMode());
@@ -504,6 +515,17 @@ public final class SpeechToTextConnectOptions {
 
     public Builder diarize(Boolean diarize) {
       this.diarize = Optional.ofNullable(diarize);
+      return this;
+    }
+
+    @JsonSetter(value = "infer_speaker_names", nulls = Nulls.SKIP)
+    public Builder inferSpeakerNames(Optional<Boolean> inferSpeakerNames) {
+      this.inferSpeakerNames = inferSpeakerNames;
+      return this;
+    }
+
+    public Builder inferSpeakerNames(Boolean inferSpeakerNames) {
+      this.inferSpeakerNames = Optional.ofNullable(inferSpeakerNames);
       return this;
     }
 

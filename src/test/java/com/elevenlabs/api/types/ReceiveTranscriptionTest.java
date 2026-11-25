@@ -127,6 +127,22 @@ class ReceiveTranscriptionTest {
   @Test
   void roundTrips_branch_of5() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
+      SpeakerNames.builder()
+        .messageType(SpeakerNamesMessageType.SPEAKER_NAMES)
+        .speakerNames(java.util.Map.of("key", "test-value"))
+        .build()
+    );
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    ReceiveTranscription roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      ReceiveTranscription.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_branch_of6() throws Exception {
+    ReceiveTranscription value = ReceiveTranscription.of(
       CommittedTranscriptWithTimestamps.builder()
         .text("test-value")
         .messageType(
@@ -153,7 +169,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of6() throws Exception {
+  void roundTrips_branch_of7() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       CommittedTranscriptEntities.builder()
         .text("test-value")
@@ -179,7 +195,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of7() throws Exception {
+  void roundTrips_branch_of8() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       RedactedTranscript.builder()
         .text("test-value")
@@ -196,7 +212,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_wire_branch_of8() throws Exception {
+  void roundTrips_wire_branch_of9() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       EditedTranscript.builder()
         .text("test-value")
@@ -216,7 +232,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of9() throws Exception {
+  void roundTrips_branch_of10() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeWarning.builder()
         .warning("test-value")
@@ -232,7 +248,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of10() throws Exception {
+  void roundTrips_branch_of11() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeError.builder().error("test-value").build()
     );
@@ -245,7 +261,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of11() throws Exception {
+  void roundTrips_branch_of12() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeAuthError.builder().error("test-value").build()
     );
@@ -258,7 +274,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of12() throws Exception {
+  void roundTrips_branch_of13() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeQuotaExceededError.builder().error("test-value").build()
     );
@@ -271,7 +287,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of13() throws Exception {
+  void roundTrips_branch_of14() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeThrottledError.builder().error("test-value").build()
     );
@@ -284,7 +300,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of14() throws Exception {
+  void roundTrips_branch_of15() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeUnacceptedTermsError.builder().error("test-value").build()
     );
@@ -297,7 +313,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of15() throws Exception {
+  void roundTrips_branch_of16() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeRateLimitedError.builder().error("test-value").build()
     );
@@ -310,7 +326,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of16() throws Exception {
+  void roundTrips_branch_of17() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeQueueOverflowError.builder().error("test-value").build()
     );
@@ -323,7 +339,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of17() throws Exception {
+  void roundTrips_branch_of18() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeResourceExhaustedError.builder().error("test-value").build()
     );
@@ -336,7 +352,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of18() throws Exception {
+  void roundTrips_branch_of19() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeSessionTimeLimitExceededError.builder().error("test-value").build()
     );
@@ -349,7 +365,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of19() throws Exception {
+  void roundTrips_branch_of20() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeInputError.builder().error("test-value").build()
     );
@@ -362,7 +378,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of20() throws Exception {
+  void roundTrips_branch_of21() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeInvalidRequestError.builder().error("test-value").build()
     );
@@ -375,7 +391,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of21() throws Exception {
+  void roundTrips_branch_of22() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeChunkSizeExceededError.builder().error("test-value").build()
     );
@@ -388,7 +404,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of22() throws Exception {
+  void roundTrips_branch_of23() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeInsufficientAudioActivityError.builder().error("test-value").build()
     );
@@ -401,7 +417,7 @@ class ReceiveTranscriptionTest {
   }
 
   @Test
-  void roundTrips_branch_of23() throws Exception {
+  void roundTrips_branch_of24() throws Exception {
     ReceiveTranscription value = ReceiveTranscription.of(
       ScribeTranscriberError.builder().error("test-value").build()
     );

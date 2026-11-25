@@ -4,6 +4,9 @@
 package com.elevenlabs.api.resources.agents.branches.requests;
 
 import com.elevenlabs.api.core.ModelConverter;
+import com.elevenlabs.api.core.Nullable;
+import com.elevenlabs.api.core.NullableNonemptyFilter;
+import com.elevenlabs.api.types.ConflictResolution;
 import com.fasterxml.jackson.annotation.JsonAnyGetter;
 import com.fasterxml.jackson.annotation.JsonAnySetter;
 import com.fasterxml.jackson.annotation.JsonIgnore;
@@ -14,6 +17,7 @@ import com.fasterxml.jackson.annotation.JsonSetter;
 import com.fasterxml.jackson.annotation.Nulls;
 import com.fasterxml.jackson.databind.annotation.JsonDeserialize;
 import java.util.HashMap;
+import java.util.List;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
@@ -28,6 +32,9 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
   private final String targetBranchId;
   private final Optional<Boolean> archiveSourceBranch;
   private final Optional<Boolean> force;
+  private final Optional<List<ConflictResolution>> conflictResolutions;
+  private final Optional<String> sourceTipId;
+  private final Optional<String> targetTipId;
   private final Map<String, Object> additionalProperties;
 
   private BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranchesSourceBranchIdMergePost(
@@ -36,6 +43,9 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
     this.targetBranchId = builder.targetBranchId;
     this.archiveSourceBranch = builder.archiveSourceBranch;
     this.force = builder.force;
+    this.conflictResolutions = builder.conflictResolutions;
+    this.sourceTipId = builder.sourceTipId;
+    this.targetTipId = builder.targetTipId;
     this.additionalProperties = builder.additionalProperties;
   }
 
@@ -56,11 +66,53 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
   }
 
   /**
-   * @return Force source branch changes onto the target, overriding timestamp-based conflict resolution
+   * @return Keep the source branch's value for every conflict instead of sending <code>conflict_resolutions</code>
    */
   @JsonProperty("force")
   public Optional<Boolean> getForce() {
     return force;
+  }
+
+  /**
+   * @return Side to keep, or custom text where the conflict accepts it, for each conflict the preview reported. A merge or rebase with conflicts is rejected unless there is one for every conflict, sent with both tip ids. On a merge it can't be combined with <code>force</code>, which lets the source win every conflict instead.
+   */
+  @JsonIgnore
+  public Optional<List<ConflictResolution>> getConflictResolutions() {
+    return conflictResolutions == null ? Optional.empty() : conflictResolutions;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("conflict_resolutions")
+  private Optional<List<ConflictResolution>> _getConflictResolutions() {
+    return conflictResolutions;
+  }
+
+  /**
+   * @return Source branch tip version the conflicts were resolved against (<code>source_tip_version_id</code> of the preview). The request fails with 409 if the branch moved since.
+   */
+  @JsonIgnore
+  public Optional<String> getSourceTipId() {
+    return sourceTipId == null ? Optional.empty() : sourceTipId;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("source_tip_id")
+  private Optional<String> _getSourceTipId() {
+    return sourceTipId;
+  }
+
+  /**
+   * @return Target branch tip version the conflicts were resolved against (<code>target_tip_version_id</code> of the preview). The request fails with 409 if the branch moved since.
+   */
+  @JsonIgnore
+  public Optional<String> getTargetTipId() {
+    return targetTipId == null ? Optional.empty() : targetTipId;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("target_tip_id")
+  private Optional<String> _getTargetTipId() {
+    return targetTipId;
   }
 
   @JsonAnyGetter
@@ -80,13 +132,23 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
     return (
       Objects.equals(targetBranchId, that.targetBranchId) &&
       Objects.equals(archiveSourceBranch, that.archiveSourceBranch) &&
-      Objects.equals(force, that.force)
+      Objects.equals(force, that.force) &&
+      Objects.equals(conflictResolutions, that.conflictResolutions) &&
+      Objects.equals(sourceTipId, that.sourceTipId) &&
+      Objects.equals(targetTipId, that.targetTipId)
     );
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.targetBranchId, this.archiveSourceBranch, this.force);
+    return Objects.hash(
+      this.targetBranchId,
+      this.archiveSourceBranch,
+      this.force,
+      this.conflictResolutions,
+      this.sourceTipId,
+      this.targetTipId
+    );
   }
 
   @java.lang.Override
@@ -123,6 +185,24 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
     _FinalStage force(Optional<Boolean> force);
 
     _FinalStage force(Boolean force);
+
+    _FinalStage conflictResolutions(Optional<List<ConflictResolution>> conflictResolutions);
+
+    _FinalStage conflictResolutions(List<ConflictResolution> conflictResolutions);
+
+    _FinalStage conflictResolutions(Nullable<List<ConflictResolution>> conflictResolutions);
+
+    _FinalStage sourceTipId(Optional<String> sourceTipId);
+
+    _FinalStage sourceTipId(String sourceTipId);
+
+    _FinalStage sourceTipId(Nullable<String> sourceTipId);
+
+    _FinalStage targetTipId(Optional<String> targetTipId);
+
+    _FinalStage targetTipId(String targetTipId);
+
+    _FinalStage targetTipId(Nullable<String> targetTipId);
   }
 
   @JsonIgnoreProperties(ignoreUnknown = true)
@@ -131,6 +211,9 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
     private String targetBranchId;
     private Optional<Boolean> archiveSourceBranch = Optional.empty();
     private Optional<Boolean> force = Optional.empty();
+    private Optional<List<ConflictResolution>> conflictResolutions = Optional.empty();
+    private Optional<String> sourceTipId = Optional.empty();
+    private Optional<String> targetTipId = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -143,6 +226,9 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
       targetBranchId(other.getTargetBranchId());
       archiveSourceBranch(other.getArchiveSourceBranch());
       force(other.getForce());
+      conflictResolutions(other.getConflictResolutions());
+      sourceTipId(other.getSourceTipId());
+      targetTipId(other.getTargetTipId());
       return this;
     }
 
@@ -179,6 +265,81 @@ public final class BodyMergeABranchIntoATargetBranchV1ConvaiAgentsAgentIdBranche
     @java.lang.Override
     public _FinalStage force(Boolean force) {
       this.force = Optional.ofNullable(force);
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "conflict_resolutions", nulls = Nulls.SKIP)
+    public _FinalStage conflictResolutions(Optional<List<ConflictResolution>> conflictResolutions) {
+      this.conflictResolutions = conflictResolutions;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage conflictResolutions(List<ConflictResolution> conflictResolutions) {
+      this.conflictResolutions = Optional.ofNullable(conflictResolutions);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage conflictResolutions(Nullable<List<ConflictResolution>> conflictResolutions) {
+      if (conflictResolutions.isNull()) {
+        this.conflictResolutions = null;
+      } else if (conflictResolutions.isEmpty()) {
+        this.conflictResolutions = Optional.empty();
+      } else {
+        this.conflictResolutions = Optional.of(conflictResolutions.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "source_tip_id", nulls = Nulls.SKIP)
+    public _FinalStage sourceTipId(Optional<String> sourceTipId) {
+      this.sourceTipId = sourceTipId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage sourceTipId(String sourceTipId) {
+      this.sourceTipId = Optional.ofNullable(sourceTipId);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage sourceTipId(Nullable<String> sourceTipId) {
+      if (sourceTipId.isNull()) {
+        this.sourceTipId = null;
+      } else if (sourceTipId.isEmpty()) {
+        this.sourceTipId = Optional.empty();
+      } else {
+        this.sourceTipId = Optional.of(sourceTipId.get());
+      }
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "target_tip_id", nulls = Nulls.SKIP)
+    public _FinalStage targetTipId(Optional<String> targetTipId) {
+      this.targetTipId = targetTipId;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage targetTipId(String targetTipId) {
+      this.targetTipId = Optional.ofNullable(targetTipId);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage targetTipId(Nullable<String> targetTipId) {
+      if (targetTipId.isNull()) {
+        this.targetTipId = null;
+      } else if (targetTipId.isEmpty()) {
+        this.targetTipId = Optional.empty();
+      } else {
+        this.targetTipId = Optional.of(targetTipId.get());
+      }
       return this;
     }
 

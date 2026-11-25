@@ -25,6 +25,7 @@ public final class LlmInputOutputTokensUsage {
   private final Optional<LlmTokensCategoryUsage> inputCacheRead;
   private final Optional<LlmTokensCategoryUsage> inputCacheWrite;
   private final Optional<LlmTokensCategoryUsage> outputTotal;
+  private final Optional<LlmTokensCategoryUsage> outputTotalReasoningPortion;
   private final Map<String, Object> additionalProperties;
 
   private LlmInputOutputTokensUsage(Builder builder) {
@@ -32,6 +33,7 @@ public final class LlmInputOutputTokensUsage {
     this.inputCacheRead = builder.inputCacheRead;
     this.inputCacheWrite = builder.inputCacheWrite;
     this.outputTotal = builder.outputTotal;
+    this.outputTotalReasoningPortion = builder.outputTotalReasoningPortion;
     this.additionalProperties = builder.additionalProperties;
   }
 
@@ -55,6 +57,11 @@ public final class LlmInputOutputTokensUsage {
     return outputTotal;
   }
 
+  @JsonProperty("output_total_reasoning_portion")
+  public Optional<LlmTokensCategoryUsage> getOutputTotalReasoningPortion() {
+    return outputTotalReasoningPortion;
+  }
+
   @JsonAnyGetter
   public Map<String, Object> getAdditionalProperties() {
     return this.additionalProperties;
@@ -69,13 +76,20 @@ public final class LlmInputOutputTokensUsage {
       Objects.equals(input, that.input) &&
       Objects.equals(inputCacheRead, that.inputCacheRead) &&
       Objects.equals(inputCacheWrite, that.inputCacheWrite) &&
-      Objects.equals(outputTotal, that.outputTotal)
+      Objects.equals(outputTotal, that.outputTotal) &&
+      Objects.equals(outputTotalReasoningPortion, that.outputTotalReasoningPortion)
     );
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.input, this.inputCacheRead, this.inputCacheWrite, this.outputTotal);
+    return Objects.hash(
+      this.input,
+      this.inputCacheRead,
+      this.inputCacheWrite,
+      this.outputTotal,
+      this.outputTotalReasoningPortion
+    );
   }
 
   @java.lang.Override
@@ -94,6 +108,7 @@ public final class LlmInputOutputTokensUsage {
     private Optional<LlmTokensCategoryUsage> inputCacheRead = Optional.empty();
     private Optional<LlmTokensCategoryUsage> inputCacheWrite = Optional.empty();
     private Optional<LlmTokensCategoryUsage> outputTotal = Optional.empty();
+    private Optional<LlmTokensCategoryUsage> outputTotalReasoningPortion = Optional.empty();
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -105,6 +120,7 @@ public final class LlmInputOutputTokensUsage {
       inputCacheRead(other.getInputCacheRead());
       inputCacheWrite(other.getInputCacheWrite());
       outputTotal(other.getOutputTotal());
+      outputTotalReasoningPortion(other.getOutputTotalReasoningPortion());
       return this;
     }
 
@@ -149,6 +165,19 @@ public final class LlmInputOutputTokensUsage {
 
     public Builder outputTotal(LlmTokensCategoryUsage outputTotal) {
       this.outputTotal = Optional.ofNullable(outputTotal);
+      return this;
+    }
+
+    @JsonSetter(value = "output_total_reasoning_portion", nulls = Nulls.SKIP)
+    public Builder outputTotalReasoningPortion(
+      Optional<LlmTokensCategoryUsage> outputTotalReasoningPortion
+    ) {
+      this.outputTotalReasoningPortion = outputTotalReasoningPortion;
+      return this;
+    }
+
+    public Builder outputTotalReasoningPortion(LlmTokensCategoryUsage outputTotalReasoningPortion) {
+      this.outputTotalReasoningPortion = Optional.ofNullable(outputTotalReasoningPortion);
       return this;
     }
 

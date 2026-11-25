@@ -32,6 +32,7 @@ public final class LeadView {
   private final String phoneNumber;
   private final Optional<List<String>> phoneNumbers;
   private final int phoneNumbersIndex;
+  private final Optional<String> timezoneOverride;
   private final String userId;
   private final int attemptCount;
   private final int failureCount;
@@ -52,6 +53,7 @@ public final class LeadView {
     this.phoneNumber = builder.phoneNumber;
     this.phoneNumbers = builder.phoneNumbers;
     this.phoneNumbersIndex = builder.phoneNumbersIndex;
+    this.timezoneOverride = builder.timezoneOverride;
     this.userId = builder.userId;
     this.attemptCount = builder.attemptCount;
     this.failureCount = builder.failureCount;
@@ -103,6 +105,20 @@ public final class LeadView {
   @JsonProperty("phone_numbers_index")
   public int getPhoneNumbersIndex() {
     return phoneNumbersIndex;
+  }
+
+  /**
+   * @return The timezone the recipient's calling windows are read in; unset when the lead follows the campaign's.
+   */
+  @JsonIgnore
+  public Optional<String> getTimezoneOverride() {
+    return timezoneOverride == null ? Optional.empty() : timezoneOverride;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("timezone_override")
+  private Optional<String> _getTimezoneOverride() {
+    return timezoneOverride;
   }
 
   /**
@@ -218,6 +234,7 @@ public final class LeadView {
       Objects.equals(phoneNumber, that.phoneNumber) &&
       Objects.equals(phoneNumbers, that.phoneNumbers) &&
       Objects.equals(phoneNumbersIndex, that.phoneNumbersIndex) &&
+      Objects.equals(timezoneOverride, that.timezoneOverride) &&
       Objects.equals(userId, that.userId) &&
       Objects.equals(attemptCount, that.attemptCount) &&
       Objects.equals(failureCount, that.failureCount) &&
@@ -241,6 +258,7 @@ public final class LeadView {
       this.phoneNumber,
       this.phoneNumbers,
       this.phoneNumbersIndex,
+      this.timezoneOverride,
       this.userId,
       this.attemptCount,
       this.failureCount,
@@ -355,6 +373,12 @@ public final class LeadView {
 
     _FinalStage phoneNumbers(List<String> phoneNumbers);
 
+    _FinalStage timezoneOverride(Optional<String> timezoneOverride);
+
+    _FinalStage timezoneOverride(String timezoneOverride);
+
+    _FinalStage timezoneOverride(Nullable<String> timezoneOverride);
+
     _FinalStage createdAtUnix(Integer createdAtUnix);
 
     _FinalStage dynamicVariables(Map<String, Object> dynamicVariables);
@@ -392,6 +416,7 @@ public final class LeadView {
     private String phoneNumber;
     private Optional<List<String>> phoneNumbers = Optional.empty();
     private int phoneNumbersIndex;
+    private Optional<String> timezoneOverride = Optional.empty();
     private String userId;
     private int attemptCount;
     private int failureCount;
@@ -416,6 +441,7 @@ public final class LeadView {
       phoneNumber(other.getPhoneNumber());
       phoneNumbers(other.getPhoneNumbers());
       phoneNumbersIndex(other.getPhoneNumbersIndex());
+      timezoneOverride(other.getTimezoneOverride());
       userId(other.getUserId());
       attemptCount(other.getAttemptCount());
       failureCount(other.getFailureCount());
@@ -537,6 +563,31 @@ public final class LeadView {
     @java.lang.Override
     public _FinalStage phoneNumbers(List<String> phoneNumbers) {
       this.phoneNumbers = Optional.ofNullable(phoneNumbers);
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "timezone_override", nulls = Nulls.SKIP)
+    public _FinalStage timezoneOverride(Optional<String> timezoneOverride) {
+      this.timezoneOverride = timezoneOverride;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage timezoneOverride(String timezoneOverride) {
+      this.timezoneOverride = Optional.ofNullable(timezoneOverride);
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage timezoneOverride(Nullable<String> timezoneOverride) {
+      if (timezoneOverride.isNull()) {
+        this.timezoneOverride = null;
+      } else if (timezoneOverride.isEmpty()) {
+        this.timezoneOverride = Optional.empty();
+      } else {
+        this.timezoneOverride = Optional.of(timezoneOverride.get());
+      }
       return this;
     }
 

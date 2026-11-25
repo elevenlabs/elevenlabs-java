@@ -117,6 +117,24 @@ public class AsyncSummariesClient {
   /**
    * Returns summaries for the specified agents.
    *
+   * @return response of {@code CompletableFuture<Map<String, GetSummariesResponse>>}
+   */
+  public CompletableFuture<Map<String, GetSummariesResponse>> get() {
+    return this.get(GetSummariesRequest.builder().build());
+  }
+
+  /**
+   * Returns summaries for the specified agents.
+   *
+   * @return response of {@code CompletableFuture<Map<String, GetSummariesResponse>>}
+   */
+  public CompletableFuture<Map<String, GetSummariesResponse>> get(RequestOptions requestOptions) {
+    return this.get(GetSummariesRequest.builder().build(), requestOptions);
+  }
+
+  /**
+   * Returns summaries for the specified agents.
+   *
    * @param requestParameters {@link GetSummariesRequest} Request Parameters Object
    * @return response of {@code CompletableFuture<Map<String, GetSummariesResponse>>}
    */
@@ -152,7 +170,7 @@ public class AsyncSummariesClient {
     )
       .setHeader("Accept", "application/json")
       .applyRequestConfig(resolvedConfig)
-      .setQueryParameter("agent_ids", requestParameters.getAgentIds())
+      .setOptionalQueryParameter("agent_ids", requestParameters.getAgentIds().orElse(null))
       .build();
   }
 
@@ -171,6 +189,26 @@ public class AsyncSummariesClient {
    * Reuses the enclosing service's request builders and configuration.
    */
   public class WithRawResponse {
+
+    /**
+     * Returns summaries for the specified agents.
+     *
+     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
+     */
+    public CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>> get() {
+      return this.get(GetSummariesRequest.builder().build());
+    }
+
+    /**
+     * Returns summaries for the specified agents.
+     *
+     * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
+     */
+    public CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>> get(
+      RequestOptions requestOptions
+    ) {
+      return this.get(GetSummariesRequest.builder().build(), requestOptions);
+    }
 
     /**
      * Returns summaries for the specified agents.

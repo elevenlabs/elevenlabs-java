@@ -29,6 +29,7 @@ public final class SubmitCampaignRecipient {
   private final Optional<List<String>> phoneNumbers;
   private final Optional<String> whatsappUserId;
   private final Optional<String> id;
+  private final Optional<String> timezoneOverride;
   private final Optional<
     ConversationInitiationClientDataRequestInput
   > conversationInitiationClientData;
@@ -39,6 +40,7 @@ public final class SubmitCampaignRecipient {
     this.phoneNumbers = builder.phoneNumbers;
     this.whatsappUserId = builder.whatsappUserId;
     this.id = builder.id;
+    this.timezoneOverride = builder.timezoneOverride;
     this.conversationInitiationClientData = builder.conversationInitiationClientData;
     this.additionalProperties = builder.additionalProperties;
   }
@@ -100,6 +102,20 @@ public final class SubmitCampaignRecipient {
   }
 
   /**
+   * @return IANA timezone to read the calling windows and callback times in for this recipient, overriding the campaign's.
+   */
+  @JsonIgnore
+  public Optional<String> getTimezoneOverride() {
+    return timezoneOverride == null ? Optional.empty() : timezoneOverride;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("timezone_override")
+  private Optional<String> _getTimezoneOverride() {
+    return timezoneOverride;
+  }
+
+  /**
    * @return Dynamic variables and overrides for this recipient's calls.
    */
   @JsonProperty("conversation_initiation_client_data")
@@ -124,6 +140,7 @@ public final class SubmitCampaignRecipient {
       Objects.equals(phoneNumbers, that.phoneNumbers) &&
       Objects.equals(whatsappUserId, that.whatsappUserId) &&
       Objects.equals(id, that.id) &&
+      Objects.equals(timezoneOverride, that.timezoneOverride) &&
       Objects.equals(conversationInitiationClientData, that.conversationInitiationClientData)
     );
   }
@@ -135,6 +152,7 @@ public final class SubmitCampaignRecipient {
       this.phoneNumbers,
       this.whatsappUserId,
       this.id,
+      this.timezoneOverride,
       this.conversationInitiationClientData
     );
   }
@@ -155,6 +173,7 @@ public final class SubmitCampaignRecipient {
     private Optional<List<String>> phoneNumbers = Optional.empty();
     private Optional<String> whatsappUserId = Optional.empty();
     private Optional<String> id = Optional.empty();
+    private Optional<String> timezoneOverride = Optional.empty();
     private Optional<
       ConversationInitiationClientDataRequestInput
     > conversationInitiationClientData = Optional.empty();
@@ -169,6 +188,7 @@ public final class SubmitCampaignRecipient {
       phoneNumbers(other.getPhoneNumbers());
       whatsappUserId(other.getWhatsappUserId());
       id(other.getId());
+      timezoneOverride(other.getTimezoneOverride());
       conversationInitiationClientData(other.getConversationInitiationClientData());
       return this;
     }
@@ -257,6 +277,28 @@ public final class SubmitCampaignRecipient {
         this.id = Optional.empty();
       } else {
         this.id = Optional.of(id.get());
+      }
+      return this;
+    }
+
+    @JsonSetter(value = "timezone_override", nulls = Nulls.SKIP)
+    public Builder timezoneOverride(Optional<String> timezoneOverride) {
+      this.timezoneOverride = timezoneOverride;
+      return this;
+    }
+
+    public Builder timezoneOverride(String timezoneOverride) {
+      this.timezoneOverride = Optional.ofNullable(timezoneOverride);
+      return this;
+    }
+
+    public Builder timezoneOverride(Nullable<String> timezoneOverride) {
+      if (timezoneOverride.isNull()) {
+        this.timezoneOverride = null;
+      } else if (timezoneOverride.isEmpty()) {
+        this.timezoneOverride = Optional.empty();
+      } else {
+        this.timezoneOverride = Optional.of(timezoneOverride.get());
       }
       return this;
     }

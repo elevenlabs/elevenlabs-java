@@ -24,6 +24,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -43,6 +44,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -63,6 +65,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -82,6 +85,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -102,6 +106,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -121,6 +126,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -141,6 +147,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -160,6 +167,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .additionalSoftTimeoutMessages(java.util.List.of("test-value"))
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -180,6 +188,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage((Boolean) null)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -199,6 +208,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .additionalSoftTimeoutMessages(java.util.List.of("test-value"))
       .useLlmGeneratedMessage(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -219,6 +229,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers((Boolean) null)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -238,6 +249,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .additionalSoftTimeoutMessages(java.util.List.of("test-value"))
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -258,6 +270,48 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration((Integer) null)
+      .pauseAfterFiller(true)
+      .llmGeneratedMessagePromptOverride("test-value")
+      .disableUntilFirstUserMessage(true)
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    SoftTimeoutConfigWorkflowOverride roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      SoftTimeoutConfigWorkflowOverride.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_pauseAfterFiller() throws Exception {
+    SoftTimeoutConfigWorkflowOverride value = SoftTimeoutConfigWorkflowOverride.builder()
+      .timeoutSeconds(1d)
+      .message("test-value")
+      .additionalSoftTimeoutMessages(java.util.List.of("test-value"))
+      .useLlmGeneratedMessage(true)
+      .randomizeFillers(true)
+      .maxSoftTimeoutsPerGeneration(1)
+      .llmGeneratedMessagePromptOverride("test-value")
+      .disableUntilFirstUserMessage(true)
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    SoftTimeoutConfigWorkflowOverride roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      SoftTimeoutConfigWorkflowOverride.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_pauseAfterFiller() throws Exception {
+    SoftTimeoutConfigWorkflowOverride value = SoftTimeoutConfigWorkflowOverride.builder()
+      .timeoutSeconds(1d)
+      .message("test-value")
+      .additionalSoftTimeoutMessages(java.util.List.of("test-value"))
+      .useLlmGeneratedMessage(true)
+      .randomizeFillers(true)
+      .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller((Boolean) null)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage(true)
       .build();
@@ -278,6 +332,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .disableUntilFirstUserMessage(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
@@ -297,6 +352,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride((String) null)
       .disableUntilFirstUserMessage(true)
       .build();
@@ -317,6 +373,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
@@ -336,6 +393,7 @@ class SoftTimeoutConfigWorkflowOverrideTest {
       .useLlmGeneratedMessage(true)
       .randomizeFillers(true)
       .maxSoftTimeoutsPerGeneration(1)
+      .pauseAfterFiller(true)
       .llmGeneratedMessagePromptOverride("test-value")
       .disableUntilFirstUserMessage((Boolean) null)
       .build();

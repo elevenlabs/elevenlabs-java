@@ -43,6 +43,20 @@ class AgentPolicyOverrideInputTest {
             .build()
         )
       )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
+            .build()
+        )
+      )
       .dataCollection(
         DataCollectionConfig.builder()
           .callbackTime("test-value")
@@ -92,6 +106,20 @@ class AgentPolicyOverrideInputTest {
                 CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
               )
             )
+            .build()
+        )
+      )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
             .build()
         )
       )
@@ -148,6 +176,20 @@ class AgentPolicyOverrideInputTest {
             .build()
         )
       )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
+            .build()
+        )
+      )
       .dataCollection(
         DataCollectionConfig.builder()
           .callbackTime("test-value")
@@ -186,6 +228,20 @@ class AgentPolicyOverrideInputTest {
                 CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
               )
             )
+            .build()
+        )
+      )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
             .build()
         )
       )
@@ -230,6 +286,20 @@ class AgentPolicyOverrideInputTest {
           .maxConsecutiveFailuresPerNumber(1)
           .build()
       )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
+            .build()
+        )
+      )
       .dataCollection(
         DataCollectionConfig.builder()
           .callbackTime("test-value")
@@ -272,6 +342,127 @@ class AgentPolicyOverrideInputTest {
           .build()
       )
       .callingPeriods((java.util.List<CallingPeriod>) null)
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
+            .build()
+        )
+      )
+      .dataCollection(
+        DataCollectionConfig.builder()
+          .callbackTime("test-value")
+          .redirectPhoneNumber("test-value")
+          .stop("test-value")
+          .mappings(java.util.Map.of("key", "test-value"))
+          .build()
+      )
+      .followupContext(
+        FollowupContextPolicy.builder()
+          .callType(true)
+          .previousConversationId(true)
+          .previousSummary(true)
+          .previousTranscript(true)
+          .build()
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    AgentPolicyOverrideInput roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      AgentPolicyOverrideInput.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_dateOverrides() throws Exception {
+    AgentPolicyOverrideInput value = AgentPolicyOverrideInput.builder()
+      .timezone("test-value")
+      .retry(
+        RetryPolicy.builder()
+          .retryDelaySeconds(1)
+          .maxShortRetries(0)
+          .maxTotalCalls(1)
+          .maxCallbacks(0)
+          .maxRedirects(0)
+          .intervalPlacement(IntervalPlacement.START)
+          .rotateStepSeconds(1)
+          .maxConsecutiveFailuresPerNumber(1)
+          .build()
+      )
+      .callingPeriods(
+        java.util.List.of(
+          CallingPeriod.builder()
+            .weekdays(java.util.List.of(0))
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .build()
+        )
+      )
+      .dataCollection(
+        DataCollectionConfig.builder()
+          .callbackTime("test-value")
+          .redirectPhoneNumber("test-value")
+          .stop("test-value")
+          .mappings(java.util.Map.of("key", "test-value"))
+          .build()
+      )
+      .followupContext(
+        FollowupContextPolicy.builder()
+          .callType(true)
+          .previousConversationId(true)
+          .previousSummary(true)
+          .previousTranscript(true)
+          .build()
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    AgentPolicyOverrideInput roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      AgentPolicyOverrideInput.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_null_dateOverrides() throws Exception {
+    AgentPolicyOverrideInput value = AgentPolicyOverrideInput.builder()
+      .timezone("test-value")
+      .retry(
+        RetryPolicy.builder()
+          .retryDelaySeconds(1)
+          .maxShortRetries(0)
+          .maxTotalCalls(1)
+          .maxCallbacks(0)
+          .maxRedirects(0)
+          .intervalPlacement(IntervalPlacement.START)
+          .rotateStepSeconds(1)
+          .maxConsecutiveFailuresPerNumber(1)
+          .build()
+      )
+      .callingPeriods(
+        java.util.List.of(
+          CallingPeriod.builder()
+            .weekdays(java.util.List.of(0))
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .build()
+        )
+      )
+      .dateOverrides((java.util.List<DateOverride>) null)
       .dataCollection(
         DataCollectionConfig.builder()
           .callbackTime("test-value")
@@ -325,6 +516,20 @@ class AgentPolicyOverrideInputTest {
             .build()
         )
       )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
+            .build()
+        )
+      )
       .followupContext(
         FollowupContextPolicy.builder()
           .callType(true)
@@ -367,6 +572,20 @@ class AgentPolicyOverrideInputTest {
                 CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
               )
             )
+            .build()
+        )
+      )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverride.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
             .build()
         )
       )

@@ -139,8 +139,11 @@ public class TranslationWebSocketClient implements AutoCloseable {
         String.valueOf(options.getClientSessionId().get())
       );
     }
-    if (options.getEnableZrm() != null && options.getEnableZrm().isPresent()) {
-      urlBuilder.addQueryParameter("enable_zrm", String.valueOf(options.getEnableZrm().get()));
+    if (options.getEnableLogging() != null && options.getEnableLogging().isPresent()) {
+      urlBuilder.addQueryParameter(
+        "enable_logging",
+        String.valueOf(options.getEnableLogging().get())
+      );
     }
     perConnect.getQueryParameters().forEach(urlBuilder::addQueryParameter);
     Request.Builder requestBuilder = new Request.Builder().url(urlBuilder.build());

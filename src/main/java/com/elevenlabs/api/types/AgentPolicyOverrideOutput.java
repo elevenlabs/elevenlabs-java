@@ -31,6 +31,7 @@ public final class AgentPolicyOverrideOutput {
   private final Optional<String> timezone;
   private final Optional<RetryPolicy> retry;
   private final Optional<List<CallingPeriod>> callingPeriods;
+  private final Optional<List<DateOverride>> dateOverrides;
   private final Optional<DataCollectionConfig> dataCollection;
   private final Optional<FollowupContextPolicy> followupContext;
   private final Map<String, Object> additionalProperties;
@@ -39,6 +40,7 @@ public final class AgentPolicyOverrideOutput {
     this.timezone = builder.timezone;
     this.retry = builder.retry;
     this.callingPeriods = builder.callingPeriods;
+    this.dateOverrides = builder.dateOverrides;
     this.dataCollection = builder.dataCollection;
     this.followupContext = builder.followupContext;
     this.additionalProperties = builder.additionalProperties;
@@ -71,6 +73,20 @@ public final class AgentPolicyOverrideOutput {
     return callingPeriods;
   }
 
+  /**
+   * @return Replaces the inherited date overrides; unset inherits them and an empty list clears them.
+   */
+  @JsonIgnore
+  public Optional<List<DateOverride>> getDateOverrides() {
+    return dateOverrides == null ? Optional.empty() : dateOverrides;
+  }
+
+  @JsonInclude(value = JsonInclude.Include.CUSTOM, valueFilter = NullableNonemptyFilter.class)
+  @JsonProperty("date_overrides")
+  private Optional<List<DateOverride>> _getDateOverrides() {
+    return dateOverrides;
+  }
+
   @JsonProperty("data_collection")
   public Optional<DataCollectionConfig> getDataCollection() {
     return dataCollection;
@@ -95,6 +111,7 @@ public final class AgentPolicyOverrideOutput {
       Objects.equals(timezone, that.timezone) &&
       Objects.equals(retry, that.retry) &&
       Objects.equals(callingPeriods, that.callingPeriods) &&
+      Objects.equals(dateOverrides, that.dateOverrides) &&
       Objects.equals(dataCollection, that.dataCollection) &&
       Objects.equals(followupContext, that.followupContext)
     );
@@ -106,6 +123,7 @@ public final class AgentPolicyOverrideOutput {
       this.timezone,
       this.retry,
       this.callingPeriods,
+      this.dateOverrides,
       this.dataCollection,
       this.followupContext
     );
@@ -126,6 +144,7 @@ public final class AgentPolicyOverrideOutput {
     private Optional<String> timezone = Optional.empty();
     private Optional<RetryPolicy> retry = Optional.empty();
     private Optional<List<CallingPeriod>> callingPeriods = Optional.empty();
+    private Optional<List<DateOverride>> dateOverrides = Optional.empty();
     private Optional<DataCollectionConfig> dataCollection = Optional.empty();
     private Optional<FollowupContextPolicy> followupContext = Optional.empty();
 
@@ -138,6 +157,7 @@ public final class AgentPolicyOverrideOutput {
       timezone(other.getTimezone());
       retry(other.getRetry());
       callingPeriods(other.getCallingPeriods());
+      dateOverrides(other.getDateOverrides());
       dataCollection(other.getDataCollection());
       followupContext(other.getFollowupContext());
       return this;
@@ -194,6 +214,28 @@ public final class AgentPolicyOverrideOutput {
         this.callingPeriods = Optional.empty();
       } else {
         this.callingPeriods = Optional.of(callingPeriods.get());
+      }
+      return this;
+    }
+
+    @JsonSetter(value = "date_overrides", nulls = Nulls.SKIP)
+    public Builder dateOverrides(Optional<List<DateOverride>> dateOverrides) {
+      this.dateOverrides = dateOverrides;
+      return this;
+    }
+
+    public Builder dateOverrides(List<DateOverride> dateOverrides) {
+      this.dateOverrides = Optional.ofNullable(dateOverrides);
+      return this;
+    }
+
+    public Builder dateOverrides(Nullable<List<DateOverride>> dateOverrides) {
+      if (dateOverrides.isNull()) {
+        this.dateOverrides = null;
+      } else if (dateOverrides.isEmpty()) {
+        this.dateOverrides = Optional.empty();
+      } else {
+        this.dateOverrides = Optional.of(dateOverrides.get());
       }
       return this;
     }

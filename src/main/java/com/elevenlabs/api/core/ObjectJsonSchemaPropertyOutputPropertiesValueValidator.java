@@ -4,6 +4,7 @@
 package com.elevenlabs.api.core;
 
 import com.elevenlabs.api.core.Violation;
+import com.elevenlabs.api.types.AnyOfJsonSchemaPropertyOutput;
 import com.elevenlabs.api.types.ArrayJsonSchemaPropertyOutput;
 import com.elevenlabs.api.types.LiteralJsonSchemaProperty;
 import com.elevenlabs.api.types.ObjectJsonSchemaPropertyOutput;
@@ -55,6 +56,11 @@ public class ObjectJsonSchemaPropertyOutputPropertiesValueValidator
         @Override
         public Violation[] visit(ArrayJsonSchemaPropertyOutput a) {
           return new ArrayJsonSchemaPropertyOutputValidator().optional().validate(a);
+        }
+
+        @Override
+        public Violation[] visit(AnyOfJsonSchemaPropertyOutput a) {
+          return new AnyOfJsonSchemaPropertyOutputValidator().optional().validate(a);
         }
       }
     );

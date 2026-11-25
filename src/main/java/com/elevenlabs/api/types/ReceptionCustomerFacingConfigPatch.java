@@ -37,7 +37,7 @@ public final class ReceptionCustomerFacingConfigPatch {
   private final Optional<String> language;
   private final Optional<List<String>> additionalLanguages;
   private final Optional<String> firstMessage;
-  private final Optional<Boolean> disableFirstMessageInterruptions;
+  private final Optional<FirstMessageMode> firstMessageMode;
   private final Optional<Boolean> enableEndCallTool;
   private final Optional<Boolean> enableSkipTurnTool;
   private final Optional<Boolean> enablePlayKeypadTouchToneTool;
@@ -60,7 +60,7 @@ public final class ReceptionCustomerFacingConfigPatch {
     this.language = builder.language;
     this.additionalLanguages = builder.additionalLanguages;
     this.firstMessage = builder.firstMessage;
-    this.disableFirstMessageInterruptions = builder.disableFirstMessageInterruptions;
+    this.firstMessageMode = builder.firstMessageMode;
     this.enableEndCallTool = builder.enableEndCallTool;
     this.enableSkipTurnTool = builder.enableSkipTurnTool;
     this.enablePlayKeypadTouchToneTool = builder.enablePlayKeypadTouchToneTool;
@@ -162,11 +162,11 @@ public final class ReceptionCustomerFacingConfigPatch {
   }
 
   /**
-   * @return When true, callers cannot interrupt the receptionist while the first message is being delivered. Use when the greeting carries a recording or legal notice callers must hear in full.
+   * @return How the receptionist's greeting plays.
    */
-  @JsonProperty("disable_first_message_interruptions")
-  public Optional<Boolean> getDisableFirstMessageInterruptions() {
-    return disableFirstMessageInterruptions;
+  @JsonProperty("first_message_mode")
+  public Optional<FirstMessageMode> getFirstMessageMode() {
+    return firstMessageMode;
   }
 
   /**
@@ -248,7 +248,7 @@ public final class ReceptionCustomerFacingConfigPatch {
       Objects.equals(language, that.language) &&
       Objects.equals(additionalLanguages, that.additionalLanguages) &&
       Objects.equals(firstMessage, that.firstMessage) &&
-      Objects.equals(disableFirstMessageInterruptions, that.disableFirstMessageInterruptions) &&
+      Objects.equals(firstMessageMode, that.firstMessageMode) &&
       Objects.equals(enableEndCallTool, that.enableEndCallTool) &&
       Objects.equals(enableSkipTurnTool, that.enableSkipTurnTool) &&
       Objects.equals(enablePlayKeypadTouchToneTool, that.enablePlayKeypadTouchToneTool) &&
@@ -274,7 +274,7 @@ public final class ReceptionCustomerFacingConfigPatch {
       this.language,
       this.additionalLanguages,
       this.firstMessage,
-      this.disableFirstMessageInterruptions,
+      this.firstMessageMode,
       this.enableEndCallTool,
       this.enableSkipTurnTool,
       this.enablePlayKeypadTouchToneTool,
@@ -309,7 +309,7 @@ public final class ReceptionCustomerFacingConfigPatch {
     private Optional<String> language = Optional.empty();
     private Optional<List<String>> additionalLanguages = Optional.empty();
     private Optional<String> firstMessage = Optional.empty();
-    private Optional<Boolean> disableFirstMessageInterruptions = Optional.empty();
+    private Optional<FirstMessageMode> firstMessageMode = Optional.empty();
     private Optional<Boolean> enableEndCallTool = Optional.empty();
     private Optional<Boolean> enableSkipTurnTool = Optional.empty();
     private Optional<Boolean> enablePlayKeypadTouchToneTool = Optional.empty();
@@ -336,7 +336,7 @@ public final class ReceptionCustomerFacingConfigPatch {
       language(other.getLanguage());
       additionalLanguages(other.getAdditionalLanguages());
       firstMessage(other.getFirstMessage());
-      disableFirstMessageInterruptions(other.getDisableFirstMessageInterruptions());
+      firstMessageMode(other.getFirstMessageMode());
       enableEndCallTool(other.getEnableEndCallTool());
       enableSkipTurnTool(other.getEnableSkipTurnTool());
       enablePlayKeypadTouchToneTool(other.getEnablePlayKeypadTouchToneTool());
@@ -479,16 +479,14 @@ public final class ReceptionCustomerFacingConfigPatch {
       return this;
     }
 
-    @JsonSetter(value = "disable_first_message_interruptions", nulls = Nulls.SKIP)
-    public Builder disableFirstMessageInterruptions(
-      Optional<Boolean> disableFirstMessageInterruptions
-    ) {
-      this.disableFirstMessageInterruptions = disableFirstMessageInterruptions;
+    @JsonSetter(value = "first_message_mode", nulls = Nulls.SKIP)
+    public Builder firstMessageMode(Optional<FirstMessageMode> firstMessageMode) {
+      this.firstMessageMode = firstMessageMode;
       return this;
     }
 
-    public Builder disableFirstMessageInterruptions(Boolean disableFirstMessageInterruptions) {
-      this.disableFirstMessageInterruptions = Optional.ofNullable(disableFirstMessageInterruptions);
+    public Builder firstMessageMode(FirstMessageMode firstMessageMode) {
+      this.firstMessageMode = Optional.ofNullable(firstMessageMode);
       return this;
     }
 

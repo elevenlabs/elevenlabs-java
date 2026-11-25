@@ -34,6 +34,11 @@ class CampaignResponseTest {
           .dataCollection(DataCollectionPolicy.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriodPolicy.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverridePolicy.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .build()
       )
       .variant(CampaignVariant.SIMPLE)
@@ -83,6 +88,11 @@ class CampaignResponseTest {
           .dataCollection(DataCollectionPolicy.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriodPolicy.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverridePolicy.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .build()
       )
       .variant(CampaignVariant.SIMPLE)
@@ -132,6 +142,11 @@ class CampaignResponseTest {
           .dataCollection(DataCollectionPolicy.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriodPolicy.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverridePolicy.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .build()
       )
       .variant(CampaignVariant.SIMPLE)
@@ -181,6 +196,11 @@ class CampaignResponseTest {
           .dataCollection(DataCollectionPolicy.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriodPolicy.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverridePolicy.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .build()
       )
       .variant(CampaignVariant.SIMPLE)
@@ -230,6 +250,11 @@ class CampaignResponseTest {
           .dataCollection(DataCollectionPolicy.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriodPolicy.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverridePolicy.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .build()
       )
       .variant(CampaignVariant.SIMPLE)
@@ -279,6 +304,11 @@ class CampaignResponseTest {
           .dataCollection(DataCollectionPolicy.builder().build())
           .followupContext(FollowupContextPolicy.builder().build())
           .callingPeriods(java.util.List.of(CallingPeriodPolicy.builder().build()))
+          .dateOverrides(
+            java.util.List.of(
+              DateOverridePolicy.builder().startDate("test-value").endDate("test-value").build()
+            )
+          )
           .build()
       )
       .variant(CampaignVariant.SIMPLE)

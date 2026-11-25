@@ -8,7 +8,13 @@ import com.elevenlabs.api.core.ResponseBodyInputStream;
 import com.elevenlabs.api.core.RetryConfig;
 import java.io.IOException;
 import java.io.InterruptedIOException;
+import java.time.Duration;
+import java.util.ArrayList;
+import java.util.Collections;
+import java.util.List;
 import java.util.Optional;
+import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ScheduledFuture;
 import java.util.concurrent.ScheduledThreadPoolExecutor;
 import java.util.concurrent.ThreadLocalRandom;
@@ -20,6 +26,8 @@ import okhttp3.Interceptor;
 import okhttp3.OkHttpClient;
 import okhttp3.Request;
 import okhttp3.Response;
+import okio.AsyncTimeout;
+import okio.Timeout;
 
 /**
  * OkHttp interceptor that automatically retries failed HTTP requests.
@@ -44,15 +52,90 @@ public class RetryInterceptor implements Interceptor {
     Optional<Long> maxRetryDelayMillis,
     Optional<Double> jitterFactor
   ) {
-    this(retryConfigOf(maxRetries, initialRetryDelayMillis, maxRetryDelayMillis, jitterFactor));
+    this(
+      maxRetries,
+      initialRetryDelayMillis,
+      maxRetryDelayMillis,
+      jitterFactor,
+      Optional.empty(),
+      Optional.empty()
+    );
+  }
+
+  /**
+   * @param retryOnStatusCodes when present, the only HTTP status codes that trigger a retry; when
+   *     empty, 408, 429 and 5xx are retried.
+   */
+  public RetryInterceptor(
+    int maxRetries,
+    Optional<Long> initialRetryDelayMillis,
+    Optional<Long> maxRetryDelayMillis,
+    Optional<Double> jitterFactor,
+    Optional<Set<Integer>> retryOnStatusCodes
+  ) {
+    this(
+      maxRetries,
+      initialRetryDelayMillis,
+      maxRetryDelayMillis,
+      jitterFactor,
+      retryOnStatusCodes,
+      Optional.empty()
+    );
+  }
+
+  /**
+   * @param retryDelays when present, an explicit retry schedule: the n-th retry waits for the n-th
+   *     duration and the call stops retrying once the list is exhausted, so its size replaces
+   *     {@code maxRetries} (a per-request {@link MaxRetriesOverride} can still lower the count). The
+   *     exponential backoff settings are not used, but a {@code Retry-After} /
+   *     {@code X-RateLimit-Reset} header still takes precedence over the scheduled delay.
+   */
+  public RetryInterceptor(
+    int maxRetries,
+    Optional<Long> initialRetryDelayMillis,
+    Optional<Long> maxRetryDelayMillis,
+    Optional<Double> jitterFactor,
+    Optional<Set<Integer>> retryOnStatusCodes,
+    Optional<List<Duration>> retryDelays
+  ) {
+    this(
+      retryConfigOf(
+        maxRetries,
+        initialRetryDelayMillis,
+        maxRetryDelayMillis,
+        jitterFactor,
+        retryOnStatusCodes,
+        retryDelays
+      )
+    );
   }
 
   private static RetryConfig retryConfigOf(
     int maxRetries,
     Optional<Long> initialRetryDelayMillis,
     Optional<Long> maxRetryDelayMillis,
-    Optional<Double> jitterFactor
+    Optional<Double> jitterFactor,
+    Optional<Set<Integer>> retryOnStatusCodes,
+    Optional<List<Duration>> retryDelays
   ) {
+    retryOnStatusCodes.ifPresent(codes -> {
+      for (Integer code : codes) {
+        if (code == null || code < 100 || code > 599) {
+          throw new IllegalArgumentException(
+            "retryOnStatusCodes contains an invalid HTTP status code: " + code
+          );
+        }
+      }
+    });
+    retryDelays.ifPresent(delays -> {
+      for (Duration delay : delays) {
+        if (delay == null || delay.isNegative()) {
+          throw new IllegalArgumentException(
+            "retryDelays must only contain non-negative durations: " + delay
+          );
+        }
+      }
+    });
     initialRetryDelayMillis.ifPresent(delay -> {
       if (delay < 0) {
         throw new IllegalArgumentException("initialRetryDelayMillis must be non-negative");
@@ -79,6 +162,14 @@ public class RetryInterceptor implements Interceptor {
       builder.maxDelay((int) Math.min(delay, Integer.MAX_VALUE))
     );
     jitterFactor.ifPresent(builder::jitterFactor);
+    retryOnStatusCodes.ifPresent(codes ->
+      builder.statusCodesToRetry(
+        Collections.unmodifiableList(new ArrayList<>(new TreeSet<>(codes)))
+      )
+    );
+    retryDelays.ifPresent(delays ->
+      builder.retryDelays(Collections.unmodifiableList(new ArrayList<>(delays)))
+    );
     return builder.build();
   }
 
@@ -168,7 +259,7 @@ public class RetryInterceptor implements Interceptor {
       MaxRetriesOverride override = this.request.tag(MaxRetriesOverride.class);
       this.maxRetries = retryInterceptor == null
         ? 0
-        : override != null ? override.getValue() : retryInterceptor.config.getMaxRetries();
+        : retryInterceptor.resolveMaxRetries(this.request);
     }
 
     @Override
@@ -330,6 +421,24 @@ public class RetryInterceptor implements Interceptor {
     }
   }
 
+  /** Milliseconds of a delay, saturating instead of throwing for a Duration beyond the long range. */
+  private static int clampedMillis(Duration delay) {
+    try {
+      return (int) Math.min(delay.toMillis(), Integer.MAX_VALUE);
+    } catch (ArithmeticException e) {
+      return Integer.MAX_VALUE;
+    }
+  }
+
+  private int resolveMaxRetries(Request request) {
+    MaxRetriesOverride override = request.tag(MaxRetriesOverride.class);
+    if (!config.getRetryDelays().isEmpty()) {
+      int scheduled = config.getRetryDelays().size();
+      return override != null ? Math.min(override.getValue(), scheduled) : scheduled;
+    }
+    return override != null ? override.getValue() : config.getMaxRetries();
+  }
+
   /**
    * Intercepts an HTTP request and retries it according to the configured retry policy.
    * Implements exponential backoff between retry attempts.
@@ -345,10 +454,7 @@ public class RetryInterceptor implements Interceptor {
       // Retries of calls created by newAsyncCall are scheduled off OkHttp's dispatcher threads.
       return chain.proceed(request);
     }
-    MaxRetriesOverride maxRetriesOverride = request.tag(MaxRetriesOverride.class);
-    int maxRetries = maxRetriesOverride == null
-      ? config.getMaxRetries()
-      : maxRetriesOverride.getValue();
+    int maxRetries = resolveMaxRetries(request);
     int tryCount = 0;
 
     Response response = null;
@@ -364,7 +470,12 @@ public class RetryInterceptor implements Interceptor {
         }
         tryCount++;
       } catch (IOException e) {
-        if (!config.getExceptionsToRetry().contains(e.getClass()) || tryCount == maxRetries) {
+        // A call the call timeout (or cancel()) ended cannot succeed on retry.
+        if (
+          chain.call().isCanceled() ||
+          !config.getExceptionsToRetry().contains(e.getClass()) ||
+          tryCount == maxRetries
+        ) {
           throw e;
         }
         // Count this failed attempt so a persistently failing connection eventually
@@ -380,6 +491,10 @@ public class RetryInterceptor implements Interceptor {
       }
 
       final int delay = calculateDelay(tryCount, response);
+      if (response != null) {
+        response.close();
+      }
+      Optional<AsyncTimeout> callTimeout = suspendCallTimeout(chain);
       try {
         Thread.sleep(delay);
       } catch (InterruptedException e) {
@@ -392,10 +507,26 @@ public class RetryInterceptor implements Interceptor {
         );
         interrupted.initCause(e);
         throw interrupted;
+      } finally {
+        callTimeout.ifPresent(AsyncTimeout::enter);
       }
     }
 
     return response;
+  }
+
+  /**
+   * Stops the call timeout while waiting to retry, as Fern does: the wait is not part of any
+   * attempt, and each attempt starts with the full timeout once {@link AsyncTimeout#enter()} runs.
+   * A timeout that already fired is not restarted: the call is cancelled and the next attempt fails.
+   */
+  private static Optional<AsyncTimeout> suspendCallTimeout(Chain chain) {
+    Timeout timeout = chain.call().timeout();
+    if (!(timeout instanceof AsyncTimeout)) {
+      return Optional.empty();
+    }
+    AsyncTimeout callTimeout = (AsyncTimeout) timeout;
+    return callTimeout.exit() ? Optional.empty() : Optional.of(callTimeout);
   }
 
   /**
@@ -411,6 +542,11 @@ public class RetryInterceptor implements Interceptor {
     final Long headerDelay = retryAfterDelayMs(response);
     if (headerDelay != null) {
       return headerDelay.intValue();
+    }
+    // An explicit schedule replaces exponential backoff, unjittered: the caller chose the delays.
+    final List<Duration> schedule = config.getRetryDelays();
+    if (!schedule.isEmpty()) {
+      return clampedMillis(schedule.get(Math.min(tryCount - 1, schedule.size() - 1)));
     }
     final int delay = (int) (config.getInitialDelay() *
       Math.pow(config.getBackoffFactor(), tryCount - 1));

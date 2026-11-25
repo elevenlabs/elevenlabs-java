@@ -48,7 +48,7 @@ public class SoftTimeoutConfigValidator extends AbstractModelValidator<SoftTimeo
       )
       .add(
         new ListValidator<String>("additionalSoftTimeoutMessages")
-          .maxLength(7)
+          .maxLength(30)
           .optional()
           .validate(softTimeoutConfig.getAdditionalSoftTimeoutMessages().orElse(null))
       )

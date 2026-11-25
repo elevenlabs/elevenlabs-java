@@ -204,7 +204,7 @@ public final class ConversationChargingCommonModel {
   }
 
   /**
-   * @return Credits charged as the voice actor reward for the Voice Library voices this conversation used. It is not included in <code>cost</code>.
+   * @return Credits charged as the voice owner fee for the custom rate voices this conversation used. It is not included in <code>cost</code>.
    */
   @JsonIgnore
   public Optional<Integer> getVoiceSurchargeCharge() {

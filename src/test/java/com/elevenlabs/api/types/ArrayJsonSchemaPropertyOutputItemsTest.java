@@ -100,4 +100,24 @@ class ArrayJsonSchemaPropertyOutputItemsTest {
       ObjectMappers.JSON_MAPPER.readTree(ObjectMappers.JSON_MAPPER.writeValueAsString(roundTripped))
     );
   }
+
+  @Test
+  void roundTrips_wire_branch_of3() throws Exception {
+    ArrayJsonSchemaPropertyOutputItems value = ArrayJsonSchemaPropertyOutputItems.of(
+      AnyOfJsonSchemaPropertyOutput.builder()
+        .discriminator("test-value")
+        .anyOf(java.util.List.of(ObjectJsonSchemaPropertyOutput.builder().build()))
+        .description("test-value")
+        .build()
+    );
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    ArrayJsonSchemaPropertyOutputItems roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      ArrayJsonSchemaPropertyOutputItems.class
+    );
+    assertEquals(
+      ObjectMappers.JSON_MAPPER.readTree(json),
+      ObjectMappers.JSON_MAPPER.readTree(ObjectMappers.JSON_MAPPER.writeValueAsString(roundTripped))
+    );
+  }
 }

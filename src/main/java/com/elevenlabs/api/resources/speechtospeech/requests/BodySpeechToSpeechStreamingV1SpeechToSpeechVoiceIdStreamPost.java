@@ -19,6 +19,7 @@ import java.util.HashMap;
 import java.util.Map;
 import java.util.Objects;
 import java.util.Optional;
+import org.jetbrains.annotations.NotNull;
 
 @JsonDeserialize(
   builder = BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost.Builder.class
@@ -29,9 +30,7 @@ public final class BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost 
   private final Optional<Boolean> enableLogging;
   private final Optional<Integer> optimizeStreamingLatency;
   private final Optional<StreamSpeechToSpeechRequestOutputFormat> outputFormat;
-  private final Optional<
-    com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost
-  > speechToSpeechStreamRequest;
+  private final com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost speechToSpeechStreamRequest;
   private final Map<String, Object> additionalProperties;
 
   private BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost(Builder builder) {
@@ -75,9 +74,7 @@ public final class BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost 
   }
 
   @JsonProperty("SpeechToSpeechStreamRequest")
-  public Optional<
-    com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost
-  > getSpeechToSpeechStreamRequest() {
+  public com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost getSpeechToSpeechStreamRequest() {
     return speechToSpeechStreamRequest;
   }
 
@@ -117,19 +114,51 @@ public final class BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost 
     return ModelConverter.modelToJson(this);
   }
 
-  public static Builder builder() {
+  public static SpeechToSpeechStreamRequestStage builder() {
     return new Builder();
   }
 
+  public interface SpeechToSpeechStreamRequestStage {
+    _FinalStage speechToSpeechStreamRequest(
+      @NotNull com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost speechToSpeechStreamRequest
+    );
+
+    Builder from(BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost other);
+  }
+
+  public interface _FinalStage {
+    BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost build();
+
+    _FinalStage additionalProperty(String key, Object value);
+
+    _FinalStage additionalProperties(Map<String, Object> additionalProperties);
+
+    _FinalStage enableLogging(Optional<Boolean> enableLogging);
+
+    _FinalStage enableLogging(Boolean enableLogging);
+
+    _FinalStage enableLogging(Nullable<Boolean> enableLogging);
+
+    _FinalStage optimizeStreamingLatency(Optional<Integer> optimizeStreamingLatency);
+
+    _FinalStage optimizeStreamingLatency(Integer optimizeStreamingLatency);
+
+    _FinalStage optimizeStreamingLatency(Nullable<Integer> optimizeStreamingLatency);
+
+    _FinalStage outputFormat(Optional<StreamSpeechToSpeechRequestOutputFormat> outputFormat);
+
+    _FinalStage outputFormat(StreamSpeechToSpeechRequestOutputFormat outputFormat);
+
+    _FinalStage outputFormat(Nullable<StreamSpeechToSpeechRequestOutputFormat> outputFormat);
+  }
+
   @JsonIgnoreProperties(ignoreUnknown = true)
-  public static final class Builder {
+  public static final class Builder implements SpeechToSpeechStreamRequestStage, _FinalStage {
 
     private Optional<Boolean> enableLogging = Optional.empty();
     private Optional<Integer> optimizeStreamingLatency = Optional.empty();
     private Optional<StreamSpeechToSpeechRequestOutputFormat> outputFormat = Optional.empty();
-    private Optional<
-      com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost
-    > speechToSpeechStreamRequest = Optional.empty();
+    private com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost speechToSpeechStreamRequest;
 
     @JsonAnySetter
     private Map<String, Object> additionalProperties = new HashMap<>();
@@ -144,18 +173,33 @@ public final class BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost 
       return this;
     }
 
+    @java.lang.Override
+    @JsonSetter("SpeechToSpeechStreamRequest")
+    public _FinalStage speechToSpeechStreamRequest(
+      @NotNull com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost speechToSpeechStreamRequest
+    ) {
+      this.speechToSpeechStreamRequest = Objects.requireNonNull(
+        speechToSpeechStreamRequest,
+        "speechToSpeechStreamRequest must not be null"
+      );
+      return this;
+    }
+
+    @java.lang.Override
     @JsonSetter(value = "enable_logging", nulls = Nulls.SKIP)
-    public Builder enableLogging(Optional<Boolean> enableLogging) {
+    public _FinalStage enableLogging(Optional<Boolean> enableLogging) {
       this.enableLogging = enableLogging;
       return this;
     }
 
-    public Builder enableLogging(Boolean enableLogging) {
+    @java.lang.Override
+    public _FinalStage enableLogging(Boolean enableLogging) {
       this.enableLogging = Optional.ofNullable(enableLogging);
       return this;
     }
 
-    public Builder enableLogging(Nullable<Boolean> enableLogging) {
+    @java.lang.Override
+    public _FinalStage enableLogging(Nullable<Boolean> enableLogging) {
       if (enableLogging.isNull()) {
         this.enableLogging = null;
       } else if (enableLogging.isEmpty()) {
@@ -166,18 +210,21 @@ public final class BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost 
       return this;
     }
 
+    @java.lang.Override
     @JsonSetter(value = "optimize_streaming_latency", nulls = Nulls.SKIP)
-    public Builder optimizeStreamingLatency(Optional<Integer> optimizeStreamingLatency) {
+    public _FinalStage optimizeStreamingLatency(Optional<Integer> optimizeStreamingLatency) {
       this.optimizeStreamingLatency = optimizeStreamingLatency;
       return this;
     }
 
-    public Builder optimizeStreamingLatency(Integer optimizeStreamingLatency) {
+    @java.lang.Override
+    public _FinalStage optimizeStreamingLatency(Integer optimizeStreamingLatency) {
       this.optimizeStreamingLatency = Optional.ofNullable(optimizeStreamingLatency);
       return this;
     }
 
-    public Builder optimizeStreamingLatency(Nullable<Integer> optimizeStreamingLatency) {
+    @java.lang.Override
+    public _FinalStage optimizeStreamingLatency(Nullable<Integer> optimizeStreamingLatency) {
       if (optimizeStreamingLatency.isNull()) {
         this.optimizeStreamingLatency = null;
       } else if (optimizeStreamingLatency.isEmpty()) {
@@ -188,18 +235,25 @@ public final class BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost 
       return this;
     }
 
+    @java.lang.Override
     @JsonSetter(value = "output_format", nulls = Nulls.SKIP)
-    public Builder outputFormat(Optional<StreamSpeechToSpeechRequestOutputFormat> outputFormat) {
+    public _FinalStage outputFormat(
+      Optional<StreamSpeechToSpeechRequestOutputFormat> outputFormat
+    ) {
       this.outputFormat = outputFormat;
       return this;
     }
 
-    public Builder outputFormat(StreamSpeechToSpeechRequestOutputFormat outputFormat) {
+    @java.lang.Override
+    public _FinalStage outputFormat(StreamSpeechToSpeechRequestOutputFormat outputFormat) {
       this.outputFormat = Optional.ofNullable(outputFormat);
       return this;
     }
 
-    public Builder outputFormat(Nullable<StreamSpeechToSpeechRequestOutputFormat> outputFormat) {
+    @java.lang.Override
+    public _FinalStage outputFormat(
+      Nullable<StreamSpeechToSpeechRequestOutputFormat> outputFormat
+    ) {
       if (outputFormat.isNull()) {
         this.outputFormat = null;
       } else if (outputFormat.isEmpty()) {
@@ -210,32 +264,18 @@ public final class BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost 
       return this;
     }
 
-    @JsonSetter(value = "SpeechToSpeechStreamRequest", nulls = Nulls.SKIP)
-    public Builder speechToSpeechStreamRequest(
-      Optional<
-        com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost
-      > speechToSpeechStreamRequest
-    ) {
-      this.speechToSpeechStreamRequest = speechToSpeechStreamRequest;
-      return this;
-    }
-
-    public Builder speechToSpeechStreamRequest(
-      com.elevenlabs.api.types.BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost speechToSpeechStreamRequest
-    ) {
-      this.speechToSpeechStreamRequest = Optional.ofNullable(speechToSpeechStreamRequest);
-      return this;
-    }
-
+    @java.lang.Override
     public BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost build() {
       return new BodySpeechToSpeechStreamingV1SpeechToSpeechVoiceIdStreamPost(this);
     }
 
+    @java.lang.Override
     public Builder additionalProperty(String key, Object value) {
       this.additionalProperties.put(key, value);
       return this;
     }
 
+    @java.lang.Override
     public Builder additionalProperties(Map<String, Object> additionalProperties) {
       this.additionalProperties.putAll(additionalProperties);
       return this;

@@ -25,12 +25,14 @@ public final class ResellerTierResponse {
 
   private final String tierId;
   private final String displayName;
+  private final ResellerTierResponseCurrency currency;
   private final ResellerTierEconomics tierEconomics;
   private final Map<String, Object> additionalProperties;
 
   private ResellerTierResponse(Builder builder) {
     this.tierId = builder.tierId;
     this.displayName = builder.displayName;
+    this.currency = builder.currency;
     this.tierEconomics = builder.tierEconomics;
     this.additionalProperties = builder.additionalProperties;
   }
@@ -43,6 +45,14 @@ public final class ResellerTierResponse {
   @JsonProperty("display_name")
   public String getDisplayName() {
     return displayName;
+  }
+
+  /**
+   * @return What the prices are in. The same for every tier on a ladder.
+   */
+  @JsonProperty("currency")
+  public ResellerTierResponseCurrency getCurrency() {
+    return currency;
   }
 
   /**
@@ -66,13 +76,14 @@ public final class ResellerTierResponse {
     return (
       Objects.equals(tierId, that.tierId) &&
       Objects.equals(displayName, that.displayName) &&
+      Objects.equals(currency, that.currency) &&
       Objects.equals(tierEconomics, that.tierEconomics)
     );
   }
 
   @java.lang.Override
   public int hashCode() {
-    return Objects.hash(this.tierId, this.displayName, this.tierEconomics);
+    return Objects.hash(this.tierId, this.displayName, this.currency, this.tierEconomics);
   }
 
   @java.lang.Override
@@ -91,7 +102,14 @@ public final class ResellerTierResponse {
   }
 
   public interface DisplayNameStage {
-    TierEconomicsStage displayName(@NotNull String displayName);
+    CurrencyStage displayName(@NotNull String displayName);
+  }
+
+  public interface CurrencyStage {
+    /**
+     * What the prices are in. The same for every tier on a ladder.
+     */
+    TierEconomicsStage currency(@NotNull ResellerTierResponseCurrency currency);
   }
 
   public interface TierEconomicsStage {
@@ -111,10 +129,11 @@ public final class ResellerTierResponse {
 
   @JsonIgnoreProperties(ignoreUnknown = true)
   public static final class Builder
-    implements TierIdStage, DisplayNameStage, TierEconomicsStage, _FinalStage {
+    implements TierIdStage, DisplayNameStage, CurrencyStage, TierEconomicsStage, _FinalStage {
 
     private String tierId;
     private String displayName;
+    private ResellerTierResponseCurrency currency;
     private ResellerTierEconomics tierEconomics;
 
     @JsonAnySetter
@@ -125,6 +144,7 @@ public final class ResellerTierResponse {
     public Builder from(ResellerTierResponse other) {
       tierId(other.getTierId());
       displayName(other.getDisplayName());
+      currency(other.getCurrency());
       tierEconomics(other.getTierEconomics());
       return this;
     }
@@ -138,8 +158,15 @@ public final class ResellerTierResponse {
 
     @java.lang.Override
     @JsonSetter("display_name")
-    public TierEconomicsStage displayName(@NotNull String displayName) {
+    public CurrencyStage displayName(@NotNull String displayName) {
       this.displayName = Objects.requireNonNull(displayName, "displayName must not be null");
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter("currency")
+    public TierEconomicsStage currency(@NotNull ResellerTierResponseCurrency currency) {
+      this.currency = Objects.requireNonNull(currency, "currency must not be null");
       return this;
     }
 

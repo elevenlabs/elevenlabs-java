@@ -41,6 +41,26 @@ public class AsyncRawSummariesClient {
   /**
    * Gets multiple knowledge base document summaries by their IDs.
    *
+   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
+   */
+  public CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>> get() {
+    return this.get(GetSummariesRequest.builder().build());
+  }
+
+  /**
+   * Gets multiple knowledge base document summaries by their IDs.
+   *
+   * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
+   */
+  public CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>> get(
+    RequestOptions requestOptions
+  ) {
+    return this.get(GetSummariesRequest.builder().build(), requestOptions);
+  }
+
+  /**
+   * Gets multiple knowledge base document summaries by their IDs.
+   *
    * @param requestParameters {@link GetSummariesRequest} Request Parameters Object
    * @return response of {@code CompletableFuture<ElevenlabsApiHttpResponse<Map<String, GetSummariesResponse>>>}
    */

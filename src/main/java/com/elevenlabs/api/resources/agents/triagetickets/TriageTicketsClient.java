@@ -362,12 +362,6 @@ public class TriageTicketsClient {
         requestParameters.getSortBy().orElse(null).toString()
       );
     }
-    if (requestParameters.getIssueType().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "issue_type",
-        requestParameters.getIssueType().orElse(null).toString()
-      );
-    }
     return builder.build();
   }
 
@@ -504,12 +498,6 @@ public class TriageTicketsClient {
       builder.setOptionalQueryParameter(
         "sort_by",
         requestParameters.getSortBy().orElse(null).toString()
-      );
-    }
-    if (requestParameters.getIssueType().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "issue_type",
-        requestParameters.getIssueType().orElse(null).toString()
       );
     }
     return builder.build();

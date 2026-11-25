@@ -59,6 +59,73 @@ class CampaignPolicySnapshotTest {
             .build()
         )
       )
+      .dateOverrides(
+        java.util.List.of(
+          DateOverridePolicy.builder()
+            .startDate("test-value")
+            .endDate("test-value")
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .name("test-value")
+            .build()
+        )
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    CampaignPolicySnapshot roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      CampaignPolicySnapshot.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_dateOverrides() throws Exception {
+    CampaignPolicySnapshot value = CampaignPolicySnapshot.builder()
+      .timezone("test-value")
+      .retry(
+        RetryPolicy.builder()
+          .retryDelaySeconds(1)
+          .maxShortRetries(0)
+          .maxTotalCalls(1)
+          .maxCallbacks(0)
+          .maxRedirects(0)
+          .intervalPlacement(IntervalPlacement.START)
+          .rotateStepSeconds(1)
+          .maxConsecutiveFailuresPerNumber(1)
+          .build()
+      )
+      .dataCollection(
+        DataCollectionPolicy.builder()
+          .callbackTime("test-value")
+          .redirectPhoneNumber("test-value")
+          .stop("test-value")
+          .mappings(java.util.Map.of("key", "test-value"))
+          .build()
+      )
+      .followupContext(
+        FollowupContextPolicy.builder()
+          .callType(true)
+          .previousConversationId(true)
+          .previousSummary(true)
+          .previousTranscript(true)
+          .build()
+      )
+      .callingPeriods(
+        java.util.List.of(
+          CallingPeriodPolicy.builder()
+            .weekdays(java.util.List.of(1))
+            .intervals(
+              java.util.List.of(
+                CallingIntervalPolicy.builder().start("test-value").end("test-value").build()
+              )
+            )
+            .build()
+        )
+      )
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     CampaignPolicySnapshot roundTripped = ObjectMappers.JSON_MAPPER.readValue(

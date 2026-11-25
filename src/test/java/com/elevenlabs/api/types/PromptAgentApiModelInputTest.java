@@ -97,6 +97,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -220,6 +225,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -349,6 +359,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -472,6 +487,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -601,6 +621,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -724,6 +749,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -854,6 +884,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -980,6 +1015,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1103,6 +1143,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -1233,6 +1278,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1356,6 +1406,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -1485,6 +1540,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1611,6 +1671,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1689,6 +1754,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -1818,6 +1888,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -1941,6 +2016,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -2070,6 +2150,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -2184,6 +2269,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -2539,6 +2629,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -2662,6 +2757,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -2792,6 +2892,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -2904,6 +3009,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -3030,6 +3140,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -3160,6 +3275,11 @@ class PromptAgentApiModelInputTest {
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
           .requestHeaders(java.util.Map.of("key", CustomLlmRequestHeadersValue.of("test-value")))
           .apiVersion("test-value")
           .apiType(CustomLlmapiType.CHAT_COMPLETIONS)
@@ -3279,6 +3399,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )
@@ -3405,6 +3530,11 @@ class PromptAgentApiModelInputTest {
           .apiKey(CustomLlmApiKey.of(ConvAiSecretLocator.builder().secretId("test-value").build()))
           .authConnection(
             CustomLlmAuthConnection.of(
+              AuthConnectionLocator.builder().authConnectionId("test-value").build()
+            )
+          )
+          .mtlsAuthConnection(
+            CustomLlmMtlsAuthConnection.of(
               AuthConnectionLocator.builder().authConnectionId("test-value").build()
             )
           )

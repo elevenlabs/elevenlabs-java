@@ -195,6 +195,7 @@ class LeadsClientWireTest {
               .overrides(FlattenedConfigOverrides.builder().build())
               .recipientId("test-value")
               .phoneNumbers(java.util.List.of("test-value"))
+              .timezoneOverride("test-value")
               .createdAtUnix(1)
               .dynamicVariables(java.util.Map.of())
               .delivery(
@@ -231,6 +232,7 @@ class LeadsClientWireTest {
           .overrides(FlattenedConfigOverrides.builder().build())
           .recipientId("test-value")
           .phoneNumbers(java.util.List.of("test-value"))
+          .timezoneOverride("test-value")
           .createdAtUnix(1)
           .dynamicVariables(java.util.Map.of())
           .delivery(

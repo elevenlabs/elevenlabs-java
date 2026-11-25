@@ -5,6 +5,7 @@ package com.elevenlabs.api;
 
 import com.elevenlabs.api.core.ApiConfig;
 import com.elevenlabs.api.core.ClientOptions;
+import com.elevenlabs.api.core.ConcurrencyLimitingInterceptor;
 import com.elevenlabs.api.core.DefaultHeadersInterceptor;
 import com.elevenlabs.api.core.Environment;
 import com.elevenlabs.api.core.Logger;
@@ -33,6 +34,7 @@ import com.elevenlabs.api.resources.speechengine.SpeechEngineClient;
 import com.elevenlabs.api.resources.speechtospeech.SpeechToSpeechClient;
 import com.elevenlabs.api.resources.speechtotext.SpeechToTextClient;
 import com.elevenlabs.api.resources.studio.StudioClient;
+import com.elevenlabs.api.resources.subtitling.SubtitlingClient;
 import com.elevenlabs.api.resources.texttodialogue.TextToDialogueClient;
 import com.elevenlabs.api.resources.texttodialoguemulticontext.TextToDialogueMultiContextClient;
 import com.elevenlabs.api.resources.texttosoundeffects.TextToSoundEffectsClient;
@@ -70,9 +72,9 @@ public class ElevenlabsApiClient implements AutoCloseable {
   private final UserClient userClient;
   private final StudioClient studioClient;
   private final PronunciationDictionariesClient pronunciationDictionariesClient;
+  private final AudioNativeClient audioNativeClient;
   private final SpeechToTextClient speechToTextClient;
   private final ModelsClient modelsClient;
-  private final AudioNativeClient audioNativeClient;
   private final ContentProvenanceClient contentProvenanceClient;
   private final ReceptionClient receptionClient;
   private final WorkspacesClient workspacesClient;
@@ -90,6 +92,7 @@ public class ElevenlabsApiClient implements AutoCloseable {
   private final TextToDialogueMultiContextClient textToDialogueMultiContextClient;
   private final TextToSpeechMultiContextClient textToSpeechMultiContextClient;
   private final TranslationClient translationClient;
+  private final SubtitlingClient subtitlingClient;
 
   private final ApiConfig config;
 
@@ -130,6 +133,8 @@ public class ElevenlabsApiClient implements AutoCloseable {
         // included, then redacted). Silent by default — see LogConfig.
         .addInterceptor(new LoggingInterceptor(Logger.from(config.getLogConfig())));
 
+    placeConcurrencyLimiterAfterRetry(httpClientBuilder);
+
     // Only apply the SDK's default read timeout when building the client ourselves; a
     // user-supplied client owns its own transport (timeout) settings.
     if (customHttpClient == null) {
@@ -158,9 +163,9 @@ public class ElevenlabsApiClient implements AutoCloseable {
       config,
       clientOptions
     );
+    this.audioNativeClient = new AudioNativeClient(httpClient, config, clientOptions);
     this.speechToTextClient = new SpeechToTextClient(httpClient, config, clientOptions);
     this.modelsClient = new ModelsClient(httpClient, config, clientOptions);
-    this.audioNativeClient = new AudioNativeClient(httpClient, config, clientOptions);
     this.contentProvenanceClient = new ContentProvenanceClient(httpClient, config, clientOptions);
     this.receptionClient = new ReceptionClient(httpClient, config, clientOptions);
     this.workspacesClient = new WorkspacesClient(httpClient, config, clientOptions);
@@ -190,6 +195,26 @@ public class ElevenlabsApiClient implements AutoCloseable {
       clientOptions
     );
     this.translationClient = new TranslationClient(httpClient, config, clientOptions);
+    this.subtitlingClient = new SubtitlingClient(httpClient, config, clientOptions);
+  }
+
+  private static void placeConcurrencyLimiterAfterRetry(OkHttpClient.Builder builder) {
+    java.util.List<okhttp3.Interceptor> interceptors = builder.interceptors();
+    int retryIndex = -1;
+    int limiterIndex = -1;
+    for (int i = 0; i < interceptors.size(); i++) {
+      okhttp3.Interceptor interceptor = interceptors.get(i);
+      if (interceptor instanceof RetryInterceptor) {
+        retryIndex = i;
+      } else if (interceptor instanceof ConcurrencyLimitingInterceptor) {
+        limiterIndex = i;
+      }
+    }
+    if (limiterIndex < 0 || retryIndex < limiterIndex) {
+      return;
+    }
+    okhttp3.Interceptor limiter = interceptors.remove(limiterIndex);
+    interceptors.add(retryIndex, limiter);
   }
 
   /** Constructs the client from the Fern-compatible options surface. */
@@ -293,6 +318,11 @@ public class ElevenlabsApiClient implements AutoCloseable {
     return this.pronunciationDictionariesClient;
   }
 
+  /** Returns the top-level AudioNativeClient. */
+  public AudioNativeClient audioNative() {
+    return this.audioNativeClient;
+  }
+
   /** Returns the top-level SpeechToTextClient. */
   public SpeechToTextClient speechToText() {
     return this.speechToTextClient;
@@ -301,11 +331,6 @@ public class ElevenlabsApiClient implements AutoCloseable {
   /** Returns the top-level ModelsClient. */
   public ModelsClient models() {
     return this.modelsClient;
-  }
-
-  /** Returns the top-level AudioNativeClient. */
-  public AudioNativeClient audioNative() {
-    return this.audioNativeClient;
   }
 
   /** Returns the top-level ContentProvenanceClient. */
@@ -391,6 +416,11 @@ public class ElevenlabsApiClient implements AutoCloseable {
   /** Returns the top-level TranslationClient. */
   public TranslationClient translation() {
     return this.translationClient;
+  }
+
+  /** Returns the top-level SubtitlingClient. */
+  public SubtitlingClient subtitling() {
+    return this.subtitlingClient;
   }
 
   /**

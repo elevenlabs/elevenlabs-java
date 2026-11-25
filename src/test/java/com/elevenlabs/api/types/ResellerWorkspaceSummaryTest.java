@@ -34,6 +34,7 @@ class ResellerWorkspaceSummaryTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .build();
@@ -64,6 +65,7 @@ class ResellerWorkspaceSummaryTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .build();
@@ -84,6 +86,7 @@ class ResellerWorkspaceSummaryTest {
       .callsLast30Days(1)
       .createdAtUnix(1)
       .billingTier("test-value")
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .build();
@@ -105,6 +108,37 @@ class ResellerWorkspaceSummaryTest {
       .createdAtUnix(1)
       .billingTier("test-value")
       .subscription((ResellerWorkspaceSubscription) null)
+      .chargeCustomer(true)
+      .hasPaymentIssue(true)
+      .onboardingCompletedAtUnix(1)
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    ResellerWorkspaceSummary roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      ResellerWorkspaceSummary.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_chargeCustomer() throws Exception {
+    ResellerWorkspaceSummary value = ResellerWorkspaceSummary.builder()
+      .workspaceId("test-value")
+      .businessName("test-value")
+      .receptionistCount(1)
+      .callsLast30Days(1)
+      .createdAtUnix(1)
+      .billingTier("test-value")
+      .subscription(
+        ResellerWorkspaceSubscription.builder()
+          .tierId("test-value")
+          .billingPeriodEndUnix(1)
+          .billingPeriod(ResellerWorkspaceSubscriptionBillingPeriod.MONTHLY_PERIOD)
+          .cancelAtUnix(1)
+          .pendingDowngradeTier("test-value")
+          .pendingDowngradeAtUnix(1)
+          .build()
+      )
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .build();
@@ -135,6 +169,7 @@ class ResellerWorkspaceSummaryTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .onboardingCompletedAtUnix(1)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
@@ -164,6 +199,7 @@ class ResellerWorkspaceSummaryTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
@@ -193,6 +229,7 @@ class ResellerWorkspaceSummaryTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix((Integer) null)
       .build();

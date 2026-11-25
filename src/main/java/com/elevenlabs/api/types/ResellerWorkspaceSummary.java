@@ -32,6 +32,7 @@ public final class ResellerWorkspaceSummary {
   private final int callsLast30Days;
   private final int createdAtUnix;
   private final Optional<ResellerWorkspaceSubscription> subscription;
+  private final Optional<Boolean> chargeCustomer;
   private final Optional<Boolean> hasPaymentIssue;
   private final Optional<Integer> onboardingCompletedAtUnix;
   private final Map<String, Object> additionalProperties;
@@ -44,6 +45,7 @@ public final class ResellerWorkspaceSummary {
     this.callsLast30Days = builder.callsLast30Days;
     this.createdAtUnix = builder.createdAtUnix;
     this.subscription = builder.subscription;
+    this.chargeCustomer = builder.chargeCustomer;
     this.hasPaymentIssue = builder.hasPaymentIssue;
     this.onboardingCompletedAtUnix = builder.onboardingCompletedAtUnix;
     this.additionalProperties = builder.additionalProperties;
@@ -81,7 +83,7 @@ public final class ResellerWorkspaceSummary {
   }
 
   /**
-   * @return The reseller-managed subscription, when this workspace has one. None means nothing is sold here yet and a tier can be assigned.
+   * @return The reseller-managed subscription, when this workspace has one. None means the reseller sells nothing here: no tier is assigned yet, or the workspace pays for its own subscription (see charge_customer).
    */
   @JsonIgnore
   public Optional<ResellerWorkspaceSubscription> getSubscription() {
@@ -92,6 +94,14 @@ public final class ResellerWorkspaceSummary {
   @JsonProperty("subscription")
   private Optional<ResellerWorkspaceSubscription> _getSubscription() {
     return subscription;
+  }
+
+  /**
+   * @return The workspace pays for its own subscription, so its tier can't be assigned or changed here.
+   */
+  @JsonProperty("charge_customer")
+  public Optional<Boolean> getChargeCustomer() {
+    return chargeCustomer;
   }
 
   /**
@@ -134,6 +144,7 @@ public final class ResellerWorkspaceSummary {
       Objects.equals(callsLast30Days, that.callsLast30Days) &&
       Objects.equals(createdAtUnix, that.createdAtUnix) &&
       Objects.equals(subscription, that.subscription) &&
+      Objects.equals(chargeCustomer, that.chargeCustomer) &&
       Objects.equals(hasPaymentIssue, that.hasPaymentIssue) &&
       Objects.equals(onboardingCompletedAtUnix, that.onboardingCompletedAtUnix)
     );
@@ -149,6 +160,7 @@ public final class ResellerWorkspaceSummary {
       this.callsLast30Days,
       this.createdAtUnix,
       this.subscription,
+      this.chargeCustomer,
       this.hasPaymentIssue,
       this.onboardingCompletedAtUnix
     );
@@ -200,6 +212,10 @@ public final class ResellerWorkspaceSummary {
 
     _FinalStage subscription(Nullable<ResellerWorkspaceSubscription> subscription);
 
+    _FinalStage chargeCustomer(Optional<Boolean> chargeCustomer);
+
+    _FinalStage chargeCustomer(Boolean chargeCustomer);
+
     _FinalStage hasPaymentIssue(Optional<Boolean> hasPaymentIssue);
 
     _FinalStage hasPaymentIssue(Boolean hasPaymentIssue);
@@ -228,6 +244,7 @@ public final class ResellerWorkspaceSummary {
     private int callsLast30Days;
     private int createdAtUnix;
     private Optional<ResellerWorkspaceSubscription> subscription = Optional.empty();
+    private Optional<Boolean> chargeCustomer = Optional.empty();
     private Optional<Boolean> hasPaymentIssue = Optional.empty();
     private Optional<Integer> onboardingCompletedAtUnix = Optional.empty();
 
@@ -244,6 +261,7 @@ public final class ResellerWorkspaceSummary {
       callsLast30Days(other.getCallsLast30Days());
       createdAtUnix(other.getCreatedAtUnix());
       subscription(other.getSubscription());
+      chargeCustomer(other.getChargeCustomer());
       hasPaymentIssue(other.getHasPaymentIssue());
       onboardingCompletedAtUnix(other.getOnboardingCompletedAtUnix());
       return this;
@@ -313,6 +331,19 @@ public final class ResellerWorkspaceSummary {
       } else {
         this.subscription = Optional.of(subscription.get());
       }
+      return this;
+    }
+
+    @java.lang.Override
+    @JsonSetter(value = "charge_customer", nulls = Nulls.SKIP)
+    public _FinalStage chargeCustomer(Optional<Boolean> chargeCustomer) {
+      this.chargeCustomer = chargeCustomer;
+      return this;
+    }
+
+    @java.lang.Override
+    public _FinalStage chargeCustomer(Boolean chargeCustomer) {
+      this.chargeCustomer = Optional.ofNullable(chargeCustomer);
       return this;
     }
 

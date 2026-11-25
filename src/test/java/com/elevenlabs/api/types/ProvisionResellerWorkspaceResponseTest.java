@@ -34,6 +34,7 @@ class ProvisionResellerWorkspaceResponseTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .memberResults(
@@ -73,6 +74,7 @@ class ProvisionResellerWorkspaceResponseTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .memberResults(
@@ -102,6 +104,46 @@ class ProvisionResellerWorkspaceResponseTest {
       .callsLast30Days(1)
       .createdAtUnix(1)
       .billingTier("test-value")
+      .chargeCustomer(true)
+      .hasPaymentIssue(true)
+      .onboardingCompletedAtUnix(1)
+      .memberResults(
+        java.util.List.of(
+          TeamInviteResult.builder()
+            .email("test-value")
+            .outcome(TeamInviteOutcome.INVITED)
+            .errorStatus("test-value")
+            .build()
+        )
+      )
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    ProvisionResellerWorkspaceResponse roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      ProvisionResellerWorkspaceResponse.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_chargeCustomer() throws Exception {
+    ProvisionResellerWorkspaceResponse value = ProvisionResellerWorkspaceResponse.builder()
+      .workspaceId("test-value")
+      .businessName("test-value")
+      .receptionistCount(1)
+      .callsLast30Days(1)
+      .createdAtUnix(1)
+      .billingTier("test-value")
+      .subscription(
+        ResellerWorkspaceSubscription.builder()
+          .tierId("test-value")
+          .billingPeriodEndUnix(1)
+          .billingPeriod(ResellerWorkspaceSubscriptionBillingPeriod.MONTHLY_PERIOD)
+          .cancelAtUnix(1)
+          .pendingDowngradeTier("test-value")
+          .pendingDowngradeAtUnix(1)
+          .build()
+      )
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .memberResults(
@@ -141,6 +183,7 @@ class ProvisionResellerWorkspaceResponseTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .onboardingCompletedAtUnix(1)
       .memberResults(
         java.util.List.of(
@@ -179,6 +222,7 @@ class ProvisionResellerWorkspaceResponseTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .memberResults(
         java.util.List.of(
@@ -217,6 +261,7 @@ class ProvisionResellerWorkspaceResponseTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix((Integer) null)
       .memberResults(
@@ -256,6 +301,7 @@ class ProvisionResellerWorkspaceResponseTest {
           .pendingDowngradeAtUnix(1)
           .build()
       )
+      .chargeCustomer(true)
       .hasPaymentIssue(true)
       .onboardingCompletedAtUnix(1)
       .build();

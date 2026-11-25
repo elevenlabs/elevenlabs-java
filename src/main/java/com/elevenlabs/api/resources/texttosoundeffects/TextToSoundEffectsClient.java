@@ -142,24 +142,19 @@ public class TextToSoundEffectsClient {
     CreateSoundEffectRequest requestParameters,
     RequestConfig resolvedConfig
   ) {
-    RequestBuilder builder = new RequestBuilder(
+    return new RequestBuilder(
       HttpMethod.POST,
       resolveBaseUrl(resolvedConfig, Environment.DEFAULT),
       "v1/sound-generation"
     )
       .applyRequestConfig(resolvedConfig)
+      .setOptionalQueryParameter("output_format", requestParameters.getOutputFormat().orElse(null))
       .setOptionalQueryParameter(
         "enable_logging",
         requestParameters.getEnableLogging().orElse(null)
       )
-      .setJsonContent(requestParameters);
-    if (requestParameters.getOutputFormat().orElse(null) != null) {
-      builder.setOptionalQueryParameter(
-        "output_format",
-        requestParameters.getOutputFormat().orElse(null).toString()
-      );
-    }
-    return builder.build();
+      .setJsonContent(requestParameters)
+      .build();
   }
 
   /**

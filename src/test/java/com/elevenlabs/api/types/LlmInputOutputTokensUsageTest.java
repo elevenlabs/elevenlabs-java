@@ -22,6 +22,7 @@ class LlmInputOutputTokensUsageTest {
       .inputCacheRead(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .inputCacheWrite(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .outputTotal(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .outputTotalReasoningPortion(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     LlmInputOutputTokensUsage roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -37,6 +38,7 @@ class LlmInputOutputTokensUsageTest {
       .inputCacheRead(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .inputCacheWrite(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .outputTotal(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .outputTotalReasoningPortion(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     LlmInputOutputTokensUsage roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -52,6 +54,7 @@ class LlmInputOutputTokensUsageTest {
       .input(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .inputCacheWrite(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .outputTotal(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .outputTotalReasoningPortion(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     LlmInputOutputTokensUsage roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -67,6 +70,7 @@ class LlmInputOutputTokensUsageTest {
       .input(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .inputCacheRead(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .outputTotal(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .outputTotalReasoningPortion(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     LlmInputOutputTokensUsage roundTripped = ObjectMappers.JSON_MAPPER.readValue(
@@ -82,6 +86,23 @@ class LlmInputOutputTokensUsageTest {
       .input(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .inputCacheRead(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .inputCacheWrite(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .outputTotalReasoningPortion(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .build();
+    String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
+    LlmInputOutputTokensUsage roundTripped = ObjectMappers.JSON_MAPPER.readValue(
+      json,
+      LlmInputOutputTokensUsage.class
+    );
+    assertEquals(value, roundTripped);
+  }
+
+  @Test
+  void roundTrips_omit_outputTotalReasoningPortion() throws Exception {
+    LlmInputOutputTokensUsage value = LlmInputOutputTokensUsage.builder()
+      .input(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .inputCacheRead(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .inputCacheWrite(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
+      .outputTotal(LlmTokensCategoryUsage.builder().tokens(1).price(1d).build())
       .build();
     String json = ObjectMappers.JSON_MAPPER.writeValueAsString(value);
     LlmInputOutputTokensUsage roundTripped = ObjectMappers.JSON_MAPPER.readValue(

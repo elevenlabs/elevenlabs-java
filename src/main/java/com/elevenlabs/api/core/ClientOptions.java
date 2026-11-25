@@ -7,11 +7,16 @@ import com.elevenlabs.api.core.ApiConfig;
 import com.elevenlabs.api.core.Environment;
 import com.elevenlabs.api.core.LogConfig;
 import com.elevenlabs.api.core.RetryConfig;
+import java.time.Duration;
 import java.util.ArrayList;
+import java.util.Collections;
 import java.util.HashMap;
+import java.util.HashSet;
+import java.util.List;
 import java.util.Map;
 import java.util.Optional;
 import java.util.Set;
+import java.util.TreeSet;
 import java.util.concurrent.ConcurrentHashMap;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicBoolean;
@@ -36,6 +41,9 @@ public final class ClientOptions {
   private final Optional<Long> initialRetryDelayMillis;
   private final Optional<Long> maxRetryDelayMillis;
   private final Optional<Double> retryJitterFactor;
+  private final Optional<Set<Integer>> retryOnStatusCodes;
+  private final Optional<List<Duration>> retryDelays;
+  private final Optional<Integer> maxConcurrentRequests;
   private final Optional<WebSocketFactory> webSocketFactory;
   private final Optional<LogConfig> logging;
 
@@ -53,6 +61,9 @@ public final class ClientOptions {
     Optional<Long> initialRetryDelayMillis,
     Optional<Long> maxRetryDelayMillis,
     Optional<Double> retryJitterFactor,
+    Optional<Set<Integer>> retryOnStatusCodes,
+    Optional<List<Duration>> retryDelays,
+    Optional<Integer> maxConcurrentRequests,
     Optional<WebSocketFactory> webSocketFactory,
     Optional<LogConfig> logging
   ) {
@@ -69,6 +80,9 @@ public final class ClientOptions {
     this.initialRetryDelayMillis = initialRetryDelayMillis;
     this.maxRetryDelayMillis = maxRetryDelayMillis;
     this.retryJitterFactor = retryJitterFactor;
+    this.retryOnStatusCodes = retryOnStatusCodes;
+    this.retryDelays = retryDelays;
+    this.maxConcurrentRequests = maxConcurrentRequests;
     this.webSocketFactory = webSocketFactory;
     this.logging = logging;
   }
@@ -116,7 +130,7 @@ public final class ClientOptions {
     TimeUnit unit
   ) {
     return builder
-      .callTimeout(0, TimeUnit.SECONDS)
+      .callTimeout(timeout, unit)
       .connectTimeout(timeout, unit)
       .readTimeout(timeout, unit)
       .writeTimeout(timeout, unit)
@@ -137,6 +151,18 @@ public final class ClientOptions {
 
   public Optional<Double> retryJitterFactor() {
     return retryJitterFactor;
+  }
+
+  public Optional<Set<Integer>> retryOnStatusCodes() {
+    return retryOnStatusCodes;
+  }
+
+  public Optional<List<Duration>> retryDelays() {
+    return retryDelays;
+  }
+
+  public Optional<Integer> maxConcurrentRequests() {
+    return maxConcurrentRequests;
   }
 
   /**
@@ -200,7 +226,11 @@ public final class ClientOptions {
     RetryConfig.RetryConfigBuilder retryBuilder = RetryConfig.builder().maxRetries(maxRetries);
     initialRetryDelayMillis.ifPresent(value -> retryBuilder.initialDelay(value.intValue()));
     maxRetryDelayMillis.ifPresent(value -> retryBuilder.maxDelay(value.intValue()));
-    retryJitterFactor.ifPresent(value -> retryBuilder.jitter((int) Math.round(value * 100)));
+    retryJitterFactor.ifPresent(retryBuilder::jitterFactor);
+    retryOnStatusCodes.ifPresent(codes ->
+      retryBuilder.statusCodesToRetry(new ArrayList<>(new TreeSet<>(codes)))
+    );
+    retryDelays.ifPresent(delays -> retryBuilder.retryDelays(new ArrayList<>(delays)));
     builder.retryConfig(retryBuilder.build());
     logging.ifPresent(builder::logConfig);
     return builder.build();
@@ -220,6 +250,9 @@ public final class ClientOptions {
     private Optional<Long> initialRetryDelayMillis = Optional.empty();
     private Optional<Long> maxRetryDelayMillis = Optional.empty();
     private Optional<Double> retryJitterFactor = Optional.empty();
+    private Optional<Set<Integer>> retryOnStatusCodes = Optional.empty();
+    private Optional<List<Duration>> retryDelays = Optional.empty();
+    private Optional<Integer> maxConcurrentRequests = Optional.empty();
     private Optional<WebSocketFactory> webSocketFactory = Optional.empty();
     private Optional<Integer> timeout = Optional.empty();
     private OkHttpClient httpClient;
@@ -282,6 +315,49 @@ public final class ClientOptions {
       return this;
     }
 
+    /** Limits retries to exactly these HTTP status codes; unset retries 408, 429 and 5xx. */
+    public Builder retryOnStatusCodes(Set<Integer> retryOnStatusCodes) {
+      if (retryOnStatusCodes == null) {
+        throw new IllegalArgumentException("retryOnStatusCodes must not be null");
+      }
+      for (Integer statusCode : retryOnStatusCodes) {
+        if (statusCode == null || statusCode < 100 || statusCode > 599) {
+          throw new IllegalArgumentException(
+            "retryOnStatusCodes contains an invalid HTTP status code: " + statusCode
+          );
+        }
+      }
+      this.retryOnStatusCodes = Optional.of(
+        Collections.unmodifiableSet(new HashSet<>(retryOnStatusCodes))
+      );
+      return this;
+    }
+
+    /** An explicit retry schedule: the n-th retry waits for the n-th duration; its size replaces maxRetries. */
+    public Builder retryDelays(List<Duration> retryDelays) {
+      if (retryDelays == null) {
+        throw new IllegalArgumentException("retryDelays must not be null");
+      }
+      for (Duration delay : retryDelays) {
+        if (delay == null || delay.isNegative()) {
+          throw new IllegalArgumentException(
+            "retryDelays must only contain non-negative durations: " + delay
+          );
+        }
+      }
+      this.retryDelays = Optional.of(Collections.unmodifiableList(new ArrayList<>(retryDelays)));
+      return this;
+    }
+
+    /** Caps how many requests are in flight at once. */
+    public Builder maxConcurrentRequests(int maxConcurrentRequests) {
+      if (maxConcurrentRequests <= 0) {
+        throw new IllegalArgumentException("maxConcurrentRequests must be positive");
+      }
+      this.maxConcurrentRequests = Optional.of(maxConcurrentRequests);
+      return this;
+    }
+
     public Builder webSocketFactory(WebSocketFactory webSocketFactory) {
       this.webSocketFactory = Optional.of(webSocketFactory);
       return this;
@@ -300,9 +376,19 @@ public final class ClientOptions {
     }
 
     public ClientOptions build() {
-      OkHttpClient client = httpClient != null
+      OkHttpClient baseClient = httpClient != null
         ? httpClient
         : withTimeout(new OkHttpClient.Builder(), timeout.orElse(240), TimeUnit.SECONDS);
+      OkHttpClient client = baseClient;
+      if (maxConcurrentRequests.isPresent()) {
+        OkHttpClient.Builder limited = baseClient.newBuilder();
+        limited
+          .interceptors()
+          .removeIf(interceptor -> interceptor instanceof ConcurrencyLimitingInterceptor);
+        client = limited
+          .addInterceptor(new ConcurrencyLimitingInterceptor(maxConcurrentRequests.get()))
+          .build();
+      }
       long clientTimeoutMillis = client.callTimeoutMillis() > 0
         ? client.callTimeoutMillis()
         : client.readTimeoutMillis();
@@ -327,6 +413,9 @@ public final class ClientOptions {
         initialRetryDelayMillis,
         maxRetryDelayMillis,
         retryJitterFactor,
+        retryOnStatusCodes,
+        retryDelays,
+        maxConcurrentRequests,
         webSocketFactory,
         logging
       );
@@ -346,6 +435,9 @@ public final class ClientOptions {
       builder.initialRetryDelayMillis = clientOptions.initialRetryDelayMillis();
       builder.maxRetryDelayMillis = clientOptions.maxRetryDelayMillis();
       builder.retryJitterFactor = clientOptions.retryJitterFactor();
+      builder.retryOnStatusCodes = clientOptions.retryOnStatusCodes();
+      builder.retryDelays = clientOptions.retryDelays();
+      builder.maxConcurrentRequests = clientOptions.maxConcurrentRequests();
       builder.webSocketFactory = clientOptions.webSocketFactory();
       builder.logging = clientOptions.logging();
       builder.baseUrl = clientOptions.baseUrl;

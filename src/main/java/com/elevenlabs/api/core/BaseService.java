@@ -208,7 +208,7 @@ public class BaseService {
 
     if (resolvedConfig.getTimeout() != null) {
       builder
-        .callTimeout(0, TimeUnit.SECONDS)
+        .callTimeout(resolvedConfig.getTimeout(), TimeUnit.MILLISECONDS)
         .connectTimeout(resolvedConfig.getTimeout(), TimeUnit.MILLISECONDS)
         .writeTimeout(resolvedConfig.getTimeout(), TimeUnit.MILLISECONDS)
         .readTimeout(resolvedConfig.getTimeout(), TimeUnit.MILLISECONDS);
@@ -307,7 +307,7 @@ public class BaseService {
       // The request never reached the server, so there is no status to report. Throwing the API
       // exception with a fabricated 0 made a transport failure indistinguishable from an error
       // response (FSDK-1637).
-      throw new ElevenlabsApiException(e.getMessage(), e);
+      throw new ElevenlabsApiException("Network error executing HTTP request", e);
     }
 
     if (response.isSuccessful()) {
@@ -342,7 +342,7 @@ public class BaseService {
     // caller catching the SDK's exception (FSDK-1700).
     // Nothing reads this body, so the response is closed here or its connection stays checked out.
     ElevenlabsApiApiException error = new ElevenlabsApiApiException(
-      extractErrorMessage(response, null),
+      "Error with status code " + response.code(),
       response.code(),
       null,
       response
@@ -399,7 +399,7 @@ public class BaseService {
             // No mapping (and no default): the same exception the sync path throws, so an
             // async caller catches what a sync caller catches (FSDK-1700).
             ElevenlabsApiApiException error = new ElevenlabsApiApiException(
-              extractErrorMessage(response, null),
+              "Error with status code " + response.code(),
               response.code(),
               null,
               response
@@ -414,7 +414,9 @@ public class BaseService {
 
         @Override
         public void onFailure(@NotNull Call call, @NotNull IOException e) {
-          future.completeExceptionally(new ElevenlabsApiException(e.getMessage(), e));
+          future.completeExceptionally(
+            new ElevenlabsApiException("Network error executing HTTP request", e)
+          );
         }
       }
     );

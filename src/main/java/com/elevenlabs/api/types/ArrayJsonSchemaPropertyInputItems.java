@@ -45,6 +45,8 @@ public final class ArrayJsonSchemaPropertyInputItems {
       return visitor.visit((ObjectJsonSchemaPropertyInput) this.value);
     } else if (this.type == 2) {
       return visitor.visit((ArrayJsonSchemaPropertyInput) this.value);
+    } else if (this.type == 3) {
+      return visitor.visit((AnyOfJsonSchemaPropertyInput) this.value);
     }
     throw new IllegalStateException("Failed to visit value. This should never happen.");
   }
@@ -84,6 +86,10 @@ public final class ArrayJsonSchemaPropertyInputItems {
     return new ArrayJsonSchemaPropertyInputItems(value, 2);
   }
 
+  public static ArrayJsonSchemaPropertyInputItems of(AnyOfJsonSchemaPropertyInput value) {
+    return new ArrayJsonSchemaPropertyInputItems(value, 3);
+  }
+
   public boolean isLiteralJsonSchemaProperty() {
     return this.type == 0;
   }
@@ -114,12 +120,24 @@ public final class ArrayJsonSchemaPropertyInputItems {
       : Optional.empty();
   }
 
+  public boolean isAnyOfJsonSchemaPropertyInput() {
+    return this.type == 3;
+  }
+
+  public Optional<AnyOfJsonSchemaPropertyInput> getAnyOfJsonSchemaPropertyInput() {
+    return isAnyOfJsonSchemaPropertyInput()
+      ? Optional.ofNullable((AnyOfJsonSchemaPropertyInput) this.value)
+      : Optional.empty();
+  }
+
   public interface Visitor<T> {
     T visit(LiteralJsonSchemaProperty value);
 
     T visit(ObjectJsonSchemaPropertyInput value);
 
     T visit(ArrayJsonSchemaPropertyInput value);
+
+    T visit(AnyOfJsonSchemaPropertyInput value);
   }
 
   private static ArrayJsonSchemaPropertyInputItems fromJson(JsonParser p) throws IOException {
@@ -128,6 +146,17 @@ public final class ArrayJsonSchemaPropertyInputItems {
     if (value instanceof Map<?, ?> && ((Map<?, ?>) value).containsKey("type")) {
       try {
         return of(ModelConverter.convertValue(value, LiteralJsonSchemaProperty.class));
+      } catch (RuntimeException e) {
+        lastFailure = e;
+      }
+    }
+    if (
+      value instanceof Map<?, ?> &&
+      ((Map<?, ?>) value).containsKey("any_of") &&
+      ((Map<?, ?>) value).containsKey("discriminator")
+    ) {
+      try {
+        return of(ModelConverter.convertValue(value, AnyOfJsonSchemaPropertyInput.class));
       } catch (RuntimeException e) {
         lastFailure = e;
       }
@@ -195,6 +224,11 @@ public final class ArrayJsonSchemaPropertyInputItems {
       } catch (RuntimeException e) {
         lastFailure = e;
       }
+    }
+    try {
+      return of(ModelConverter.convertValue(value, AnyOfJsonSchemaPropertyInput.class));
+    } catch (RuntimeException e) {
+      lastFailure = e;
     }
     throw new JsonParseException(p, "Failed to deserialize", lastFailure);
   }
